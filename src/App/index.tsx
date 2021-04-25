@@ -1,9 +1,10 @@
 import { VFC } from 'react'
-import './App.css'
+import { CssBaseline } from '@material-ui/core'
 
 export const App: VFC = () => {
   return <>
-    <main className="App">
+    <CssBaseline />
+    <main>
       <p>Hello world!</p>
     </main>
   </>
