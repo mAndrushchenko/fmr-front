@@ -9,7 +9,7 @@ export const App: VFC = () => (
     <main>
       <Router>
         <Switch>
-          <Route path="/signin">
+          <Route path='/signin'>
             <Signin />
           </Route>
         </Switch>
