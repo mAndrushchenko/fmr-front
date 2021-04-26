@@ -7,49 +7,52 @@ import { makeStyles } from '@material-ui/core/styles'
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
 const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
 
+const emailError = 'Check your email. It is incorrect'
+const passwordError = 'Paswword must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
+
 const styles = makeStyles({
   root: {
     maxWidth: '900px',
     margin: '0 auto',
     minWidth: '300px',
-    padding: '30px 30px 0',
+    padding: '30px 30px 0'
   },
 
   link: {
     display: 'block',
-    margin: '10px 0 20px',
+    margin: '10px 0 20px'
   }
 })
 
 export const Signin: VFC = () => {
   const classes = styles()
 
-  const [form, setForm] = useState({
+  const [ form, setForm ] = useState({
     email: '',
-    password: '',
+    password: ''
   })
 
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [ isSubmitted, setIsSubmitted ] = useState(false)
 
-  const [error, setError] = useState({
+  const [ error, setError ] = useState({
     email: '',
-    password: '',
+    password: ''
   })
 
   useEffect(() => {
     if (isSubmitted && !error.email && !error.password) {
       console.log('send request')
     }
-  }, [isSubmitted, error])
+  }, [ isSubmitted, error ])
 
   const fieldChangeHandler = useCallback(e => {
     setIsSubmitted(false)
 
     setForm({
       ...form,
-      [e.target.id]: e.target.value,
+      [e.target.id]: e.target.value
     })
-  }, [form])
+  }, [ form ])
 
   const submitHandler = useCallback(e => {
     e.preventDefault()
@@ -57,51 +60,55 @@ export const Signin: VFC = () => {
     setIsSubmitted(true)
 
     setError({
-      email: emailRegexp.test(form.email) ? '' : 'Check your email. It is incorrect',
-      password: passwordRegexp.test(form.password) ? '' : 'Paswword must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
+      email: emailRegexp.test(form.email) ? '' : emailError,
+      password: passwordRegexp.test(form.password) ? '' : passwordError
     })
-
-  }, [form])
+  }, [ form ])
 
   return (
     <div className={classes.root}>
       <h1>Sign in the system before you continue using site.</h1>
 
       <form onSubmit={submitHandler}>
-        <TextField 
-          label="Email" 
-          id="email" 
-          type="email" 
-          variant="outlined" 
-          margin="normal" 
-          required={true} 
-          fullWidth={true}
-          value={form.email} 
-          onChange={fieldChangeHandler} 
-          error={!!error.email} 
+        <TextField
+          label='Email'
+          id='email'
+          type='email'
+          variant='outlined'
+          margin='normal'
+          required
+          fullWidth
+          value={form.email}
+          onChange={fieldChangeHandler}
+          error={!!error.email}
           helperText={error.email}
         />
 
-        <TextField 
-          id="password" 
-          label="Password" 
-          type="password" 
-          variant="outlined" 
-          margin="normal"
-          fullWidth={true}
-          required={true} 
-          value={form.password} 
-          onChange={fieldChangeHandler} 
-          error={!!error.password} 
-          helperText={error.password} 
+        <TextField
+          id='password'
+          label='Password'
+          type='password'
+          variant='outlined'
+          margin='normal'
+          fullWidth
+          required
+          value={form.password}
+          onChange={fieldChangeHandler}
+          error={!!error.password}
+          helperText={error.password}
         />
 
-        <Link to="/reset-password" className={classes.link} >Forgot password?</Link>
+        <Link
+          to='/reset-password'
+          className={classes.link}
+        >
+          Forgot password?
+        </Link>
 
-        <Button 
-          variant="outlined" 
-          type="submit" 
-          color="primary"
+        <Button
+          variant='outlined'
+          type='submit'
+          color='primary'
         >
           Sign in
         </Button>
