@@ -7,12 +7,16 @@ const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-
 const passwordREgexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
 const nameRegexp = /^[a-zA-Z]+(\s[a-zA-Z]+)?$/
 
+const nameError = 'Your name should consist only of English letters'
+const emailError = 'Check your email. It is incorrect'
+const passwordError = 'Paswword must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
+
 const styles = makeStyles({
   root: {
     maxWidth: '1000px',
     minWidth: '350px',
     padding: '30px 30px 0',
-    margin: '0 auto',
+    margin: '0 auto'
   },
 
   button: {
@@ -23,49 +27,57 @@ const styles = makeStyles({
 export const Signup: VFC = () => {
   const classes = styles()
 
-  const [form, setForm] = useState({
+  const [ form, setForm ] = useState({
     email: '',
     name: '',
     firstPassword: '',
-    secondPassword: '',
+    secondPassword: ''
   })
 
-  const [error, setError] = useState({
+  const [ error, setError ] = useState({
     email: '',
     name: '',
-    firstPassword: '',
+    firstPassword: ''
   })
 
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [ isSubmitted, setIsSubmitted ] = useState(false)
 
   useEffect(() => {
-    if (isSubmitted && !error.email && !error.name && !error.firstPassword ) {
+    if (isSubmitted && !error.email && !error.name && !error.firstPassword) {
       console.log('send form')
     }
-  }, [isSubmitted, error, form])
+  }, [ isSubmitted, error, form ])
 
   const fieldChangeHandler = useCallback(e => {
     setIsSubmitted(false)
 
     setForm({
       ...form,
-      [e.target.id]: e.target.value,
+      [e.target.id]: e.target.value
     })
-  }, [form])
+  }, [ form ])
 
   const submitHandler = useCallback(e => {
     e.preventDefault()
 
     setIsSubmitted(true)
 
-    setError({
-      email: emailRegexp.test(form.email.trim()) ? '' : 'Check your email. It is incorrect',
-      name: nameRegexp.test(form.name.trim()) ? '' : 'Your name should consist only of English letters',
-      firstPassword: form.secondPassword !== form.firstPassword ? `Your password doesn't match` : 
-        passwordREgexp.test(form.firstPassword) ? '' : 'Password must consist of English capitals and lowercase letters and numbers and be at least 8-symbol length',
-    })
+    let passwordProblem = ''
 
-  }, [form])
+    if (form.firstPassword !== form.secondPassword) {
+      passwordProblem = 'You password does not match'
+    } else if (!passwordREgexp.test(form.firstPassword)) {
+      passwordProblem = passwordError
+    } else {
+      passwordProblem = ''
+    }
+
+    setError({
+      email: emailRegexp.test(form.email.trim()) ? '' : emailError,
+      name: nameRegexp.test(form.name.trim()) ? '' : nameError,
+      firstPassword: passwordProblem
+    })
+  }, [ form ])
 
   return (
     <div className={classes.root}>
@@ -73,65 +85,67 @@ export const Signup: VFC = () => {
 
       <form onSubmit={submitHandler}>
         <TextField
-          label="Name"
-          type="text"
-          variant="outlined"
-          margin="normal"
-          id="name"
+          label='Name'
+          type='text'
+          variant='outlined'
+          margin='normal'
+          id='name'
           value={form.name}
-          fullWidth={true}
+          fullWidth
           onChange={fieldChangeHandler}
-          required={true}
+          required
           error={!!error.name}
           helperText={error.name}
         />
 
         <TextField
-          label="Email"
-          type="email"
-          variant="outlined"
-          margin="normal"
-          id="email"
+          label='Email'
+          type='email'
+          variant='outlined'
+          margin='normal'
+          id='email'
           value={form.email}
-          fullWidth={true}
+          fullWidth
           onChange={fieldChangeHandler}
-          required={true}
+          required
           error={!!error.email}
           helperText={error.email}
         />
 
         <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          margin="normal"
-          id="firstPassword"
+          label='Password'
+          type='password'
+          variant='outlined'
+          margin='normal'
+          id='firstPassword'
           value={form.firstPassword}
-          fullWidth={true}
+          fullWidth
           onChange={fieldChangeHandler}
-          required={true}
+          required
           error={!!error.firstPassword}
           helperText={error.firstPassword}
         />
 
         <TextField
-          label="Repeat password"
-          type="password"
-          variant="outlined"
-          margin="normal"
-          id="secondPassword"
+          label='Repeat password'
+          type='password'
+          variant='outlined'
+          margin='normal'
+          id='secondPassword'
           value={form.secondPassword}
-          fullWidth={true}
+          fullWidth
           onChange={fieldChangeHandler}
-          required={true}
+          required
         />
 
         <Button
-          type="submit"
-          variant="outlined"
-          color="primary"
+          type='submit'
+          variant='outlined'
+          color='primary'
           className={classes.button}
-        >Sign up</Button>
+        >
+          Sign up
+        </Button>
       </form>
     </div>
   )
