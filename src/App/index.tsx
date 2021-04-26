@@ -3,8 +3,8 @@ import { CssBaseline } from '@material-ui/core'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Signin } from '../components/Signin'
 
-export const App: VFC = () => {
-  return <>
+export const App: VFC = () => (
+  <>
     <CssBaseline />
     <main>
       <Router>
@@ -16,4 +16,4 @@ export const App: VFC = () => {
       </Router>
     </main>
   </>
-}
+)
