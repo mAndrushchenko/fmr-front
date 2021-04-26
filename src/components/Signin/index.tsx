@@ -1,4 +1,5 @@
-import { VFC, useState, useCallback } from 'react'
+import { VFC, useState, useCallback, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
@@ -14,38 +15,53 @@ const styles = makeStyles({
     padding: '30px 30px 0',
   },
 
-  button: {
-    marginTop: '20px',
-  },
+  link: {
+    display: 'block',
+    margin: '10px 0 20px',
+  }
 })
 
 export const Signin: VFC = () => {
   const classes = styles()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  })
+
+  const [isSubmitted, setIsSubmitted] = useState(false)
+
   const [error, setError] = useState({
     email: '',
     password: '',
   })
 
-  const emailHandler = useCallback(e => {
-    setEmail(e.target.value.trim())
-  }, [])
+  useEffect(() => {
+    if (isSubmitted && !error.email && !error.password) {
+      console.log('send request')
+    }
+  }, [isSubmitted, error])
 
-  const passwordHandler = useCallback(e => {
-    setPassword(e.target.value.trim())
-  }, [])
+  const fieldChangeHandler = useCallback(e => {
+    setIsSubmitted(false)
+
+    setForm({
+      ...form,
+      [e.target.id]: e.target.value,
+    })
+  }, [form])
 
   const submitHandler = useCallback(e => {
     e.preventDefault()
 
+    setIsSubmitted(true)
+
     setError({
-      email: emailRegexp.test(email) ? '' : 'Check your email. It is incorrect',
-      password: passwordRegexp.test(password) ? '' : 'Paswword must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
+      email: emailRegexp.test(form.email) ? '' : 'Check your email. It is incorrect',
+      password: passwordRegexp.test(form.password) ? '' : 'Paswword must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
     })
 
-  }, [email, password])
+  }, [form])
 
   return (
     <div className={classes.root}>
@@ -60,8 +76,8 @@ export const Signin: VFC = () => {
           margin="normal" 
           required={true} 
           fullWidth={true}
-          value={email} 
-          onChange={emailHandler} 
+          value={form.email} 
+          onChange={fieldChangeHandler} 
           error={!!error.email} 
           helperText={error.email}
         />
@@ -74,17 +90,18 @@ export const Signin: VFC = () => {
           margin="normal"
           fullWidth={true}
           required={true} 
-          value={password} 
-          onChange={passwordHandler} 
+          value={form.password} 
+          onChange={fieldChangeHandler} 
           error={!!error.password} 
           helperText={error.password} 
         />
+
+        <Link to="/reset-password" className={classes.link} >Forgot password?</Link>
 
         <Button 
           variant="outlined" 
           type="submit" 
           color="primary"
-          className={classes.button}
         >
           Sign in
         </Button>
