@@ -91,7 +91,7 @@ export const Signin: VFC = () => {
           helperText={error.email}
         />
 
-        <FormControlLabel 
+        <FormControlLabel
           control={
             <Checkbox
               color='primary'
