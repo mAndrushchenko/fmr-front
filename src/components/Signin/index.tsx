@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
 
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
 const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
@@ -33,6 +35,7 @@ export const Signin: VFC = () => {
   })
 
   const [ isSubmitted, setIsSubmitted ] = useState(false)
+  const [ ignoreEmail, setIgnore ] = useState(false)
 
   const [ error, setError ] = useState({
     email: '',
@@ -54,16 +57,20 @@ export const Signin: VFC = () => {
     })
   }, [ form ])
 
+  const checkboxHandler = useCallback(e => {
+    setIgnore(e.target.checked)
+  }, [])
+
   const submitHandler = useCallback(e => {
     e.preventDefault()
 
     setIsSubmitted(true)
 
     setError({
-      email: emailRegexp.test(form.email) ? '' : emailError,
+      email: (ignoreEmail || emailRegexp.test(form.email)) ? '' : emailError,
       password: passwordRegexp.test(form.password) ? '' : passwordError
     })
-  }, [ form ])
+  }, [ form, ignoreEmail ])
 
   return (
     <div className={classes.root}>
@@ -82,6 +89,17 @@ export const Signin: VFC = () => {
           onChange={fieldChangeHandler}
           error={!!error.email}
           helperText={error.email}
+        />
+
+        <FormControlLabel 
+          control={
+            <Checkbox
+              color='primary'
+              checked={ignoreEmail}
+              onChange={checkboxHandler}
+            />
+          }
+          label='I am sure in my email'
         />
 
         <TextField
