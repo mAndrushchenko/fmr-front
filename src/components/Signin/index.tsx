@@ -1,11 +1,13 @@
 import { VFC, useState, useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { sign } from 'jsonwebtoken'
+
+import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import { makeStyles } from '@material-ui/core/styles'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
-import { sign } from 'jsonwebtoken'
+import Typography from '@material-ui/core/Typography'
 
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
 const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
@@ -79,7 +81,9 @@ export const Signin: VFC = () => {
 
   return (
     <div className={classes.root}>
-      <h1>Sign in the system before you continue using site.</h1>
+      <Typography variant='h4'>
+        Sign in the system before you continue using site.
+      </Typography>
 
       <form onSubmit={submitHandler}>
         <TextField
@@ -104,7 +108,7 @@ export const Signin: VFC = () => {
               onChange={checkboxHandler}
             />
           }
-          label='I am sure in my email'
+          label='I am sure my email is correct'
         />
 
         <TextField
