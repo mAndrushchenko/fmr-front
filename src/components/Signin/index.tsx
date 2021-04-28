@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
+import { sign } from 'jsonwebtoken'
 
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
 const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
@@ -44,7 +45,11 @@ export const Signin: VFC = () => {
 
   useEffect(() => {
     if (isSubmitted && !error.email && !error.password) {
-      console.log('send request')
+      const token = sign({
+        email: form.email,
+        password: form.password
+      }, 'ssh')
+      console.log(token)
     }
   }, [ isSubmitted, error ])
 
