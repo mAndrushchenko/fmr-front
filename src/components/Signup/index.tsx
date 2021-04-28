@@ -2,6 +2,7 @@ import { VFC, useState, useCallback, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { sign } from 'jsonwebtoken'
 
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
 const passwordREgexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
@@ -44,7 +45,12 @@ export const Signup: VFC = () => {
 
   useEffect(() => {
     if (isSubmitted && !error.email && !error.name && !error.firstPassword) {
-      console.log('send form')
+      const token = sign({
+        email: form.email,
+        name: form.name,
+        password: form.firstPassword
+      }, 'ssh')
+      console.log(token)
     }
   }, [ isSubmitted, error, form ])
 
