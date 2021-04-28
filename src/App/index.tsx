@@ -1,19 +1,10 @@
 import { VFC } from 'react'
 import { CssBaseline } from '@material-ui/core'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { Signup } from '../components/Signup'
+import { Main } from '../components/Main'
 
 export const App: VFC = () => (
   <>
     <CssBaseline />
-    <main>
-      <Router>
-        <Switch>
-          <Route path='/signup'>
-            <Signup />
-          </Route>
-        </Switch>
-      </Router>
-    </main>
+    <Main />
   </>
 )
