@@ -1,8 +1,10 @@
 import { VFC, useState, useCallback, useEffect } from 'react'
+import { sign } from 'jsonwebtoken'
+
 import TextField from '@material-ui/core/TextField'
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { sign } from 'jsonwebtoken'
+import Typography from '@material-ui/core/Typography'
 
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
 const passwordREgexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
@@ -87,7 +89,9 @@ export const Signup: VFC = () => {
 
   return (
     <div className={classes.root}>
-      <h1>Sign-up to start using our service with all features.</h1>
+      <Typography variant='h4'>
+        Sign-up to start using our service with all features.
+      </Typography>
 
       <form onSubmit={submitHandler}>
         <TextField
