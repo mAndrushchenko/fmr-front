@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback, useEffect } from 'react'
+import { VFC, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { sign } from 'jsonwebtoken'
 
@@ -37,7 +37,6 @@ export const Signin: VFC = () => {
     password: ''
   })
 
-  const [ isSubmitted, setIsSubmitted ] = useState(false)
   const [ ignoreEmail, setIgnore ] = useState(false)
 
   const [ error, setError ] = useState({
@@ -45,19 +44,7 @@ export const Signin: VFC = () => {
     password: ''
   })
 
-  useEffect(() => {
-    if (isSubmitted && !error.email && !error.password) {
-      const token = sign({
-        email: form.email,
-        password: form.password
-      }, 'ssh')
-      console.log(token)
-    }
-  }, [ isSubmitted, error ])
-
   const fieldChangeHandler = useCallback(e => {
-    setIsSubmitted(false)
-
     setForm({
       ...form,
       [e.target.id]: e.target.value
@@ -66,13 +53,25 @@ export const Signin: VFC = () => {
 
   const checkboxHandler = useCallback(e => {
     setIgnore(e.target.checked)
+    setError({
+      ...error,
+      email: (e.target.checked || emailRegexp.test(form.email)) ? '' : emailError
+    })
   }, [])
 
   const submitHandler = useCallback(e => {
     e.preventDefault()
 
-    setIsSubmitted(true)
+    if (!error.email && !error.password) {
+      const token = sign({
+        email: form.email,
+        password: form.password
+      }, 'ssh')
+      console.log(token)
+    }
+  }, [ form, ignoreEmail, error ])
 
+  const onBlurHandler = useCallback(() => {
     setError({
       email: (ignoreEmail || emailRegexp.test(form.email)) ? '' : emailError,
       password: passwordRegexp.test(form.password) ? '' : passwordError
@@ -95,9 +94,10 @@ export const Signin: VFC = () => {
           required
           fullWidth
           value={form.email}
-          onChange={fieldChangeHandler}
           error={!!error.email}
           helperText={error.email}
+          onChange={fieldChangeHandler}
+          onBlur={onBlurHandler}
         />
 
         <FormControlLabel
@@ -120,9 +120,10 @@ export const Signin: VFC = () => {
           fullWidth
           required
           value={form.password}
-          onChange={fieldChangeHandler}
           error={!!error.password}
           helperText={error.password}
+          onChange={fieldChangeHandler}
+          onBlur={onBlurHandler}
         />
 
         <Link
@@ -137,7 +138,7 @@ export const Signin: VFC = () => {
           type='submit'
           color='primary'
         >
-          Sign in
+          Login
         </Button>
       </form>
     </div>
