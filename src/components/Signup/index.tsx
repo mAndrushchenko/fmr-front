@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback, useEffect } from 'react'
+import { VFC, useState, useCallback } from 'react'
 import { sign } from 'jsonwebtoken'
 
 import TextField from '@material-ui/core/TextField'
@@ -43,33 +43,7 @@ export const Signup: VFC = () => {
     firstPassword: ''
   })
 
-  const [ isSubmitted, setIsSubmitted ] = useState(false)
-
-  useEffect(() => {
-    if (isSubmitted && !error.email && !error.name && !error.firstPassword) {
-      const token = sign({
-        email: form.email,
-        name: form.name,
-        password: form.firstPassword
-      }, 'ssh')
-      console.log(token)
-    }
-  }, [ isSubmitted, error, form ])
-
-  const fieldChangeHandler = useCallback(e => {
-    setIsSubmitted(false)
-
-    setForm({
-      ...form,
-      [e.target.id]: e.target.value
-    })
-  }, [ form ])
-
-  const submitHandler = useCallback(e => {
-    e.preventDefault()
-
-    setIsSubmitted(true)
-
+  const validation = useCallback(() => {
     let passwordProblem = ''
 
     if (form.firstPassword !== form.secondPassword) {
@@ -80,11 +54,39 @@ export const Signup: VFC = () => {
       passwordProblem = ''
     }
 
-    setError({
+    return {
       email: emailRegexp.test(form.email.trim()) ? '' : emailError,
       name: nameRegexp.test(form.name.trim()) ? '' : nameError,
       firstPassword: passwordProblem
+    }
+  }, [ form ])
+
+  const fieldChangeHandler = useCallback(e => {
+    setForm({
+      ...form,
+      [e.target.id]: e.target.value
     })
+  }, [ form ])
+
+  const onBlurHandler = useCallback(() => {
+    setError(validation())
+  }, [ form ])
+
+  const submitHandler = useCallback(e => {
+    e.preventDefault()
+
+    const newError = validation()
+
+    if (!newError.email && !newError.name && !newError.firstPassword) {
+      const token = sign({
+        email: form.email,
+        name: form.name,
+        password: form.firstPassword
+      }, 'ssh')
+      console.log(token)
+    }
+    console.log('submit')
+    setError(newError)
   }, [ form ])
 
   return (
@@ -100,12 +102,13 @@ export const Signup: VFC = () => {
           variant='outlined'
           margin='normal'
           id='name'
-          value={form.name}
           fullWidth
-          onChange={fieldChangeHandler}
           required
+          value={form.name}
           error={!!error.name}
           helperText={error.name}
+          onChange={fieldChangeHandler}
+          onBlur={onBlurHandler}
         />
 
         <TextField
@@ -114,12 +117,13 @@ export const Signup: VFC = () => {
           variant='outlined'
           margin='normal'
           id='email'
-          value={form.email}
-          fullWidth
-          onChange={fieldChangeHandler}
           required
+          fullWidth
+          value={form.email}
           error={!!error.email}
           helperText={error.email}
+          onChange={fieldChangeHandler}
+          onBlur={onBlurHandler}
         />
 
         <TextField
@@ -128,12 +132,13 @@ export const Signup: VFC = () => {
           variant='outlined'
           margin='normal'
           id='firstPassword'
-          value={form.firstPassword}
           fullWidth
-          onChange={fieldChangeHandler}
           required
+          value={form.firstPassword}
           error={!!error.firstPassword}
           helperText={error.firstPassword}
+          onChange={fieldChangeHandler}
+          onBlur={onBlurHandler}
         />
 
         <TextField
@@ -142,10 +147,11 @@ export const Signup: VFC = () => {
           variant='outlined'
           margin='normal'
           id='secondPassword'
-          value={form.secondPassword}
           fullWidth
-          onChange={fieldChangeHandler}
           required
+          value={form.secondPassword}
+          onChange={fieldChangeHandler}
+          onBlur={onBlurHandler}
         />
 
         <Button
