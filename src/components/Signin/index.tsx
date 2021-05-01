@@ -44,6 +44,12 @@ export const Signin: VFC = () => {
     password: ''
   })
 
+  const validation = useCallback(() => ({
+    email: (ignoreEmail || emailRegexp.test(form.email)) ? '' : emailError,
+    password: passwordRegexp.test(form.password) ? '' : passwordError
+  }
+  ), [ form, ignoreEmail ])
+
   const fieldChangeHandler = useCallback(e => {
     setForm({
       ...form,
@@ -57,26 +63,26 @@ export const Signin: VFC = () => {
       ...error,
       email: (e.target.checked || emailRegexp.test(form.email)) ? '' : emailError
     })
-  }, [])
+  }, [ form ])
 
   const submitHandler = useCallback(e => {
     e.preventDefault()
 
-    if (!error.email && !error.password) {
+    const newError = validation()
+
+    if (!newError.email && !newError.password) {
       const token = sign({
         email: form.email,
         password: form.password
       }, 'ssh')
       console.log(token)
     }
-  }, [ form, ignoreEmail, error ])
+    setError(newError)
+  }, [ form ])
 
   const onBlurHandler = useCallback(() => {
-    setError({
-      email: (ignoreEmail || emailRegexp.test(form.email)) ? '' : emailError,
-      password: passwordRegexp.test(form.password) ? '' : passwordError
-    })
-  }, [ form, ignoreEmail ])
+    setError(validation())
+  }, [ validation ])
 
   return (
     <div className={classes.root}>
