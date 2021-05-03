@@ -27,18 +27,17 @@ const styles = makeStyles((theme: Theme) =>
       }
     },
     input: {
-      [theme.breakpoints.up('md')]: {
-        maxWidth: '300px',
-        width: '300px'
-      },
-      maxWidth: '185px',
+      width: '100%',
       background: 'rgba(255, 255, 255, 0.15)',
       padding: '1px 10px',
       borderRadius: '5px',
       color: 'inherit'
     },
     search: {
-      position: 'relative'
+      position: 'relative',
+      minWidth: '200px',
+      maxWidth: '500px',
+      width: '35%'
     },
     searchIcon: {
       position: 'absolute',
@@ -88,7 +87,7 @@ export const Header: VFC = () => {
 
   return (
     <>
-      <AppBar position='fixed'>
+      <AppBar>
         <Toolbar className={classes.root}>
           <Link
             className={classes.label}

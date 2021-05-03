@@ -19,7 +19,8 @@ const style = makeStyles((theme: Theme) =>
       textAlign: 'center',
       textDecoration: 'none',
       color: 'inherit',
-      padding: '6px 8px'
+      padding: '6px 8px',
+      fontWeight: 500
     }
   }))
 
@@ -28,8 +29,8 @@ export const DesktopMenu: VFC = () => {
 
   return (
     <div className={classes.root}>
-      <Link className={classes.link} to='catalog'>Catalog</Link>
-      <Link className={classes.link} to='online-reader'>
+      <Link className={classes.link} to='/catalog'>Catalog</Link>
+      <Link className={classes.link} to='/online-reader'>
         Online reader
         <Badge
           badgeContent='new'
@@ -39,10 +40,10 @@ export const DesktopMenu: VFC = () => {
           &nbsp;
         </Badge>
       </Link>
-      <Link className={classes.link} to='my-books'>My Books</Link>
-      <Link className={classes.link} to='basket'>Basket</Link>
-      <Link className={classes.link} to='about'>About us</Link>
-      <Link className={classes.link} to='signin'>Log in</Link>
+      <Link className={classes.link} to='/my-books'>My Books</Link>
+      <Link className={classes.link} to='/basket'>Basket</Link>
+      <Link className={classes.link} to='/about'>About us</Link>
+      <Link className={classes.link} to='/signin'>Log in</Link>
     </div>
   )
 }
