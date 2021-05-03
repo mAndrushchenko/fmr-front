@@ -1,4 +1,4 @@
-import { TBook } from './store';
+import { TBook } from './store'
 
 export type TUsersBookLoader = {
   id: number

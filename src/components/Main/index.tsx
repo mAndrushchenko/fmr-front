@@ -6,7 +6,6 @@ export const Main: VFC = () => (
     <Router>
       <Switch>
         <Route>
-          
         </Route>
       </Switch>
     </Router>

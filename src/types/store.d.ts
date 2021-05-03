@@ -4,11 +4,36 @@ export type TReducer = ReturnType<typeof rootReducer>
 
 export type TAppDispatch = typeof store.dispatch
 
-export type TAuthUser = {
+export type TCandidate = {
   name: string
-  token: string
-  ownBookList: TBook[]
+  email: string
+  password: string
+  isAdmin: boolean
+  uploadedBooks: TBook[]
+  purchasedBooks: TBook[]
   basket: TBook[]
+}
+
+export type TAuthUser = {
+  email: string
+  password: string
+}
+
+export type TAuthUserByToken = {
+  token: string
+}
+
+export type TUserData = {
+  token: string
+  isAdmin: boolean
+  basket: TBook[]
+  uploadedBooks: TBook[]
+  purchasedBooks: TBook[],
+  lastReqType: string
+}
+
+export type TUserEmail = {
+  email: string
 }
 
 export type TRandomUser = {

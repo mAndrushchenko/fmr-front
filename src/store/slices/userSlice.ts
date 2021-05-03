@@ -1,105 +1,100 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { TAddAlbumA, TDelAlbum, TDelPhotoFromAlbumA, TPhotoBuffer, TReducer } from "../types/store-types"
-import { TCandidate, TLoginUser, TLoginUserByToken, TUser } from "../types/user"
-import { TAlbum, TImage } from "../types/photo"
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import {
+  TBook,
+  TReducer,
+  TAuthUser,
+  TCandidate,
+  TUserData,
+  TUserEmail,
+  TAuthUserByToken
+} from '@types-fmr/store'
+import {
+  TBuyBooks,
+  TUploadBook,
+  TAddToBasket,
+  TDelFromBasket
+} from '@types-fmr/payloadActions'
 
-const initialState: TUser = {
-  firstName: '',
-  lastName: '',
+const initialState: TUserData = {
   token: '',
-  _id: '',
-  albums: [],
-  photos: [],
+  lastReqType: '',
+  isAdmin: false,
+  basket: [],
+  uploadedBooks: [],
+  purchasedBooks: []
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    loginUser: (state, action: PayloadAction<TLoginUser>) => {
-    },
+    loginUserReq: (state, action: PayloadAction<TAuthUser>) => ({
+      ...state, lastReqType: action.type
+    }),
 
-    loginUserByToken: (state, action: PayloadAction<TLoginUserByToken>) => {
-    },
+    loginUserByTokenReq: (state, action: PayloadAction<TAuthUserByToken>) => ({
+      ...state, lastReqType: action.type
+    }),
 
-    registerUser: (state, action: PayloadAction<TCandidate>) => {
-    },
+    registerUserReq: (state, action: PayloadAction<TCandidate>) => ({
+      ...state, lastReqType: action.type
+    }),
 
-    uploadPhotos: (state, action: PayloadAction<{fd: FormData, token: string}>) => {
-    },
+    changePasswordReq: (state, action: PayloadAction<TUserEmail>) => ({
+      ...state, lastReqType: action.type
+    }),
 
-    deletePhotosById: (state, action: PayloadAction<{ photosBuffer: TPhotoBuffer[], token: string }>) => {
-      return {
-        ...state,
-        photos: state.photos.filter(photo => !action.payload.photosBuffer.some(el => el.id === photo.id))
-      }
-    },
+    setUserData: (state, action: PayloadAction<TUserData>) => action.payload,
 
-    delPhotoFromMainList: (state, action: PayloadAction<{ photosBuffer: TPhotoBuffer[] }>) => {
-      return {
-        ...state,
-        photos: state.photos.filter(photo => !action.payload.photosBuffer.some(el => el.id === photo.id))
-      }
+    addToBasketReq: (state, action: PayloadAction<TAddToBasket>) => ({
+      ...state, lastReqType: action.type
+    }),
 
-    },
+    addToBasket: (state, action: PayloadAction<TBook>) => ({
+      ...state, basket: [ ...state.basket, action.payload ]
+    }),
 
-    delPhotoFromAlbum: (state, action: PayloadAction<TDelPhotoFromAlbumA>) => {
-      return {
-        ...state,
-        albums: state.albums.map(album => {
-          if (album.albumName === action.payload.albumName) {
-            return {
-              ...album, photos: album.photos.filter(photo => {
-                return action.payload.photo.id !== photo.id
-              })
-            }
-          }
-          return album
-        })
-      }
-    },
+    delFromBasketReq: (state, action: PayloadAction<TDelFromBasket>) => ({
+      ...state, lastReqType: action.type
+    }),
 
-    addAlbum: (state, action: PayloadAction<TAddAlbumA>) => {
-      const newAlbumList = [...state.albums, action.payload.album]
-      return { ...state, albums: newAlbumList, photos: action.payload.photos }
-    },
+    delFromBasket: (state, action: PayloadAction<{ id: number }>) => ({
+      ...state,
+      basket: state.basket.filter(book => book.id !== action.payload.id)
+    }),
 
-    delAlbumWithPhotos: (state, action: PayloadAction<TDelAlbum>) => {
-      return {
-        ...state, albums: state.albums.filter(album => album.albumName !== action.payload.albumName)
-      }
-    },
+    uploadBookReq: (state, action: PayloadAction<TUploadBook>) => ({
+      ...state, lastReqType: action.type
+    }),
 
-    delAlbumWithoutPhotos: (state, action: PayloadAction<TDelAlbum>) => {
-      let photosFromAlbum: TImage[] = []
-      state.albums.forEach(album => {
-        if (album.albumName === action.payload.albumName) {
-          if (album.photos.length) {
-            photosFromAlbum = [...album.photos]
-          }
-        }
-      })
-      return {
-        ...state, photos: [...state.photos, ...photosFromAlbum],
-        albums: state.albums.filter(album => album.albumName !== action.payload.albumName)
-      }
-    },
-    setUser: (state, action: PayloadAction<TUser>) => action.payload,
-  },
+    uploadBook: (state, action: PayloadAction<TBook>) => ({
+      ...state, uploadedBooks: [ ...state.uploadedBooks, action.payload ]
+    }),
+
+    buyBooksReq: (state, action: PayloadAction<TBuyBooks>) => ({
+      ...state, lastReqType: action.type
+    }),
+
+    buyBooks: (state, action: PayloadAction<TBook[]>) => ({
+      ...state, purchasedBooks: [ ...state.purchasedBooks, ...action.payload ]
+    })
+  }
 })
 
 export const {
-  loginUser,
-  setUser,
-  registerUser,
-  loginUserByToken,
-  uploadPhotos,
-  deletePhotosById,
-  addAlbum,
-  delPhotoFromMainList,
-  delAlbumWithPhotos,
-  delAlbumWithoutPhotos,
-  delPhotoFromAlbum
+  buyBooks,
+  uploadBook,
+  buyBooksReq,
+  addToBasket,
+  setUserData,
+  loginUserReq,
+  delFromBasket,
+  uploadBookReq,
+  addToBasketReq,
+  registerUserReq,
+  delFromBasketReq,
+  changePasswordReq,
+  loginUserByTokenReq
 } = userSlice.actions
 
 export const userSelector = (state: TReducer) => state.userSlice
