@@ -19,7 +19,21 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "paths": {
+      "@store/*": [
+        "src/store/*"
+      ],
+      "@types-fmr/*": [
+        "src/types/*"
+      ],
+      "@hooks": [
+        "src/hooks/*"
+      ],
+      "@api": [
+        "src/api/*"
+      ]
+    }
   },
   "include": [
     "src"
