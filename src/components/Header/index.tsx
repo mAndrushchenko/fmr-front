@@ -9,7 +9,7 @@ import InputBase from '@material-ui/core/InputBase'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 
-import logo from '../../assets/img/logo/dark.png'
+import logo from '@assets/img/logo/dark.png'
 import { MobileMenu } from './MobileMenu'
 import { DesktopMenu } from './DesktopMenu'
 
