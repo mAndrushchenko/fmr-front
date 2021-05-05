@@ -5,11 +5,14 @@ import IconButton from '@material-ui/core/IconButton'
 import Toolbar from '@material-ui/core/Toolbar'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import InputBase from '@material-ui/core/InputBase'
+import Button from '@material-ui/core/Button'
 
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
+import Brightness7Icon from '@material-ui/icons/Brightness7'
+import Brightness4Icon from '@material-ui/icons/Brightness4'
 
-import logo from '@assets/img/logo/dark.png'
+import logo from '../../assets/img/logo/dark.png'
 import { MobileMenu } from './MobileMenu'
 import { DesktopMenu } from './DesktopMenu'
 
@@ -35,9 +38,12 @@ const styles = makeStyles((theme: Theme) =>
     },
     search: {
       position: 'relative',
-      minWidth: '200px',
+      minWidth: '170px',
       maxWidth: '500px',
-      width: '35%'
+      width: '40%',
+      [theme.breakpoints.up('md')]: {
+        width: '30%'
+      }
     },
     searchIcon: {
       position: 'absolute',
@@ -56,6 +62,12 @@ const styles = makeStyles((theme: Theme) =>
     },
     image: {
       width: '100%'
+    },
+    themeIcon: {
+      width: '36px',
+      height: '36px',
+      minWidth: 0,
+      color: 'inherit'
     }
   }))
 
@@ -64,6 +76,7 @@ export const Header: VFC = () => {
 
   const [ search, setSearch ] = useState('')
   const [ open, setOpen ] = useState(false)
+  const [ isDark, setIsDark ] = useState(true)
 
   const searchChangeHandler = useCallback(e => {
     setSearch(e.target.value)
@@ -84,6 +97,10 @@ export const Header: VFC = () => {
       console.log(search)
     }
   }, [ search ])
+
+  const toggleTheme = useCallback(() => {
+    setIsDark(!isDark)
+  }, [ isDark ])
 
   return (
     <>
@@ -109,6 +126,9 @@ export const Header: VFC = () => {
               onClick={searchButtonHandler}
             />
           </div>
+          <Button className={classes.themeIcon} onClick={toggleTheme}>
+            {isDark ? <Brightness4Icon /> : <Brightness7Icon />}
+          </Button>
           <IconButton
             onClick={toggleMenu}
             className={classes.burger}
