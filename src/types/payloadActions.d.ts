@@ -8,7 +8,7 @@ export type TAddToBasket = {
 
 export type TDelFromBasket = {
   token: string
-  id: number
+  book: TBook
 }
 
 export type TUploadBook = {

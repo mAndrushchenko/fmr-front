@@ -3,17 +3,15 @@ import {
   TBook,
   TReducer,
   TAuthUser,
-  TCandidate,
   TUserData,
-  TUserEmail,
-  TAuthUserByToken
-} from '@types-fmr/store'
+  TUserEmail
+} from 'src/types/store'
 import {
   TBuyBooks,
   TUploadBook,
   TAddToBasket,
   TDelFromBasket
-} from '@types-fmr/payloadActions'
+} from 'src/types/payloadActions'
 
 const initialState: TUserData = {
   token: '',
@@ -28,51 +26,51 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    loginUserReq: (state, action: PayloadAction<TAuthUser>) => ({
+    authUserAction: (state, action: PayloadAction<TAuthUser>) => ({
       ...state, lastReqType: action.type
     }),
 
-    loginUserByTokenReq: (state, action: PayloadAction<TAuthUserByToken>) => ({
+    signupUserAction: (state, action: PayloadAction<TAuthUser>) => ({
       ...state, lastReqType: action.type
     }),
 
-    registerUserReq: (state, action: PayloadAction<TCandidate>) => ({
+    passwordRecoveryAction: (state, action: PayloadAction<TUserEmail>) => ({
       ...state, lastReqType: action.type
     }),
 
-    changePasswordReq: (state, action: PayloadAction<TUserEmail>) => ({
+    setUserDataAction: (state, action: PayloadAction<TAuthUser>) => ({
+      ...state, lastReqType: action.type
+    }),
+
+    addToBasketAction: (state, action: PayloadAction<TAddToBasket>) => ({
+      ...state, lastReqType: action.type
+    }),
+
+    delFromBasketAction: (state, action: PayloadAction<TDelFromBasket>) => ({
+      ...state, lastReqType: action.type
+    }),
+
+    uploadBookAction: (state, action: PayloadAction<TUploadBook>) => ({
+      ...state, lastReqType: action.type
+    }),
+
+    buyBooksAction: (state, action: PayloadAction<TBuyBooks>) => ({
       ...state, lastReqType: action.type
     }),
 
     setUserData: (state, action: PayloadAction<TUserData>) => action.payload,
 
-    addToBasketReq: (state, action: PayloadAction<TAddToBasket>) => ({
-      ...state, lastReqType: action.type
-    }),
-
     addToBasket: (state, action: PayloadAction<TBook>) => ({
       ...state, basket: [ ...state.basket, action.payload ]
     }),
 
-    delFromBasketReq: (state, action: PayloadAction<TDelFromBasket>) => ({
-      ...state, lastReqType: action.type
-    }),
-
-    delFromBasket: (state, action: PayloadAction<{ id: number }>) => ({
+    delFromBasket: (state, action: PayloadAction<TBook>) => ({
       ...state,
       basket: state.basket.filter(book => book.id !== action.payload.id)
     }),
 
-    uploadBookReq: (state, action: PayloadAction<TUploadBook>) => ({
-      ...state, lastReqType: action.type
-    }),
-
     uploadBook: (state, action: PayloadAction<TBook>) => ({
       ...state, uploadedBooks: [ ...state.uploadedBooks, action.payload ]
-    }),
-
-    buyBooksReq: (state, action: PayloadAction<TBuyBooks>) => ({
-      ...state, lastReqType: action.type
     }),
 
     buyBooks: (state, action: PayloadAction<TBook[]>) => ({
@@ -84,17 +82,17 @@ export const userSlice = createSlice({
 export const {
   buyBooks,
   uploadBook,
-  buyBooksReq,
   addToBasket,
   setUserData,
-  loginUserReq,
   delFromBasket,
-  uploadBookReq,
-  addToBasketReq,
-  registerUserReq,
-  delFromBasketReq,
-  changePasswordReq,
-  loginUserByTokenReq
+  authUserAction,
+  buyBooksAction,
+  signupUserAction,
+  uploadBookAction,
+  addToBasketAction,
+  setUserDataAction,
+  delFromBasketAction,
+  passwordRecoveryAction
 } = userSlice.actions
 
 export const userSelector = (state: TReducer) => state.userSlice

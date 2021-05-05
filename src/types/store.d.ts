@@ -1,4 +1,5 @@
-import { rootReducer, store } from 'bla bla bla/src/store/configure-store'
+import { store } from '@store/index'
+import { rootReducer } from '@store/redux'
 
 export type TReducer = ReturnType<typeof rootReducer>
 
@@ -15,11 +16,6 @@ export type TCandidate = {
 }
 
 export type TAuthUser = {
-  email: string
-  password: string
-}
-
-export type TAuthUserByToken = {
   token: string
 }
 
@@ -29,7 +25,7 @@ export type TUserData = {
   basket: TBook[]
   uploadedBooks: TBook[]
   purchasedBooks: TBook[],
-  lastReqType: string
+  lastReqType: string | null
 }
 
 export type TUserEmail = {

@@ -1,6 +1,6 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { rootReducer } from './redux'
-import { sagaMiddleWare } from './saga'
+import { rootWatcher, sagaMiddleWare } from './saga'
 
 export const store = configureStore({
   reducer: rootReducer,
@@ -11,3 +11,4 @@ export const store = configureStore({
     }
   }), sagaMiddleWare ]
 })
+sagaMiddleWare.run(rootWatcher)

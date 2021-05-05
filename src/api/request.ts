@@ -1,31 +1,34 @@
-import { IEndpoint } from '@types-fmr/api'
+import { IEndpoint, IHeaders, TResponse } from 'src/types/api'
 
-export const request = async ({ uri, method = 'GET', body, token, headers = {} }: IEndpoint): Promise<any> => {
+export const request = async ({
+  url, method = 'GET', body: bodyData, token, fd
+}: IEndpoint): Promise<TResponse> => {
+  let body
+  const headers: IHeaders = {}
+
   try {
-    if (body) {
-      body = JSON.stringify(body)
+    if (bodyData) {
+      body = JSON.stringify(bodyData)
       headers['Content-Type'] = 'application/json'
+    } else if (fd) {
+      body = JSON.stringify(fd)
     }
     if (token) {
-      headers['Authorization'] = `Bearer ${token}`
+      headers.authorization = `Bearer ${token}`
     }
 
-    const response: Response = await fetch(uri, { method, body, headers })
+    const response: Response = await fetch(url, { method, body, headers })
     const status = response.ok
-    const statusNumber = response.status
+    const resData = await response.json()
 
-    if (!status) {
-      const data = await response.json()
-      const message = data.message
-      console.error(message) // Just for now. Next we will change that on alert from Material
+    if (status) {
+      const { message, data } = resData
+      return { status, data, message }
     }
-    if (statusNumber !== 204) {
-      const userData = await response.json()
-      return { status, userData }
-    }
-    return { status, userData: {} }
+    // Just for now. Next we will change that on alert from Material
+    console.error(resData.message)
+    return { status, message: resData.message, data: null }
   } catch (err) {
-    return { message: err.message }
+    return { message: err.message, status: err.status, data: null }
   }
 }
-

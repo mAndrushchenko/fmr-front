@@ -1,11 +1,9 @@
 import createSagaMiddleWare from 'redux-saga'
-// import { all } from 'redux-saga/effects'
-// import { userWatcher } from './userSaga'
-//
-//
-// export function* rootWatcher() {
-//   yield all([userWatcher()])
-// }
-export const sagaMiddleWare = createSagaMiddleWare()
+import { all } from 'redux-saga/effects'
+import { userSaga } from './watchers/userSaga'
 
-// sagaMiddleWare.run(rootWatcher)
+export function* rootWatcher() {
+  yield all([ userSaga() ])
+}
+
+export const sagaMiddleWare = createSagaMiddleWare()

@@ -1,68 +1,59 @@
-import { TCandidate, TLoginUser } from "../types/user"
-import { TBuffer } from "../types/store-types"
+import { TAuthUser } from 'src/types/store'
+import {
+  TBuyBooks,
+  TUploadBook,
+  TAddToBasket,
+  TDelFromBasket
+} from 'src/types/payloadActions'
 
-
-export const login = (body: TLoginUser) => ({
-    uri: '/api/auth/login',
-    method: 'POST',
-    body
+export const signinReq = ({ token }: TAuthUser) => ({
+  url: '/signin',
+  method: 'POST',
+  token
 })
 
-export const loginByToken = (token: string) => ({
-    uri: '/api/user',
-    method: 'POST',
-    token
+export const signupReq = ({ token }: TAuthUser) => ({
+  url: '/signup',
+  method: 'POST',
+  token
 })
 
-export const register = (body: TCandidate) => ({
-    uri: '/api/auth/register',
-    method: 'POST',
-    body
+export const getUserReq = ({ token }: TAuthUser) => ({
+  url: '/user',
+  method: 'GET',
+  token
 })
 
-export const addPhotosUri = '/api/user/add/photos'
-export const addPhotos = (fd: FormData, token: string) => ({
-    method: 'POST',
-    body: fd,
-    headers: {
-        'Authorization': `Bearer ${token}`
-    }
+export const passwordRecoveryReq = ({ token }: TAuthUser) => ({
+  url: '/password-recovery',
+  method: 'POST',
+  token
 })
 
-export const removePhotosAction = ({ photosBuffer, token }: { photosBuffer: TBuffer[], token: string }) => ({
-    uri: '/api/user/delete/photos',
-    method: 'DELETE',
-    body: {
-        photosBuffer
-    },
-    token
+export const addToBasketReq = ({ token, book: body }: TAddToBasket) => ({
+  url: 'user/basket/add',
+  method: 'POST',
+  body,
+  token
 })
 
-export const addAlbumAction = ({ photosBuffer, token, albumName }:
-                                   { photosBuffer: TBuffer[], token: string, albumName: string }) => ({
-    uri: '/api/user/add/album',
-    method: 'POST',
-    body: {
-        photosBuffer,
-        albumName
-    },
-    token
+export const delFromBasketReq = ({ token, book: body }: TDelFromBasket) => ({
+  url: 'user/basket/delete',
+  method: 'DELETE',
+  body,
+  token
 })
 
-export const delAlbumAction = ({ token, albumName }: { token: string, albumName: string }) => ({
-    uri: '/api/user/delete/album',
-    method: 'DELETE',
-    body: {
-        albumName
-    },
-    token
+export const uploadBookReq = ({ token, book: body }: TUploadBook) => ({
+  url: 'user/upload',
+  method: 'POST',
+  body,
+  token
 })
 
-export const delAlbumOnlyA = ({ token, albumName }: { token: string, albumName: string }) => ({
-    uri: '/api/user/delete/album/only',
-    method: 'DELETE',
-    body: {
-        albumName
-    },
-    token
+export const buyBookReq = ({ token, basket: body }: TBuyBooks) => ({
+  url: 'user/buy',
+  method: 'POST',
+  body,
+  token
 })
