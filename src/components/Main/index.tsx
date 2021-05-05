@@ -2,6 +2,9 @@ import { VFC } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { styled } from '@material-ui/core'
 import { Reader } from '../Reader'
+import { Header } from '../Header'
+import { Signin } from '../Signin'
+import { Signup } from '../Signup'
 
 const MainRoot = styled('main')({
   height: '100%'
@@ -10,8 +13,15 @@ const MainRoot = styled('main')({
 export const Main: VFC = () => (
   <MainRoot>
     <Router>
+      <Header />
       <Switch>
-        <Route path='/'>
+        <Route path='/signin'>
+          <Signin />
+        </Route>
+        <Route path='/signup'>
+          <Signup />
+        </Route>
+        <Route path='/reader'>
           <Reader />
         </Route>
       </Switch>
