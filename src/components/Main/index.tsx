@@ -22,7 +22,7 @@ export const Main: VFC = () => (
         <Route path='/signup'>
           <Signup />
         </Route>
-        <Route path='/reader'>
+        <Route path='/online-reader'>
           <Reader />
         </Route>
       </Switch>
