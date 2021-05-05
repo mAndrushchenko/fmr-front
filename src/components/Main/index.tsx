@@ -7,7 +7,8 @@ import { Signin } from '../Signin'
 import { Signup } from '../Signup'
 
 const MainRoot = styled('main')({
-  height: '100%'
+  height: '100%',
+  paddingTop: '64px'
 })
 
 export const Main: VFC = () => (
