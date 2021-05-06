@@ -12,7 +12,7 @@ const nameRegexp = /^[a-zA-Z]+(\s[a-zA-Z]+)?$/
 
 const nameError = 'Your name should consist only of English letters'
 const emailError = 'Check your email. It is incorrect'
-const passwordError = 'Paswword must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
+const passwordError = 'Password must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
 
 const styles = makeStyles({
   root: {
