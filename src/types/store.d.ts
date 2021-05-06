@@ -65,3 +65,9 @@ export type TFirstLoadBooksLists = {
   last: TBook[]
   random: TBook[]
 }
+
+export type TShop = {
+  books: TBook[]
+  filters: TShopFilters
+  lastReqType: string | null
+}

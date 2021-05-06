@@ -6,7 +6,7 @@ import {
   TUploadBookReq,
   TAddToBasketReq,
   TDelFromBasketReq,
-  TPasswordRecoveryReq
+  TPasswordRecoveryReq, TGetShopBooks
 } from '../types/api'
 
 export const signinReq: TSigninReq = ({ token }) => ({
@@ -60,3 +60,8 @@ export const buyBookReq: TBuyBookReq = ({ token, basket: body }) => ({
   token
 })
 
+export const getShopBooksReq: TGetShopBooks = body => ({
+  url: 'shop',
+  method: 'POST',
+  body
+})

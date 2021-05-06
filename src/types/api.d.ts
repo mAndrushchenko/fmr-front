@@ -1,4 +1,4 @@
-import { TAuthUser, TBook, TUserData } from 'src/types/store'
+import { TAuthUser, TBook, TShopFilters, TUserData } from 'src/types/store'
 import { TAdminBookLoader, TUsersBookLoader } from 'src/types/bookLoader'
 import { TAddToBasket, TBuyBooks, TDelFromBasket, TUploadBook } from './payloadActions'
 
@@ -7,8 +7,11 @@ import { TAddToBasket, TBuyBooks, TDelFromBasket, TUploadBook } from './payloadA
 export interface IEndpoint {
   url: string
   method: string
-  body?: string | Blob | TBook | TUsersBookLoader | TAdminBookLoader | TBook[] //any type should be changed
-  token: string
+  body?: string | Blob |
+    TBook | TUsersBookLoader |
+    TAdminBookLoader | TBook[] |
+    TShopFilters
+  token?: string
   fd?: FormData
 }
 
@@ -35,7 +38,11 @@ export type TBookRes = TResInformation & {
   data: TBook
 }
 
-export type TResponse = TUserDataRes | TEmptyRes | TBookRes
+export type TBooksRes = TResInformation & {
+  data: TBook[]
+}
+
+export type TResponse = TUserDataRes | TEmptyRes | TBookRes | TBooksRes
 
 // server actions types
 
@@ -89,6 +96,12 @@ export type TBuyBookReq = ({ token, basket: body }: TBuyBooks) => ({
   method: 'POST',
   body: TBook[],
   token: string
+})
+
+export type TGetShopBooks = (filters : TShopFilters) => ({
+  url: 'shop',
+  method: 'POST',
+  body: TShopFilters,
 })
 
 export type TUserServerActions = TSigninReq |
