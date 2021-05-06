@@ -17,7 +17,6 @@ const passwordError = 'Password must consist of capital and lowercase letters, n
 const styles = makeStyles({
   root: {
     maxWidth: '1000px',
-    minWidth: '350px',
     padding: '30px 30px 0',
     margin: '0 auto'
   },
