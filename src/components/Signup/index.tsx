@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField'
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
 
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
 const passwordREgexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
@@ -36,6 +38,8 @@ export const Signup: VFC = () => {
     secondPassword: ''
   })
 
+  const [ ignoreEmail, setIgnore ] = useState(false)
+
   const [ error, setError ] = useState({
     email: '',
     name: '',
@@ -54,7 +58,7 @@ export const Signup: VFC = () => {
     }
 
     return {
-      email: emailRegexp.test(form.email.trim()) ? '' : emailError,
+      email: (ignoreEmail || emailRegexp.test(form.email)) ? '' : emailError,
       name: nameRegexp.test(form.name.trim()) ? '' : nameError,
       firstPassword: passwordProblem
     }
@@ -64,6 +68,14 @@ export const Signup: VFC = () => {
     setForm({
       ...form,
       [e.target.id]: e.target.value
+    })
+  }, [ form ])
+
+  const checkboxHandler = useCallback(e => {
+    setIgnore(e.target.checked)
+    setError({
+      ...error,
+      email: (e.target.checked || emailRegexp.test(form.email)) ? '' : emailError
     })
   }, [ form ])
 
@@ -122,6 +134,17 @@ export const Signup: VFC = () => {
           helperText={error.email}
           onChange={fieldChangeHandler}
           onBlur={onBlurHandler}
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              color='primary'
+              checked={ignoreEmail}
+              onChange={checkboxHandler}
+            />
+          }
+          label='I am sure my email is correct'
         />
 
         <TextField
