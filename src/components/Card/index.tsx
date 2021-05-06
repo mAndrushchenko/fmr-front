@@ -1,12 +1,12 @@
 import { VFC } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
+import { TBook } from 'src/types/store'
+
 const style = makeStyles({
   root: {
-    border: '1px solid #000',
+    border: '1px solid #ccc',
     borderRadius: '5px',
-    marginTop: '100px',
-    marginLeft: '30px',
     width: '220px',
     height: '370px'
   },
@@ -16,7 +16,7 @@ const style = makeStyles({
     objectFit: 'cover',
     borderRadius: '5px'
   },
-  title: {
+  name: {
     marginTop: 0,
     fontWeight: 'bold',
     fontFamily: 'inherit',
@@ -25,10 +25,10 @@ const style = makeStyles({
     fontSize: 16
   },
   text: {
-    padding: '0 5px 5px'
+    padding: '10px 7px 5px'
   },
   author: {
-    marginBottom: '5px',
+    marginBottom: '10px',
     marginTop: 0,
     color: '#767579'
   },
@@ -39,29 +39,21 @@ const style = makeStyles({
   }
 })
 
-interface ICard {
-  book: {
-    name: string;
-    author: string;
-    image: string;
-    price: string
-  }
-}
-
-export const Card: VFC<ICard> = ({ book }) => {
+export const Card: VFC<{ book: TBook }> = ({ book }) => {
   const classes = style()
 
   return (
     <div className={classes.root}>
       <img src={book.image} alt='book preview' className={classes.image} />
       <div className={classes.text}>
-        <p className={classes.title}>
+        <p className={classes.name}>
           {book.name}
         </p>
         <p className={classes.author}>
           {book.author}
         </p>
         <p className={classes.price}>
+          $
           {book.price}
         </p>
       </div>

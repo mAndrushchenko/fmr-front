@@ -7,9 +7,12 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
+import { useDispatch } from 'react-redux'
+import { TAppDispatch } from 'src/types/store'
+import { signupUserAction } from '../../store/slices/userSlice'
 
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
-const passwordREgexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
+const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
 const nameRegexp = /^[a-zA-Z]+(\s[a-zA-Z]+)?$/
 
 const nameError = 'Your name should consist only of English letters'
@@ -30,6 +33,7 @@ const styles = makeStyles({
 
 export const Signup: VFC = () => {
   const classes = styles()
+  const dispatch = useDispatch<TAppDispatch>()
 
   const [ form, setForm ] = useState({
     email: '',
@@ -51,7 +55,7 @@ export const Signup: VFC = () => {
 
     if (form.firstPassword !== form.secondPassword) {
       passwordProblem = 'You password does not match'
-    } else if (!passwordREgexp.test(form.firstPassword)) {
+    } else if (!passwordRegexp.test(form.firstPassword)) {
       passwordProblem = passwordError
     } else {
       passwordProblem = ''
@@ -94,10 +98,11 @@ export const Signup: VFC = () => {
         name: form.name,
         password: form.firstPassword
       }, 'ssh')
+      dispatch(signupUserAction({ token }))
       console.log(token)
     }
     setError(newError)
-  }, [ form ])
+  }, [ dispatch, form ])
 
   return (
     <div className={classes.root}>
