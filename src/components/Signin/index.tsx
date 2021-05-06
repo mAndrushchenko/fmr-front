@@ -13,7 +13,7 @@ const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-
 const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
 
 const emailError = 'Check your email. It is incorrect'
-const passwordError = 'Paswword must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
+const passwordError = 'Password must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
 
 const styles = makeStyles({
   root: {
@@ -89,6 +89,12 @@ export const Signin: VFC = () => {
       <Typography variant='h4'>
         Sign in the system before you continue using site.
       </Typography>
+
+      <p>
+        Haven&apos;t registered yet?&nbsp;
+        <Link to='/signup'>Create account now</Link>
+        &nbsp;and start using all features of our product!
+      </p>
 
       <form onSubmit={submitHandler}>
         <TextField
