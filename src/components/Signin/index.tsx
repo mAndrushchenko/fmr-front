@@ -90,6 +90,12 @@ export const Signin: VFC = () => {
         Sign in the system before you continue using site.
       </Typography>
 
+      <p>
+        Haven&apos;t registered yet?&nbsp;
+        <Link to='/signup'>Create account now</Link>
+        &nbsp;and start using all features of our product!
+      </p>
+
       <form onSubmit={submitHandler}>
         <TextField
           label='Email'
