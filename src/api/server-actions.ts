@@ -1,59 +1,62 @@
-import { TAuthUser } from 'src/types/store'
 import {
-  TBuyBooks,
-  TUploadBook,
-  TAddToBasket,
-  TDelFromBasket
-} from 'src/types/payloadActions'
+  TSigninReq,
+  TSignupReq,
+  TBuyBookReq,
+  TGetUserReq,
+  TUploadBookReq,
+  TAddToBasketReq,
+  TDelFromBasketReq,
+  TPasswordRecoveryReq
+} from '../types/api'
 
-export const signinReq = ({ token }: TAuthUser) => ({
+export const signinReq: TSigninReq = ({ token }) => ({
   url: '/signin',
   method: 'POST',
   token
 })
 
-export const signupReq = ({ token }: TAuthUser) => ({
+export const signupReq: TSignupReq = ({ token }) => ({
   url: '/signup',
   method: 'POST',
   token
 })
 
-export const getUserReq = ({ token }: TAuthUser) => ({
+export const getUserReq: TGetUserReq = ({ token }) => ({
   url: '/user',
   method: 'GET',
   token
 })
-
-export const passwordRecoveryReq = ({ token }: TAuthUser) => ({
+export const passwordRecoveryReq: TPasswordRecoveryReq = ({ token }) => ({
   url: '/password-recovery',
   method: 'POST',
   token
 })
 
-export const addToBasketReq = ({ token, book: body }: TAddToBasket) => ({
+export const addToBasketReq: TAddToBasketReq = ({ token, book: body }) => ({
   url: 'user/basket/add',
   method: 'POST',
   body,
   token
 })
 
-export const delFromBasketReq = ({ token, book: body }: TDelFromBasket) => ({
+export const delFromBasketReq: TDelFromBasketReq = ({ token, book: body }) => ({
   url: 'user/basket/delete',
   method: 'DELETE',
   body,
   token
 })
 
-export const uploadBookReq = ({ token, book: body }: TUploadBook) => ({
+export const uploadBookReq: TUploadBookReq = ({ token, book: body }) => ({
   url: 'user/upload',
   method: 'POST',
   body,
   token
 })
 
-export const buyBookReq = ({ token, basket: body }: TBuyBooks) => ({
+export const buyBookReq: TBuyBookReq = ({ token, basket: body }) => ({
   url: 'user/buy',
   method: 'POST',
   body,
   token
 })
+

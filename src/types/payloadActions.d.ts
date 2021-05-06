@@ -1,4 +1,4 @@
-import { TBook } from './store'
+import { TAuthUser, TBook, TUserEmail } from './store'
 import { TAdminBookLoader, TUsersBookLoader } from './bookLoader'
 
 export type TAddToBasket = {
@@ -20,3 +20,5 @@ export type TBuyBooks = {
   token: string
   basket: TBook[]
 }
+
+export type TUserActionPayload = TAuthUser | TUserEmail | TAddToBasket | TDelFromBasket | TUploadBook | TBuyBooks

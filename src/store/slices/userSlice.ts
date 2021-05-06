@@ -26,7 +26,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    authUserAction: (state, action: PayloadAction<TAuthUser>) => ({
+    signinUserAction: (state, action: PayloadAction<TAuthUser>) => ({
       ...state, lastReqType: action.type
     }),
 
@@ -85,8 +85,8 @@ export const {
   addToBasket,
   setUserData,
   delFromBasket,
-  authUserAction,
   buyBooksAction,
+  signinUserAction,
   signupUserAction,
   uploadBookAction,
   addToBasketAction,

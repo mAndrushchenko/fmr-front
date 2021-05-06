@@ -17,26 +17,28 @@ import {
   TBuyBooks,
   TUploadBook,
   TAddToBasket,
-  TDelFromBasket
+  TDelFromBasket,
+  TUserActionPayload
 } from 'src/types/payloadActions'
 import {
   buyBooks,
   uploadBook,
-  buyBooksAction,
   addToBasket,
   setUserData,
-  authUserAction,
   delFromBasket,
+  buyBooksAction,
   uploadBookAction,
-  addToBasketAction,
-  setUserDataAction,
+  signinUserAction,
   signupUserAction,
+  setUserDataAction,
+  addToBasketAction,
   delFromBasketAction,
   passwordRecoveryAction
 } from '../slices/userSlice'
 
-function* makeUserRequest(actionPayload: any, serverAction: any) {
-  const fetchDataFromApi = () => request(serverAction(actionPayload))
+function* makeUserRequest({ payload, serverAction }:
+    { payload: TUserActionPayload, serverAction: any }) {
+  const fetchDataFromApi = () => request(serverAction(payload))
   const response: TResponse = yield call(fetchDataFromApi)
   return response
 }
@@ -61,9 +63,9 @@ function* checkStatus({ response, action, actionPayload }: any) {
 
 function* signinWorker(action: PayloadAction<TAuthUser>) {
   try {
-    const response: TUserDataRes = yield makeUserRequest(
-      signinReq, action.payload
-    )
+    const response: TUserDataRes = yield makeUserRequest({
+      payload: action.payload, serverAction: signinReq
+    })
 
     yield checkStatus({
       response, action: setUserData
@@ -75,9 +77,9 @@ function* signinWorker(action: PayloadAction<TAuthUser>) {
 
 function* getUserDataWorker(action: PayloadAction<TAuthUser>) {
   try {
-    const response: TUserDataRes = yield makeUserRequest(
-      getUserReq, action.payload
-    )
+    const response: TUserDataRes = yield makeUserRequest({
+      serverAction: getUserReq, payload: action.payload
+    })
 
     yield checkStatus({
       response, action: setUserData
@@ -89,9 +91,10 @@ function* getUserDataWorker(action: PayloadAction<TAuthUser>) {
 
 function* signupUserWorker(action: PayloadAction<TAuthUser>) {
   try {
-    const response: TEmptyRes = yield makeUserRequest(
-      signupReq, action.payload
-    )
+    const response: TEmptyRes = yield makeUserRequest({
+      serverAction: signupReq, payload: action.payload
+    })
+
     yield checkStatus({
       response
     })
@@ -102,9 +105,9 @@ function* signupUserWorker(action: PayloadAction<TAuthUser>) {
 
 function* passwordRecoveryWorker(action: PayloadAction<TAuthUser>) {
   try {
-    const response: TEmptyRes = yield makeUserRequest(
-      passwordRecoveryReq, action.payload
-    )
+    const response: TEmptyRes = yield makeUserRequest({
+      serverAction: passwordRecoveryReq, payload: action.payload
+    })
 
     yield checkStatus({ response })
   } catch (e) {
@@ -115,9 +118,9 @@ function* passwordRecoveryWorker(action: PayloadAction<TAuthUser>) {
 function* addToBasketWorker(action: PayloadAction<TAddToBasket>) {
   try {
     const { book } = action.payload
-    const response: TEmptyRes = yield makeUserRequest(
-      addToBasketReq, action.payload
-    )
+    const response: TEmptyRes = yield makeUserRequest({
+      serverAction: addToBasketReq, payload: action.payload
+    })
 
     yield checkStatus({
       response, action: addToBasket, actionPayload: book
@@ -130,9 +133,9 @@ function* addToBasketWorker(action: PayloadAction<TAddToBasket>) {
 function* delFromBasketWorker(action: PayloadAction<TDelFromBasket>) {
   try {
     const { book } = action.payload
-    const response: TEmptyRes = yield makeUserRequest(
-      delFromBasketReq, action.payload
-    )
+    const response: TEmptyRes = yield makeUserRequest({
+      serverAction: delFromBasketReq, payload: action.payload
+    })
 
     yield checkStatus({
       response, action: delFromBasket, actionPayload: book
@@ -144,9 +147,9 @@ function* delFromBasketWorker(action: PayloadAction<TDelFromBasket>) {
 
 function* uploadBookWorker(action: PayloadAction<TUploadBook>) {
   try {
-    const response: TBookRes = yield makeUserRequest(
-      uploadBookReq, action.payload
-    )
+    const response: TBookRes = yield makeUserRequest({
+      serverAction: uploadBookReq, payload: action.payload
+    })
 
     yield checkStatus({
       response, action: uploadBook
@@ -159,9 +162,9 @@ function* uploadBookWorker(action: PayloadAction<TUploadBook>) {
 function* buyBooksWorker(action: PayloadAction<TBuyBooks>) {
   try {
     const { basket } = action.payload
-    const response: TEmptyRes = yield makeUserRequest(
-      buyBookReq, action.payload
-    )
+    const response: TEmptyRes = yield makeUserRequest({
+      serverAction: buyBookReq, payload: action.payload
+    })
 
     yield checkStatus({
       response, action: buyBooks, actionPayload: basket
@@ -172,7 +175,7 @@ function* buyBooksWorker(action: PayloadAction<TBuyBooks>) {
 }
 
 export function* userSaga() {
-  yield takeEvery(authUserAction.type, signinWorker)
+  yield takeEvery(signinUserAction.type, signinWorker)
   yield takeEvery(buyBooksAction.type, buyBooksWorker)
   yield takeEvery(signupUserAction.type, signupUserWorker)
   yield takeEvery(uploadBookAction.type, uploadBookWorker)
