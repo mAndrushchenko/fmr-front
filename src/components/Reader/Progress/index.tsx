@@ -1,8 +1,23 @@
-import { VFC } from 'react'
-import { styled, LinearProgress } from '@material-ui/core'
+import {
+  ComponentPropsWithRef,
+  ElementType,
+  useCallback,
+  useState,
+  VFC
+} from 'react'
+import {
+  styled,
+  withStyles,
+  Slider,
+  SliderTypeMap
+} from '@material-ui/core'
+
+type OverrideProps<D extends ElementType, T> =
+  T & Omit<ComponentPropsWithRef<D>, keyof T>
 
 interface ProgressBarProps {
   value: number
+  onChange?: (value: number) => void
 }
 
 const ProgressRoot = styled('div')({
@@ -15,16 +30,54 @@ const ProgressText = styled('p')({
   margin: '8px 0'
 })
 
-const ProgressBar = styled(
-  props => <LinearProgress {...props} variant='determinate' />
-)({
-  height: 10,
-  borderRadius: 5
+interface ProgressSliderProps {
+  animate?: boolean
+}
+
+const ProgressSlider = withStyles(() => ({
+  track: {
+    width: 0,
+    height: 10,
+    borderRadius: '5px 0 0 5px',
+    transition: ({ animate }: ProgressSliderProps) =>
+      animate ? 'width .4s linear' : ''
+  },
+  rail: {
+    height: 10,
+    borderRadius: 5
+  },
+  thumb: {
+    display: 'none'
+  }
+// Self made OverrideProps with SliderTypeMap instead of SliderProps,
+// because of a bug in SliderProps, which caused to incorrect props override
+}))((
+  props: OverrideProps<'span', SliderTypeMap['props']> & ProgressSliderProps
+) => {
+  const { animate, ...others } = props
+  return <Slider {...others} />
 })
 
-export const Progress: VFC<ProgressBarProps> = ({ value }) => (
-  <ProgressRoot>
-    <ProgressBar value={value} />
-    <ProgressText>{`${value.toFixed()}% / 100%`}</ProgressText>
-  </ProgressRoot>
-)
+export const Progress: VFC<ProgressBarProps> = ({ value, onChange }) => {
+  const [ animated, setAnimated ] = useState(true)
+  const sliderChangeCommitedHandler = useCallback(() => setAnimated(true), [])
+  const sliderChangeHandler = useCallback(
+    (_: unknown, newValue: number | number[]) => {
+      setAnimated(false)
+      onChange?.(newValue as number)
+    },
+    []
+  )
+
+  return (
+    <ProgressRoot>
+      <ProgressSlider
+        value={value}
+        animate={animated}
+        onChange={sliderChangeHandler}
+        onChangeCommitted={sliderChangeCommitedHandler}
+      />
+      <ProgressText>{`${value.toFixed()}% / 100%`}</ProgressText>
+    </ProgressRoot>
+  )
+}
