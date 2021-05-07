@@ -1,5 +1,6 @@
-import { styled, Slider } from '@material-ui/core'
+import { styled } from '@material-ui/core'
 import { useCallback, useState, VFC } from 'react'
+import { ControlItem } from './ControlItem'
 
 interface ControlsProps {
   className?: string
@@ -9,31 +10,11 @@ interface ControlsProps {
   onFontSizeChange?: (value: number) => void
 }
 
-type SliderHandlerFabricCallback = ((value: number) => void) | undefined
-
-const sliderHandlerFabric = (...callbacks: SliderHandlerFabricCallback[]) =>
-  (event: unknown, value: number | number[]) => {
-    if (Array.isArray(value)) {
-      [ value ] = value
-    }
-    callbacks.forEach(cb => cb?.(value as number))
-  }
-
 const ControlsRoot = styled('div')({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column'
-})
-
-const ControlItem = styled('div')({
-  display: 'flex',
-  width: '80%',
-  alignItems: 'center'
-})
-
-const SliderValue = styled('h3')({
-  marginLeft: '10px'
 })
 
 export const Controls: VFC<ControlsProps> = ({
@@ -46,24 +27,33 @@ export const Controls: VFC<ControlsProps> = ({
   const [ fontSizeState, setFontSize ] = useState(fontSize)
   const [ speedState, setSpeed ] = useState(speed)
   const speedChangeHandler = useCallback(
-    sliderHandlerFabric(setSpeed, onSpeedChange),
+    (value: number) => {
+      setSpeed(value)
+      onSpeedChange?.(value)
+    },
     [ onSpeedChange ]
   )
   const fontSizeChangeHandler = useCallback(
-    sliderHandlerFabric(setFontSize, onFontSizeChange),
+    (value: number) => {
+      setFontSize(value)
+      onFontSizeChange?.(value)
+    },
     [ onFontSizeChange ]
   )
 
   return (
     <ControlsRoot className={className}>
-      <ControlItem>
-        <Slider value={fontSizeState} onChange={fontSizeChangeHandler} />
-        <SliderValue>{fontSizeState}</SliderValue>
-      </ControlItem>
-      <ControlItem>
-        <Slider value={speedState} onChange={speedChangeHandler} max={1000} />
-        <SliderValue>{speedState}</SliderValue>
-      </ControlItem>
+      <ControlItem
+        name='Font Size'
+        value={fontSizeState}
+        onChange={fontSizeChangeHandler}
+      />
+      <ControlItem
+        name='Speed'
+        max={1000}
+        value={speedState}
+        onChange={speedChangeHandler}
+      />
     </ControlsRoot>
   )
 }
