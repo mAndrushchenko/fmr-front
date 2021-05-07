@@ -24,12 +24,25 @@ const tokenList = [
   'nulla.'
 ]
 
-const ReaderRoot = styled('div')({
+const ReaderRoot = styled('div')(({ theme }) => ({
+  [theme.breakpoints.down('xs')]: {
+    width: '100%'
+  },
+  [theme.breakpoints.up('sm')]: {
+    width: '70%'
+  },
+  [theme.breakpoints.up('md')]: {
+    width: '50%'
+  },
+  [theme.breakpoints.up('lg')]: {
+    width: '30%'
+  },
   height: '100%',
+  margin: 'auto',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between'
-})
+}))
 
 export const Reader: VFC = () => {
   const [ speed, setSpeed ] = useState(200)
