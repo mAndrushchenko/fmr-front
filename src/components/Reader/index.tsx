@@ -1,4 +1,4 @@
-import { useCallback, useState, VFC } from 'react'
+import { useCallback, useState, VFC, MouseEvent } from 'react'
 import { styled } from '@material-ui/core'
 import { Visualizer } from './Visualizer'
 import { Controls } from './Controls'
@@ -49,7 +49,11 @@ export const Reader: VFC = () => {
   const [ isPaused, togglePause ] = useToggle(true)
   const [ fontSize, setFontSize ] = useState(28)
   const [ currentIndex, setCurrentIndex ] = useState(0)
-  const pauseClickHandler = useCallback(() => togglePause(), [])
+  const pauseClickHandler = useCallback(
+    (event: MouseEvent) =>
+      event.currentTarget === event.target && togglePause(),
+    []
+  )
   const progressChangeHandler = useCallback(
     (value: number) => {
       const nextIndex = +((value / 100) * tokenList.length - 1).toFixed()
