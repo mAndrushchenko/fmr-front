@@ -5,11 +5,11 @@ import { useInterval } from '../../../hooks/useInterval'
 interface VisualizerProps {
   className?: string
   tokenList: string[]
-  startIndex?: number
+  index: number
   speed: number
   fontSize: number
   paused?: boolean
-  onNext?: (tokenIndex: number) => void
+  onNext: (tokenIndex: number) => void
   onEnd?: (tokenIndex: number) => void
 }
 
@@ -30,26 +30,25 @@ const Text = styled('p')((props: TextStyleProps) => ({
 export const Visualizer: VFC<VisualizerProps> = ({
   className,
   tokenList,
-  startIndex = 0,
+  index,
   speed,
   fontSize,
   paused = false,
   onNext,
   onEnd
 }) => {
-  const [ currentToken, setToken ] = useState(tokenList[startIndex])
+  const currentToken = tokenList[index]
   const delayRef = useRef<number>((60 / speed) * 1000)
   delayRef.current = (60 / speed) * 1000
 
   useInterval(() => {
     if (paused) return true
-    if (tokenList.length <= startIndex + 1) {
-      onEnd?.(startIndex)
+    if (tokenList.length <= index + 1) {
+      onEnd?.(index)
       return true
     }
 
-    setToken(tokenList[++startIndex])
-    onNext?.(startIndex)
+    onNext?.(++index)
   }, delayRef, [ paused, onNext ])
 
   return (

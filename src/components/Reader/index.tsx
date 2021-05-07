@@ -50,7 +50,7 @@ export const Reader: VFC = () => {
       <Progress value={progress} onChange={progressChangeHandler} />
       <Visualizer
         tokenList={tokenList}
-        startIndex={currentIndex}
+        index={currentIndex}
         speed={speed}
         fontSize={fontSize}
         paused={isPaused}
