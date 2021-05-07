@@ -17,14 +17,22 @@ const style = makeStyles((theme: Theme) =>
       ...theme.mixins.toolbar
     },
     drawer: {
-      width: 320,
+      width: '100%',
+      maxWidth: '576px',
       flexShrink: 0,
+      [theme.breakpoints.up(576)]: {
+        width: 480
+      },
       [theme.breakpoints.up('md')]: {
         display: 'none'
       }
     },
     drawerPaper: {
-      width: 320
+      width: '100%',
+      maxWidth: '576px',
+      [theme.breakpoints.up(576)]: {
+        width: 480
+      }
     },
     link: {
       lineHeight: 1.75,
