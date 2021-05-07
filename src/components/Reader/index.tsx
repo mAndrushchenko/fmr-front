@@ -38,9 +38,11 @@ export const Reader: VFC = () => {
   const [ currentIndex, setCurrentIndex ] = useState(0)
   const pauseClickHandler = useCallback(() => togglePause(), [])
   const progressChangeHandler = useCallback(
-    (value: number) => setCurrentIndex(
-      +((value / 100) * tokenList.length - 1).toFixed()
-    ),
+    (value: number) => {
+      const nextIndex = +((value / 100) * tokenList.length - 1).toFixed()
+      togglePause(true)
+      setCurrentIndex(nextIndex)
+    },
     []
   )
   const progress = (currentIndex / (tokenList.length - 1)) * 100
