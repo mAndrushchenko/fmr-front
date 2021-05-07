@@ -2,15 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   TBook,
   TReducer,
-  TAuthUser,
+  TToken,
   TUserData,
   TUserEmail
 } from 'src/types/store'
 import {
   TBuyBooks,
   TUploadBook,
-  TAddToBasket,
-  TDelFromBasket
+  TBookWithToken
 } from 'src/types/payloadActions'
 
 const initialState: TUserData = {
@@ -26,11 +25,11 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    signinUserAction: (state, action: PayloadAction<TAuthUser>) => ({
+    signinUserAction: (state, action: PayloadAction<TToken>) => ({
       ...state, lastReqType: action.type
     }),
 
-    signupUserAction: (state, action: PayloadAction<TAuthUser>) => ({
+    signupUserAction: (state, action: PayloadAction<TToken>) => ({
       ...state, lastReqType: action.type
     }),
 
@@ -38,15 +37,15 @@ export const userSlice = createSlice({
       ...state, lastReqType: action.type
     }),
 
-    setUserDataAction: (state, action: PayloadAction<TAuthUser>) => ({
+    setUserDataAction: (state, action: PayloadAction<TToken>) => ({
       ...state, lastReqType: action.type
     }),
 
-    addToBasketAction: (state, action: PayloadAction<TAddToBasket>) => ({
+    addToBasketAction: (state, action: PayloadAction<TBookWithToken>) => ({
       ...state, lastReqType: action.type
     }),
 
-    delFromBasketAction: (state, action: PayloadAction<TDelFromBasket>) => ({
+    delFromBasketAction: (state, action: PayloadAction<TBookWithToken>) => ({
       ...state, lastReqType: action.type
     }),
 

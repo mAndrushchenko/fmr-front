@@ -1,18 +1,34 @@
-import { TAuthUser, TBook, TShopFilters, TUserData } from 'src/types/store'
 import { TAdminBookLoader, TUsersBookLoader } from 'src/types/bookLoader'
-import { TAddToBasket, TBuyBooks, TDelFromBasket, TUploadBook } from './payloadActions'
+import {
+  TBook,
+  TToken,
+  TUserData,
+  TReaderBook,
+  TShopFilters
+} from 'src/types/store'
+import {
+  TBuyBooks,
+  TUploadBook,
+  TGetReaderBook,
+  TBookWithToken
+} from './payloadActions'
 
 // request types
+
+type TGet = { method: 'GET' }
+type TPut = { method: 'PUT' }
+type TPost = { method: 'POST' }
+type TDelete = { method: 'DELETE' }
 
 export interface IEndpoint {
   url: string
   method: string
+  token?: string
+  fd?: FormData
   body?: string | Blob |
     TBook | TUsersBookLoader |
     TAdminBookLoader | TBook[] |
     TShopFilters
-  token?: string
-  fd?: FormData
 }
 
 export interface IHeaders {
@@ -42,69 +58,59 @@ export type TBooksRes = TResInformation & {
   data: TBook[]
 }
 
-export type TResponse = TUserDataRes | TEmptyRes | TBookRes | TBooksRes
+export type TReaderRes = TResInformation & {
+  data: TReaderBook
+}
+
+export type TResponse = TUserDataRes | TEmptyRes | TBookRes | TBooksRes | TReaderRes
 
 // server actions types
+// user
+export type TSigninReq = ({ token }: TToken) => (TToken & TPost & { url: '/signin' })
 
-export type TSigninReq = ({ token }: TAuthUser) => ({
-  url: '/signin',
-  method: 'POST',
-  token: string
-})
+export type TSignupReq = ({ token }: TToken) => (TToken & TPost & { url: '/signup' })
 
-export type TSignupReq = ({token}: TAuthUser) => ({
-  url: '/signup',
-  method: 'POST',
-  token: string
-})
+export type TGetUserReq = ({ token }: TToken) => (TToken & TGet & { url: '/user' })
 
-export type TGetUserReq = ({ token }:TAuthUser) => ({
-  url: '/user',
-  method: 'GET',
-  token: string
-})
+export type TPasswordRecoveryReq = ({ token }: TToken) => (TToken & TPost & { url: '/password-recovery' })
 
-export type TPasswordRecoveryReq = ({ token }: TAuthUser) =>  ({
-  url: '/password-recovery',
-  method: 'POST',
-  token: string
-})
-
-export type TAddToBasketReq = ({ token, book: body }: TAddToBasket) => ({
+export type TAddToBasketReq = ({ token, book: body }: TBookWithToken) => (TToken & TPost & {
   url: 'user/basket/add',
-  method: 'POST',
   body: TBook,
-  token: string
 })
 
-export type TDelFromBasketReq = ({ token, book: body }: TDelFromBasket) => ({
+export type TDelFromBasketReq = ({ token, book: body }: TBookWithToken) => (TToken & TDelete & {
   url: 'user/basket/delete',
-  method: 'DELETE',
   body: TBook,
-  token: string
 })
 
-export type TUploadBookReq = ({ token, book: body }: TUploadBook) => ({
+export type TUploadBookReq = ({ token, book: body }: TUploadBook) => (TToken & TPost & {
   url: 'user/upload',
-  method: 'POST',
   body: TUsersBookLoader | TAdminBookLoader,
-  token: string
 })
 
-export type TBuyBookReq = ({ token, basket: body }: TBuyBooks) => ({
+export type TBuyBookReq = ({ token, basket: body }: TBuyBooks) => (TToken & TPost & {
   url: 'user/buy',
-  method: 'POST',
   body: TBook[],
-  token: string
 })
 
-export type TGetShopBooks = (filters : TShopFilters) => ({
+export type TUserServerActions = TSigninReq |
+  TBuyBookReq | TGetUserReq | TUploadBookReq |
+  TAddToBasketReq | TDelFromBasketReq |
+  TPasswordRecoveryReq
+
+// shop
+
+export type TGetShopBooks = (filters: TShopFilters) => ({
   url: 'shop',
   method: 'POST',
   body: TShopFilters,
 })
 
-export type TUserServerActions = TSigninReq |
-  TBuyBookReq | TGetUserReq | TUploadBookReq |
-  TAddToBasketReq |  TDelFromBasketReq |
-  TPasswordRecoveryReq
+// reader
+
+export type TGetBookReq = ({ token, cacheSize, selectedPage, id
+} : TGetReaderBook) => (TToken & TGet & {
+  url: string,
+})
+

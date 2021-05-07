@@ -5,6 +5,10 @@ export type TReducer = ReturnType<typeof rootReducer>
 
 export type TAppDispatch = typeof store.dispatch
 
+export type TId = {
+  id: number | string
+}
+
 export type TCandidate = {
   name: string
   email: string
@@ -15,12 +19,11 @@ export type TCandidate = {
   basket: TBook[]
 }
 
-export type TAuthUser = {
+export type TToken = {
   token: string
 }
 
-export type TUserData = {
-  token: string
+export type TUserData = TToken & {
   isAdmin: boolean
   basket: TBook[]
   uploadedBooks: TBook[]
@@ -36,8 +39,7 @@ export type TRandomUser = {
   basket: TBook[]
 }
 
-export type TBook = {
-  id: number
+export type TBook = TId & {
   name: string
   image: string
   keywords: string[]
@@ -55,9 +57,26 @@ export type TShopFilters = {
   author: string | null
 }
 
-export type TReaderBook = {
-  text: string[]
+export type TBookPage = string[]
+
+export type TReaderSelectedPage = { selectedPage: number }
+
+export type TReaderSelectedWord = { selectedWord: number }
+
+export type TReaderCacheSize = { cacheSize: number }
+
+export type TReaderTotalPages = { totalPages: number }
+
+export type TReaderBook = TReaderTotalPages & {
+  pages: TBookPage[]
   book: TBook
+}
+
+export type TReaderBookState = TReaderSelectedPage &
+  TReaderSelectedWord & TReaderCacheSize & TReaderTotalPages & {
+  pages: TBookPage[]
+  book: TBook | null,
+  lastReqType: string | null
 }
 
 export type TFirstLoadBooksLists = {
