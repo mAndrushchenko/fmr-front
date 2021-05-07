@@ -1,5 +1,6 @@
+import { VFC, useRef } from 'react'
 import { styled } from '@material-ui/core'
-import { VFC, useRef, useState } from 'react'
+import { PauseRounded } from '@material-ui/icons'
 import { useInterval } from '../../../hooks/useInterval'
 
 interface VisualizerProps {
@@ -20,7 +21,18 @@ interface TextStyleProps {
 const VisualizerRoot = styled('div')({
   display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
+  position: 'relative'
+})
+
+const DisplayPaused = styled(PauseRounded)({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  fontSize: 256,
+  opacity: 0.1,
+  zIndex: -1
 })
 
 const Text = styled('p')((props: TextStyleProps) => ({
@@ -53,6 +65,7 @@ export const Visualizer: VFC<VisualizerProps> = ({
 
   return (
     <VisualizerRoot className={className}>
+      {paused && <DisplayPaused />}
       <Text fontSize={fontSize}>{currentToken}</Text>
     </VisualizerRoot>
   )
