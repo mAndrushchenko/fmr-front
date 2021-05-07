@@ -2,14 +2,14 @@ import { VFC, useState, useCallback } from 'react'
 import { sign } from 'jsonwebtoken'
 
 import TextField from '@material-ui/core/TextField'
+import Checkbox from '@material-ui/core/Checkbox'
 import { Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { useDispatch } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
-import { signupUserAction } from '../../store/slices/userSlice'
+import { signupUserAction } from 'src/store/slices/userSlice'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
 const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
@@ -79,7 +79,8 @@ export const Signup: VFC = () => {
     setIgnore(e.target.checked)
     setError({
       ...error,
-      email: (e.target.checked || emailRegexp.test(form.email)) ? '' : emailError
+      email: (e.target.checked ||
+        emailRegexp.test(form.email)) ? '' : emailError
     })
   }, [ form ])
 
