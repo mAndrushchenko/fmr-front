@@ -40,7 +40,7 @@ const ProgressSlider = withStyles(() => ({
   track: {
     width: 0,
     height: 10,
-    borderRadius: '5px 0 0 5px',
+    borderRadius: '5px',
     transition: ({ animate }: ProgressSliderProps) =>
       animate ? 'width .4s linear' : ''
   },
