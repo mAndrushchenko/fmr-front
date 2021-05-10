@@ -104,7 +104,7 @@ export const Header: VFC = () => {
 
   return (
     <>
-      <AppBar position='sticky'>
+      <AppBar>
         <Toolbar className={classes.root}>
           <Link
             className={classes.label}
