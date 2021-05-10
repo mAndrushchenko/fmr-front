@@ -18,7 +18,7 @@ export const useInterval = (
     }, 0)
 
     return () => clearTimeout(idRef.current)
-  }, [ idRef, delayRef, cb ])
+  }, [ delayRef, cb ])
 
   return () => clearTimeout(idRef.current)
 }

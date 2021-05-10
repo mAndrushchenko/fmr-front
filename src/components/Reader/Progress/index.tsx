@@ -1,6 +1,4 @@
 import {
-  ComponentPropsWithRef,
-  ElementType,
   useCallback,
   useState,
   VFC,
@@ -12,14 +10,16 @@ import {
   Slider,
   SliderTypeMap
 } from '@material-ui/core'
-
-type OverrideProps<D extends ElementType, T> =
-  T & Omit<ComponentPropsWithRef<D>, keyof T>
+import type { OverrideProps } from '../../../utils/OverrideProps'
 
 interface ProgressBarProps {
   value: number
   onChange?: (value: number) => void
   onPause?: (state?: boolean) => void
+}
+
+interface ProgressSliderProps {
+  animate?: boolean
 }
 
 const ProgressRoot = styled('div')({
@@ -32,11 +32,7 @@ const ProgressText = styled('p')({
   margin: '8px 0'
 })
 
-interface ProgressSliderProps {
-  animate?: boolean
-}
-
-const ProgressSlider = withStyles(() => ({
+const ProgressSlider = withStyles({
   track: {
     width: 0,
     height: 10,
@@ -53,7 +49,7 @@ const ProgressSlider = withStyles(() => ({
   }
 // Self made OverrideProps with SliderTypeMap instead of SliderProps,
 // because of a bug in SliderProps, which caused to incorrect props override
-}))((
+})((
   props: OverrideProps<'span', SliderTypeMap['props']> & ProgressSliderProps
 ) => {
   const { animate, ...others } = props

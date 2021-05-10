@@ -33,13 +33,8 @@ export const ControlItem: VFC<ControlItemProps> = ({
   onPause
 }) => {
   const changeHandler = useCallback(
-    (event: unknown, eventValue: number | number[]) => {
-      if (Array.isArray(eventValue)) {
-        [ eventValue ] = eventValue
-      }
-
-      onChange?.(eventValue as number)
-    },
+    (event: unknown, eventValue: number | number[]) =>
+      onChange?.(eventValue as number),
     [ onChange ]
   )
   const pauseClickHandler = useCallback(
