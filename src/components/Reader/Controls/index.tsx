@@ -1,5 +1,5 @@
 import { styled } from '@material-ui/core'
-import { useCallback, useState, VFC } from 'react'
+import { useCallback, useState, VFC, MouseEvent } from 'react'
 import { ControlItem } from './ControlItem'
 
 interface ControlsProps {
@@ -8,6 +8,7 @@ interface ControlsProps {
   speed: number
   onSpeedChange?: (value: number) => void
   onFontSizeChange?: (value: number) => void
+  onPause?: (state?: boolean) => void
 }
 
 const ControlsRoot = styled('div')({
@@ -22,7 +23,8 @@ export const Controls: VFC<ControlsProps> = ({
   fontSize,
   speed,
   onSpeedChange,
-  onFontSizeChange
+  onFontSizeChange,
+  onPause
 }) => {
   const [ fontSizeState, setFontSize ] = useState(fontSize)
   const [ speedState, setSpeed ] = useState(speed)
@@ -40,19 +42,26 @@ export const Controls: VFC<ControlsProps> = ({
     },
     [ onFontSizeChange ]
   )
+  const pauseClickHandler = useCallback(
+    (event: MouseEvent) =>
+      event.currentTarget === event.target && onPause?.(),
+    []
+  )
 
   return (
-    <ControlsRoot className={className}>
+    <ControlsRoot className={className} onClick={pauseClickHandler}>
       <ControlItem
         name='Font Size'
         value={fontSizeState}
         onChange={fontSizeChangeHandler}
+        onPause={onPause}
       />
       <ControlItem
         name='Speed'
         max={1000}
         value={speedState}
         onChange={speedChangeHandler}
+        onPause={onPause}
       />
     </ControlsRoot>
   )

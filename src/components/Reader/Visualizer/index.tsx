@@ -1,4 +1,4 @@
-import { VFC, useRef } from 'react'
+import { VFC, useRef, useCallback } from 'react'
 import { styled } from '@material-ui/core'
 import { PauseRounded } from '@material-ui/icons'
 import { useInterval } from '../../../hooks/useInterval'
@@ -12,6 +12,7 @@ interface VisualizerProps {
   paused?: boolean
   onNext: (tokenIndex: number) => void
   onEnd?: (tokenIndex: number) => void
+  onPause?: (state?: boolean) => void
 }
 
 interface TextStyleProps {
@@ -47,7 +48,8 @@ export const Visualizer: VFC<VisualizerProps> = ({
   fontSize,
   paused = false,
   onNext,
-  onEnd
+  onEnd,
+  onPause
 }) => {
   const currentToken = tokenList[index]
   const delayRef = useRef<number>((60 / speed) * 1000)
@@ -63,8 +65,10 @@ export const Visualizer: VFC<VisualizerProps> = ({
     onNext?.(++index)
   }, delayRef, [ paused, onNext ])
 
+  const pauseClickHandler = useCallback(() => onPause?.(), [])
+
   return (
-    <VisualizerRoot className={className}>
+    <VisualizerRoot onClick={pauseClickHandler} className={className}>
       {paused && <DisplayPaused />}
       <Text fontSize={fontSize}>{currentToken}</Text>
     </VisualizerRoot>

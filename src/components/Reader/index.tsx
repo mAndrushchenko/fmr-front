@@ -66,7 +66,11 @@ export const Reader: VFC = () => {
 
   return (
     <ReaderRoot onClick={pauseClickHandler}>
-      <Progress value={progress} onChange={progressChangeHandler} />
+      <Progress
+        value={progress}
+        onChange={progressChangeHandler}
+        onPause={togglePause}
+      />
       <Visualizer
         tokenList={tokenList}
         index={currentIndex}
@@ -74,12 +78,14 @@ export const Reader: VFC = () => {
         fontSize={fontSize}
         paused={isPaused}
         onNext={setCurrentIndex}
+        onPause={togglePause}
       />
       <Controls
         fontSize={fontSize}
         speed={speed}
         onFontSizeChange={setFontSize}
         onSpeedChange={setSpeed}
+        onPause={togglePause}
       />
     </ReaderRoot>
   )

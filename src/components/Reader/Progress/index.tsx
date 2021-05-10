@@ -3,7 +3,8 @@ import {
   ElementType,
   useCallback,
   useState,
-  VFC
+  VFC,
+  MouseEvent
 } from 'react'
 import {
   styled,
@@ -18,6 +19,7 @@ type OverrideProps<D extends ElementType, T> =
 interface ProgressBarProps {
   value: number
   onChange?: (value: number) => void
+  onPause?: (state?: boolean) => void
 }
 
 const ProgressRoot = styled('div')({
@@ -58,7 +60,11 @@ const ProgressSlider = withStyles(() => ({
   return <Slider {...others} />
 })
 
-export const Progress: VFC<ProgressBarProps> = ({ value, onChange }) => {
+export const Progress: VFC<ProgressBarProps> = ({
+  value,
+  onChange,
+  onPause
+}) => {
   const [ animated, setAnimated ] = useState(true)
   const sliderChangeCommitedHandler = useCallback(() => setAnimated(true), [])
   const sliderChangeHandler = useCallback(
@@ -68,9 +74,14 @@ export const Progress: VFC<ProgressBarProps> = ({ value, onChange }) => {
     },
     []
   )
+  const pauseClickHandler = useCallback(
+    (event: MouseEvent) =>
+      event.currentTarget === event.target && onPause?.(),
+    []
+  )
 
   return (
-    <ProgressRoot>
+    <ProgressRoot onClick={pauseClickHandler}>
       <ProgressSlider
         value={value}
         animate={animated}

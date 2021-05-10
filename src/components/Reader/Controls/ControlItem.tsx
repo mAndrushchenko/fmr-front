@@ -1,5 +1,5 @@
 import { styled, Slider } from '@material-ui/core'
-import { useCallback, VFC } from 'react'
+import { useCallback, VFC, MouseEvent } from 'react'
 
 interface ControlItemProps {
   name: string
@@ -7,6 +7,7 @@ interface ControlItemProps {
   min?: number
   max?: number
   onChange?: (value: number) => void
+  onPause?: (state?: boolean) => void
 }
 
 const ControlItemRoot = styled('div')({
@@ -28,7 +29,8 @@ export const ControlItem: VFC<ControlItemProps> = ({
   value,
   min,
   max,
-  onChange
+  onChange,
+  onPause
 }) => {
   const changeHandler = useCallback(
     (event: unknown, eventValue: number | number[]) => {
@@ -40,9 +42,14 @@ export const ControlItem: VFC<ControlItemProps> = ({
     },
     [ onChange ]
   )
+  const pauseClickHandler = useCallback(
+    (event: MouseEvent) =>
+      event.currentTarget === event.target && onPause?.(),
+    []
+  )
 
   return (
-    <ControlItemRoot>
+    <ControlItemRoot onClick={pauseClickHandler}>
       <Name>{name}</Name>
       <Slider
         value={value}
