@@ -58,7 +58,8 @@ export const Reader: VFC = () => {
     (value: number) => {
       const nextIndex = +((value / 100) * tokenList.length - 1).toFixed()
       togglePause(true)
-      setCurrentIndex(nextIndex)
+      // For unknown reason, this formula gives -1 when value === 0
+      setCurrentIndex(nextIndex > 0 ? nextIndex : 0)
     },
     []
   )
