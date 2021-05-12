@@ -11,6 +11,9 @@ import { makeStyles } from '@material-ui/core/styles'
 const styles = makeStyles({
   fileUpload: {
     display: 'none'
+  },
+  submit: {
+    marginTop: '24px'
   }
 })
 
@@ -51,20 +54,29 @@ export const AdminForm: VFC = () => {
     <form>
       <TextField
         id='name'
+        variant='outlined'
+        margin='normal'
+        label='Name'
         value={form.name}
         onChange={fieldChangeHandler}
         fullWidth
+        required
       />
       <TextField
         id='author'
+        variant='outlined'
+        margin='normal'
+        label='Author'
         value={form.author}
         onChange={fieldChangeHandler}
         fullWidth
+        required
       />
-      <FormControl variant='outlined'>
-        <InputLabel id='Genre'>Genre</InputLabel>
+      <FormControl variant='outlined' fullWidth margin='normal' required>
+        <InputLabel id='genre-label'>Genre</InputLabel>
         <Select
-          labelId='Genre'
+          labelId='genre-label'
+          label='Genre'
           id='genre'
           value={form.genre}
           onChange={genreChangeHandler}
@@ -77,10 +89,12 @@ export const AdminForm: VFC = () => {
           <MenuItem value='30'>Thirty</MenuItem>
         </Select>
       </FormControl>
-      <input
+      <TextField
         type='file'
         id='image'
-        accept='.jpg, .jpeg, .png'
+        inputProps={{
+          accept: '.jpg, .jpeg, .png'
+        }}
         className={classes.fileUpload}
       />
       <label htmlFor='image'>
@@ -94,24 +108,63 @@ export const AdminForm: VFC = () => {
       </label>
       <TextField
         id='keywords'
+        variant='outlined'
+        margin='normal'
+        label='Keywords'
         value={form.keywords}
         onChange={fieldChangeHandler}
         fullWidth
+        required
       />
       <TextField
         id='releaseYear'
         type='number'
+        variant='outlined'
+        margin='normal'
+        label='Release year'
         value={form.releaseYear}
         onChange={fieldChangeHandler}
         fullWidth
+        required
       />
       <TextField
         id='price'
         type='number'
+        variant='outlined'
+        margin='normal'
+        label='Price'
         value={form.price}
         onChange={fieldChangeHandler}
         fullWidth
+        required
       />
+
+      <TextField
+        type='file'
+        id='bookFile'
+        inputProps={{
+          accept: '.pdf, .txt, .epub, .fb2'
+        }}
+        className={classes.fileUpload}
+      />
+      <label htmlFor='bookFile'>
+        <Button
+          component='span'
+          color='primary'
+          variant='outlined'
+        >
+          Upload book
+        </Button>
+      </label>
+
+      <Button
+        color='primary'
+        variant='outlined'
+        type='submit'
+        className={classes.submit}
+      >
+        Add book
+      </Button>
     </form>
   )
 }

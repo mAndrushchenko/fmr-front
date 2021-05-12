@@ -45,7 +45,9 @@ const style = makeStyles((theme: Theme) =>
     }
   }))
 
-export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, toggle }) => {
+export const MobileMenu: VFC<{
+  open: boolean, toggle: () => void
+}> = ({ open, toggle }) => {
   const classes = style()
 
   return (
@@ -64,8 +66,18 @@ export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, t
         </IconButton>
       </div>
       <Divider />
-      <Link className={classes.link} onClick={toggle} to='/catalog'>Catalog</Link>
-      <Link className={classes.link} onClick={toggle} to='/online-reader'>
+      <Link
+        className={classes.link}
+        onClick={toggle}
+        to='/catalog'
+      >
+        Catalog
+      </Link>
+      <Link
+        className={classes.link}
+        onClick={toggle}
+        to='/online-reader'
+      >
         Online reader
         <Badge
           badgeContent='new'
@@ -75,10 +87,34 @@ export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, t
           &nbsp;
         </Badge>
       </Link>
-      <Link className={classes.link} onClick={toggle} to='/my-books'>My Books</Link>
-      <Link className={classes.link} onClick={toggle} to='/basket'>Basket</Link>
-      <Link className={classes.link} onClick={toggle} to='/about'>About us</Link>
-      <Link className={classes.link} onClick={toggle} to='/signin'>Log in</Link>
+      <Link
+        className={classes.link}
+        onClick={toggle}
+        to='/my-books'
+      >
+        My Books
+      </Link>
+      <Link
+        className={classes.link}
+        onClick={toggle}
+        to='/basket'
+      >
+        Basket
+      </Link>
+      <Link
+        className={classes.link}
+        onClick={toggle}
+        to='/about'
+      >
+        About us
+      </Link>
+      <Link
+        className={classes.link}
+        onClick={toggle}
+        to='/signin'
+      >
+        Log in
+      </Link>
     </Drawer>
   )
 }
