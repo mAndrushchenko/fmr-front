@@ -150,6 +150,13 @@ export const UserForm: VFC = () => {
             <MenuItem value='Fantasy'>Fantasy</MenuItem>
             <MenuItem value='Business'>Business</MenuItem>
             <MenuItem value='Autobiography'>Autobiography</MenuItem>
+            <MenuItem value='Thrillers'>Thrillers</MenuItem>
+            <MenuItem value='Horror'>Horror</MenuItem>
+            <MenuItem value='Poem'>Poem</MenuItem>
+            <MenuItem value='Comics'>Comics</MenuItem>
+            <MenuItem value='Memoirs'>Memoirs</MenuItem>
+            <MenuItem value='History'>History</MenuItem>
+
           </Select>
         </FormControl>
         <div>
