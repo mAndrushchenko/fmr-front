@@ -49,6 +49,16 @@ export type TBook = TId & {
   price: number
 }
 
+export type TUploadBook = {
+  name: string
+  image: string
+  keywords: string[]
+  releaseYear: number
+  author: string
+  genre: string
+  price: number
+}
+
 export type TShopFilters = {
   year: number | null
   price: number | null
