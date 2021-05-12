@@ -15,7 +15,7 @@ const styles = makeStyles({
 export const Loader: VFC = () => {
   const classes = styles()
 
-  const isAdmin = true
+  const isAdmin = false
 
   return (
     <div className={classes.root}>

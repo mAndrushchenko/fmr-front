@@ -143,12 +143,13 @@ export const UserForm: VFC = () => {
             onChange={genreChangeHandler}
             fullWidth
           >
-            <MenuItem value=''>
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value='10'>Ten</MenuItem>
-            <MenuItem value='20'>Twenty</MenuItem>
-            <MenuItem value='30'>Thirty</MenuItem>
+            <MenuItem value='Detective'>Detective</MenuItem>
+            <MenuItem value='Fantastic'>Fantastic</MenuItem>
+            <MenuItem value='Psychology'>Psychology</MenuItem>
+            <MenuItem value='Roman'>Roman</MenuItem>
+            <MenuItem value='Fantasy'>Fantasy</MenuItem>
+            <MenuItem value='Business'>Business</MenuItem>
+            <MenuItem value='Autobiography'>Autobiography</MenuItem>
           </Select>
         </FormControl>
         <div>
