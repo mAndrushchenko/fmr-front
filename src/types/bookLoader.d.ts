@@ -1,7 +1,6 @@
 import { TBook } from './store'
 
 export type TUsersBookLoader = {
-  id: number
   name: string
   image: FormData
   author: string
@@ -10,6 +9,6 @@ export type TUsersBookLoader = {
 }
 
 export type TAdminBookLoader = {
-  bookInfo: TBook
-  bookData: FormData
+  bookInfo: TUploadBook
+  bookFile: FormData
 }
