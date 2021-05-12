@@ -32,9 +32,8 @@ export const UserForm: VFC = () => {
   const classes = styles()
 
   const [ form, setForm ] = useState<TUsersBookLoader>({
-    id: Math.random() * 1000,
     name: '',
-    image: new FormData(),
+    image: null,
     author: '',
     genre: '',
     bookFile: new FormData()
@@ -54,9 +53,21 @@ export const UserForm: VFC = () => {
 
   const imageHandler = useCallback(
     e => {
-      form.image.append('image', e.target.files[0])
+      const image = new FormData()
+      image.append('image', e.target.files[0])
       setForm({
-        ...form
+        ...form,
+        image
+      })
+    },
+    [ form ]
+  )
+
+  const genreChangeHandler = useCallback(
+    e => {
+      setForm({
+        ...form,
+        genre: e.target.value
       })
     },
     [ form ]
@@ -83,9 +94,7 @@ export const UserForm: VFC = () => {
     e => {
       e.preventDefault()
 
-      if (!form.image.get('image')) {
-        setError('You had not uploaded image of book!')
-      } else if (!form.bookFile.get('book')) {
+      if (!form.bookFile.get('book')) {
         setError('You had not uploaded book file!')
       } else {
         console.log('success')
@@ -129,7 +138,7 @@ export const UserForm: VFC = () => {
             id='genre'
             label='Genre'
             value={form.genre}
-            onChange={fieldChangeHandler}
+            onChange={genreChangeHandler}
             fullWidth
           >
             <MenuItem value=''>
