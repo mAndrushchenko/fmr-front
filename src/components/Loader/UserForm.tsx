@@ -28,6 +28,8 @@ const styles = makeStyles({
   }
 })
 
+const nameRegexp = /^[a-z0-9]+(\s[a-z0-9]+)+?$/
+
 export const UserForm: VFC = () => {
   const classes = styles()
 
@@ -96,7 +98,7 @@ export const UserForm: VFC = () => {
 
       if (!form.bookFile.get('book')) {
         setError('You had not uploaded book file!')
-      } else {
+      } else if (nameRegexp.test(form.name.trim())) {
         console.log('success')
       }
     },

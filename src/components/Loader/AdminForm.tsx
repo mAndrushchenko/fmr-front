@@ -28,6 +28,8 @@ const styles = makeStyles({
   }
 })
 
+const nameRegexp = /^[a-z0-9]+(\s[a-z0-9]+)+?$/i
+
 export const AdminForm: VFC = () => {
   const classes = styles()
 
@@ -110,7 +112,7 @@ export const AdminForm: VFC = () => {
 
       if (!form.bookFile.get('book')) {
         setError('You had not uploaded book')
-      } else {
+      } else if (nameRegexp.test(form.bookInfo.name.trim())) {
         const data = {
           ...form,
           bookInfo: {
