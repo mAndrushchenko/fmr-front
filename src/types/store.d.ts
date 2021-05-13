@@ -51,7 +51,6 @@ export type TBook = TId & {
 
 export type TUploadBook = {
   name: string
-  image: FormData | null
   keywords: string
   releaseYear: number
   author: string

@@ -2,13 +2,12 @@ import { TUploadBook } from './store'
 
 export type TUsersBookLoader = {
   name: string
-  image: FormData | null
   author: string
   genre: string
-  bookFile: FormData
+  fd: FormData
 }
 
 export type TAdminBookLoader = {
   bookInfo: TUploadBook
-  bookFile: FormData
+  fd: FormData
 }

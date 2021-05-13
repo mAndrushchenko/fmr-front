@@ -28,7 +28,7 @@ const styles = makeStyles({
   }
 })
 
-const nameRegexp = /^[a-z0-9]+(\s[a-z0-9]+)+?$/i
+const nameRegexp = /^[a-z0-9]+(\s[a-z0-9]+)*$/i
 
 export const AdminForm: VFC = () => {
   const classes = styles()
@@ -36,14 +36,13 @@ export const AdminForm: VFC = () => {
   const [ form, setForm ] = useState<TAdminBookLoader>({
     bookInfo: {
       name: '',
-      image: null,
       author: '',
       genre: '',
       keywords: '',
       price: 0,
       releaseYear: new Date().getFullYear()
     },
-    bookFile: new FormData()
+    fd: new FormData()
   })
 
   const [ error, setError ] = useState('')
@@ -75,26 +74,30 @@ export const AdminForm: VFC = () => {
   )
 
   const imageHandler = useCallback(
-    e => {
-      const image = new FormData()
-      image.append('image', e.target.files[0])
-      setForm({
-        ...form,
-        bookInfo: {
-          ...form.bookInfo,
-          image
-        }
-      })
+    async e => {
+      const fd = new FormData()
+      await fd.append('image', e.target.files[0])
+      setForm({ ...form, fd })
+
+      // for login Form Data
+      for (let key of fd) {
+        console.log('key ', key)
+      }
+
     },
     [ form ]
   )
 
   const bookHandler = useCallback(
-    e => {
-      form.bookFile.append('book', e.target.files[0])
-      setForm({
-        ...form
-      })
+    async e => {
+      form.fd.append('book', e.target.files[0])
+      setForm({ ...form })
+
+      // for login Form Data
+      for (let key of form.fd) {
+        console.log('key ', key)
+      }
+
     },
     [ form ]
   )
@@ -110,7 +113,7 @@ export const AdminForm: VFC = () => {
     e => {
       e.preventDefault()
 
-      if (!form.bookFile.get('book')) {
+      if (!form.fd.get('book')) {
         setError('You had not uploaded book')
       } else if (nameRegexp.test(form.bookInfo.name.trim())) {
         const data = {
@@ -123,6 +126,8 @@ export const AdminForm: VFC = () => {
           }
         }
         console.log(data)
+      } else {
+        console.log(form.bookInfo.name.trim(), nameRegexp.test(form.bookInfo.name.trim()))
       }
     },
     [ form ]

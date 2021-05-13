@@ -35,10 +35,9 @@ export const UserForm: VFC = () => {
 
   const [ form, setForm ] = useState<TUsersBookLoader>({
     name: '',
-    image: null,
     author: '',
     genre: '',
-    bookFile: new FormData()
+    fd: new FormData()
   })
 
   const [ error, setError ] = useState('')
@@ -55,12 +54,9 @@ export const UserForm: VFC = () => {
 
   const imageHandler = useCallback(
     e => {
-      const image = new FormData()
-      image.append('image', e.target.files[0])
-      setForm({
-        ...form,
-        image
-      })
+      const fd = new FormData()
+      fd.append('image', e.target.files[0])
+      setForm({ ...form, fd })
     },
     [ form ]
   )
@@ -77,10 +73,8 @@ export const UserForm: VFC = () => {
 
   const bookHandler = useCallback(
     e => {
-      form.bookFile.append('book', e.target.files[0])
-      setForm({
-        ...form
-      })
+      form.fd.append('book', e.target.files[0])
+      setForm({ ...form })
     },
     [ form ]
   )
@@ -96,7 +90,7 @@ export const UserForm: VFC = () => {
     e => {
       e.preventDefault()
 
-      if (!form.bookFile.get('book')) {
+      if (!form.fd.get('book')) {
         setError('You had not uploaded book file!')
       } else if (nameRegexp.test(form.name.trim())) {
         console.log('success')
