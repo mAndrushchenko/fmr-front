@@ -1,5 +1,5 @@
-import { store } from '@store/index'
-import { rootReducer } from '@store/redux'
+import { store } from 'src/store'
+import { rootReducer } from 'src/store/redux'
 
 export type TReducer = ReturnType<typeof rootReducer>
 
@@ -51,7 +51,7 @@ export type TBook = TId & {
 
 export type TUploadBook = {
   name: string
-  keywords: string
+  keywords: string[]
   releaseYear: number
   author: string
   genre: string

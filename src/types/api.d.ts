@@ -24,11 +24,8 @@ export interface IEndpoint {
   url: string
   method: string
   token?: string
-  fd?: FormData
-  body?: string | Blob |
-    TBook | TUsersBookLoader |
-    TAdminBookLoader | TBook[] |
-    TShopFilters
+  fd?: TUsersBookLoader | TAdminBookLoader
+  body?: string | TBook | TBook[] | TShopFilters
 }
 
 export interface IHeaders {
@@ -74,22 +71,22 @@ export type TGetUserReq = ({ token }: TToken) => (TToken & TGet & { url: '/user'
 
 export type TPasswordRecoveryReq = ({ token }: TToken) => (TToken & TPost & { url: '/password-recovery' })
 
-export type TAddToBasketReq = ({ token, book: body }: TBookWithToken) => (TToken & TPost & {
+export type TAddToBasketReq = ({ token, book }: TBookWithToken) => (TToken & TPost & {
   url: 'user/basket/add',
   body: TBook,
 })
 
-export type TDelFromBasketReq = ({ token, book: body }: TBookWithToken) => (TToken & TDelete & {
+export type TDelFromBasketReq = ({ token, book }: TBookWithToken) => (TToken & TDelete & {
   url: 'user/basket/delete',
   body: TBook,
 })
 
-export type TUploadBookReq = ({ token, book: body }: TUploadBook) => (TToken & TPost & {
+export type TUploadBookReq = ({ token, book }: TUploadBook) => (TToken & TPut & {
   url: 'user/upload',
-  body: TUsersBookLoader | TAdminBookLoader,
+  fd: TUsersBookLoader | TAdminBookLoader,
 })
 
-export type TBuyBookReq = ({ token, basket: body }: TBuyBooks) => (TToken & TPost & {
+export type TBuyBookReq = ({ token, basket }: TBuyBooks) => (TToken & TPost & {
   url: 'user/buy',
   body: TBook[],
 })

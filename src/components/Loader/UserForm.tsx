@@ -11,6 +11,18 @@ import Alert from '@material-ui/lab/Alert'
 import { makeStyles } from '@material-ui/core/styles'
 
 import { TUsersBookLoader } from 'src/types/bookLoader'
+import { useDispatch, useSelector } from 'react-redux'
+import { TAppDispatch } from '../../types/store'
+import { uploadBookAction, userSelector } from '../../store/slices/userSlice'
+
+const initialBookState: TUsersBookLoader = {
+  bookInfo: {
+    name: '',
+    author: '',
+    genre: ''
+  },
+  bookData: new FormData()
+}
 
 const styles = makeStyles({
   fileUpload: {
@@ -28,76 +40,63 @@ const styles = makeStyles({
   }
 })
 
-const nameRegexp = /^[a-z0-9]+(\s[a-z0-9]+)+?$/
+const nameRegexp = /^[a-z0-9]+[.,]?(\s[a-z0-9]+[.,]?)*$/i
 
 export const UserForm: VFC = () => {
   const classes = styles()
-
-  const [ form, setForm ] = useState<TUsersBookLoader>({
-    name: '',
-    author: '',
-    genre: '',
-    fd: new FormData()
-  })
+  const dispatch = useDispatch<TAppDispatch>()
+  const { token } = useSelector(userSelector)
+  const [ form, setForm ] = useState<TUsersBookLoader>(initialBookState)
 
   const [ error, setError ] = useState('')
 
-  const fieldChangeHandler = useCallback(
-    e => {
-      setForm({
-        ...form,
+  const fieldChangeHandler = useCallback(e => {
+    setForm({
+      ...form,
+      bookInfo: {
+        ...form.bookInfo,
         [e.target.id || 'genre']: e.target.value
-      })
-    },
-    [ form ]
-  )
-
-  const imageHandler = useCallback(
-    e => {
-      const fd = new FormData()
-      fd.append('image', e.target.files[0])
-      setForm({ ...form, fd })
-    },
-    [ form ]
-  )
-
-  const genreChangeHandler = useCallback(
-    e => {
-      setForm({
-        ...form,
-        genre: e.target.value
-      })
-    },
-    [ form ]
-  )
-
-  const bookHandler = useCallback(
-    e => {
-      form.fd.append('book', e.target.files[0])
-      setForm({ ...form })
-    },
-    [ form ]
-  )
-
-  const closeHandler = useCallback(
-    () => {
-      setError('')
-    },
-    []
-  )
-
-  const submitHandler = useCallback(
-    e => {
-      e.preventDefault()
-
-      if (!form.fd.get('book')) {
-        setError('You had not uploaded book file!')
-      } else if (nameRegexp.test(form.name.trim())) {
-        console.log('success')
       }
-    },
-    [ form ]
-  )
+    })
+  }, [ form ])
+
+  const imageHandler = useCallback(e => {
+    const bookData = new FormData()
+    bookData.append('image', e.target.files[0])
+    setForm({ ...form, bookData })
+  }, [ form ])
+
+  const genreChangeHandler = useCallback(e => {
+    setForm({
+      ...form,
+      bookInfo: {
+        ...form.bookInfo, genre: e.target.value
+      }
+    })
+  }, [ form ])
+
+  const bookHandler = useCallback(e => {
+    form.bookData.append('book', e.target.files[0])
+    setForm({ ...form })
+  }, [ form ])
+
+  const closeHandler = useCallback(() => {
+    setError('')
+  }, [])
+
+  const submitHandler = useCallback(e => {
+    e.preventDefault()
+
+    if (!form.bookData.get('book')) {
+      return setError('You had not uploaded book file!')
+    }
+    if (!nameRegexp.test(form.bookInfo.name.trim())) {
+      return setError('Invalid name of book')
+    }
+
+    dispatch(uploadBookAction({ token, book: form }))
+    return setForm(initialBookState)
+  }, [ form ])
 
   return (
     <>
@@ -107,7 +106,7 @@ export const UserForm: VFC = () => {
           variant='outlined'
           margin='normal'
           label='Name of book'
-          value={form.name}
+          value={form.bookInfo.name}
           onChange={fieldChangeHandler}
           fullWidth
           required
@@ -117,7 +116,7 @@ export const UserForm: VFC = () => {
           variant='outlined'
           margin='normal'
           label='Author'
-          value={form.author}
+          value={form.bookInfo.author}
           onChange={fieldChangeHandler}
           fullWidth
           required
@@ -133,7 +132,7 @@ export const UserForm: VFC = () => {
             labelId='genre-label'
             id='genre'
             label='Genre'
-            value={form.genre}
+            value={form.bookInfo.genre}
             onChange={genreChangeHandler}
             fullWidth
           >
@@ -178,7 +177,7 @@ export const UserForm: VFC = () => {
             type='file'
             id='bookFile'
             inputProps={{
-              accept: '.txt, .pdf, .fb2, .epub'
+              accept: '.txt, .epub, .fb2, .doc, .docx, .odt'
             }}
             className={classes.fileUpload}
             onChange={bookHandler}

@@ -12,6 +12,9 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { TAdminBookLoader } from 'src/types/bookLoader'
 import { Divider } from '@material-ui/core'
+import { useDispatch, useSelector } from 'react-redux'
+import { TAppDispatch } from '../../types/store'
+import { uploadBookAction, userSelector } from '../../store/slices/userSlice'
 
 const styles = makeStyles({
   fileUpload: {
@@ -28,110 +31,92 @@ const styles = makeStyles({
   }
 })
 
-const nameRegexp = /^[a-z0-9]+(\s[a-z0-9]+)*$/i
+const initialBookState: TAdminBookLoader = {
+  bookInfo: {
+    name: '',
+    author: '',
+    genre: '',
+    keywords: [],
+    price: 0,
+    releaseYear: new Date().getFullYear()
+  },
+  bookData: new FormData()
+}
+
+const nameRegexp = /^[a-z0-9]+[.,]?(\s[a-z0-9]+[.,]?)*$/i
 
 export const AdminForm: VFC = () => {
   const classes = styles()
-
-  const [ form, setForm ] = useState<TAdminBookLoader>({
-    bookInfo: {
-      name: '',
-      author: '',
-      genre: '',
-      keywords: '',
-      price: 0,
-      releaseYear: new Date().getFullYear()
-    },
-    fd: new FormData()
-  })
+  const dispatch = useDispatch<TAppDispatch>()
+  const { token } = useSelector(userSelector)
 
   const [ error, setError ] = useState('')
+  const [ keywords, setKeywords ] = useState('')
 
-  const fieldChangeHandler = useCallback(
-    e => {
-      setForm({
-        ...form,
-        bookInfo: {
-          ...form.bookInfo,
-          [e.target.id]: e.target.value
-        }
-      })
-    },
-    [ form ]
-  )
+  const [ form, setForm ] = useState<TAdminBookLoader>(initialBookState)
 
-  const genreChangeHandler = useCallback(
-    e => {
-      setForm({
-        ...form,
-        bookInfo: {
-          ...form.bookInfo,
-          genre: e.target.value
-        }
-      })
-    },
-    [ form ]
-  )
-
-  const imageHandler = useCallback(
-    async e => {
-      const fd = new FormData()
-      await fd.append('image', e.target.files[0])
-      setForm({ ...form, fd })
-
-      // for login Form Data
-      for (let key of fd) {
-        console.log('key ', key)
+  const fieldChangeHandler = useCallback(e => {
+    setForm({
+      ...form,
+      bookInfo: {
+        ...form.bookInfo,
+        [e.target.id]: e.target.value
       }
+    })
+  }, [ form ])
 
-    },
-    [ form ]
-  )
+  const keywordsChangeHandler = useCallback(e => {
+    setKeywords(e.target.value)
+  }, [])
 
-  const bookHandler = useCallback(
-    async e => {
-      form.fd.append('book', e.target.files[0])
-      setForm({ ...form })
-
-      // for login Form Data
-      for (let key of form.fd) {
-        console.log('key ', key)
+  const genreChangeHandler = useCallback(e => {
+    setForm({
+      ...form,
+      bookInfo: {
+        ...form.bookInfo,
+        genre: e.target.value
       }
+    })
+  }, [ form ])
 
-    },
-    [ form ]
-  )
+  const imageHandler = useCallback(async e => {
+    const bookData = new FormData()
+    await bookData.append('image', e.target.files[0])
+    setForm({ ...form, bookData })
+  }, [ form ])
 
-  const closeHandler = useCallback(
-    () => {
-      setError('')
-    },
-    []
-  )
+  const bookHandler = useCallback(async e => {
+    form.bookData.append('book', e.target.files[0])
+    setForm({ ...form })
+  }, [ form ])
 
-  const submitHandler = useCallback(
-    e => {
-      e.preventDefault()
+  const closeHandler = useCallback(() => {
+    setError('')
+  }, [])
 
-      if (!form.fd.get('book')) {
-        setError('You had not uploaded book')
-      } else if (nameRegexp.test(form.bookInfo.name.trim())) {
-        const data = {
-          ...form,
-          bookInfo: {
-            ...form.bookInfo,
-            keywords: form.bookInfo.keywords.split(',')
-              .map(word => word.trim()),
-            price: +form.bookInfo.price
-          }
-        }
-        console.log(data)
-      } else {
-        console.log(form.bookInfo.name.trim(), nameRegexp.test(form.bookInfo.name.trim()))
+  const submitHandler = useCallback(e => {
+    e.preventDefault()
+    if (!form.bookData.get('book')) {
+      return setError('You had not uploaded book')
+    }
+    if (!nameRegexp.test(form.bookInfo.name.trim())) {
+      return setError('Invalid name of book')
+    }
+    if (!keywords) {
+      return setError('Please, write keywords')
+    }
+    const arrOfKeywords = keywords.split(',').map(word => word.trim())
+    const book = {
+      ...form,
+      bookInfo: {
+        ...form.bookInfo,
+        keywords: arrOfKeywords,
+        price: +form.bookInfo.price
       }
-    },
-    [ form ]
-  )
+    }
+    dispatch(uploadBookAction({ book, token }))
+    return setForm(initialBookState)
+  }, [ form, keywords, token ])
 
   return (
     <>
@@ -204,8 +189,8 @@ export const AdminForm: VFC = () => {
           variant='outlined'
           margin='normal'
           label='Keywords'
-          value={form.bookInfo.keywords}
-          onChange={fieldChangeHandler}
+          value={keywords}
+          onChange={keywordsChangeHandler}
           fullWidth
           required
         />
@@ -236,7 +221,7 @@ export const AdminForm: VFC = () => {
           type='file'
           id='bookFile'
           inputProps={{
-            accept: '.pdf, .txt, .epub, .fb2'
+            accept: '.txt, .epub, .fb2, .doc, .docx, .odt'
           }}
           className={classes.fileUpload}
           onChange={bookHandler}

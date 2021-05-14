@@ -22,7 +22,7 @@ export const Loader: VFC = () => {
       <Typography variant='h4'>
         Upload your book
       </Typography>
-      {!isAdmin ? <AdminForm /> : <UserForm />}
+      {isAdmin ? <AdminForm /> : <UserForm />}
     </div>
   )
 }
