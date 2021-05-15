@@ -1,8 +1,8 @@
-import { TBook } from './store'
+import { TUploadBook } from './store'
 
 export type TUsersBookLoader = {
   name: string
-  image: string | null
+  image: FormData | null
   author: string
   genre: string
   bookFile: FormData
