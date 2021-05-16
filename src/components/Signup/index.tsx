@@ -4,13 +4,14 @@ import { sign } from 'jsonwebtoken'
 import TextField from '@material-ui/core/TextField'
 import Checkbox from '@material-ui/core/Checkbox'
 import { Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
 import { signupUserAction, userSelector } from 'src/store/slices/userSlice'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { AfterRegComp } from './AfterRegComp'
+
+import { styles } from './styles'
 
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
 const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
@@ -20,30 +21,19 @@ const nameError = 'Your name should consist only of English letters'
 const emailError = 'Check your email. It is incorrect'
 const passwordError = 'Password must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
 
-const styles = makeStyles({
-  root: {
-    maxWidth: '1000px',
-    padding: '30px 30px 0',
-    margin: '0 auto',
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  singnup: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center'
-  },
-  button: {
-    marginTop: '30px'
-  }
-})
-
 const formInitialState = {
   email: '',
   name: '',
   firstPassword: '',
   secondPassword: ''
 }
+
+// singnup: {
+//   display: 'flex',
+//     flexDirection: 'column',
+//     justifyContent: 'center'
+// },
+
 
 export const Signup: VFC = () => {
   const classes = styles()
@@ -55,6 +45,7 @@ export const Signup: VFC = () => {
   const [ register, setRegister ] = useState(false)
 
   const [ form, setForm ] = useState(formInitialState)
+
 
   const [ ignoreEmail, setIgnore ] = useState(false)
 
