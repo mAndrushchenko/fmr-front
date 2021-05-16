@@ -1,6 +1,6 @@
 import { VFC } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Slider from 'react-slick'
+import { CardSlider } from '../Slider'
 
 const styles = makeStyles({
   root: {
