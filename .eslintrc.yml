@@ -17,6 +17,9 @@ plugins:
   - only-warn
 rules:
   no-console: 'off'
+  no-void: 'off'
+  no-return-assign: 'off'
+  no-param-reassign: 'off'
   import/no-named-default: 'off'
   implicit-arrow-linebreak: 'off'
   react/react-in-jsx-scope: 'off'
@@ -68,7 +71,7 @@ rules:
         minProperties: 5
   max-len:
     - 'warn'
-    - code: 80
+    - code: 120
       tabWidth: 2
   react/jsx-wrap-multilines:
     - 'error'
