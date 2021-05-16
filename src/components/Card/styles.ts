@@ -5,7 +5,8 @@ export const styles = makeStyles({
     border: '1px solid #ccc',
     borderRadius: '5px',
     width: '220px',
-    height: '370px'
+    height: '370px',
+    margin: '0 auto'
   },
   image: {
     width: '100%',
