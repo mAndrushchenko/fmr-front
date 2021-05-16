@@ -35,8 +35,9 @@ export const styles = makeStyles({
         right: '10px',
         transform: 'translateY(-50%) rotate(-45deg)'
       },
+      // disablded arrows
       '&.slick-disabled': {
-        borderColor: 'grey'
+        borderColor: 'rgba(0, 0, 0, 0.5)'
       }
     }
   }
