@@ -22,6 +22,8 @@ rules:
   no-restricted-syntax: 'off'
   no-confusing-arrow: 'off'
   consistent-return: 'off'
+  no-void: 'off'
+  no-return-assign: 'off'
   import/no-named-default: 'off'
   import/prefer-default-export: 'off'
   implicit-arrow-linebreak: 'off'
@@ -72,7 +74,7 @@ rules:
         minProperties: 5
   max-len:
     - 'warn'
-    - code: 80
+    - code: 120
       tabWidth: 2
   react/jsx-wrap-multilines:
     - 'error'
