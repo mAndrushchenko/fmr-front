@@ -1,24 +1,11 @@
 export const sliderSettings = {
   dots: false,
   infinite: false,
-  slidesToShow: 5,
+  slidesToShow: 3,
   arrows: true,
-  slidesToScroll: 3,
-  touchThreshold: 10,
+  slidesToScroll: 2,
+  touchThreshold: 50,
   responsive: [
-    {
-      breakpoint: 1260,
-      settings: {
-        slidesToShow: 4,
-        slidesToScroll: 2
-      }
-    },
-    {
-      breakpoint: 1018,
-      settings: {
-        slidesToShow: 3
-      }
-    },
     {
       breakpoint: 780,
       settings: {
