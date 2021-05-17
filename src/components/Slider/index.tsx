@@ -11,13 +11,22 @@ export const CardSlider: VFC<{ books: TBook[] }> = ({ books }) => {
   const classes = styles()
 
   return (
-    <Slider
-      className={classes.slider}
-      {...sliderSettings}
-    >
-      {books.map(book => (
-        <Card key={book.name} book={book} />
-      ))}
-    </Slider>
+    <>
+      <Slider
+        className={classes.slider}
+        {...sliderSettings}
+      >
+        {books.map(book => (
+          <Card key={book.name} book={book} />
+        ))}
+      </Slider>
+      <div className={classes.sliderScroll}>
+        {books.map(book => (
+          <div className={classes.sliderScrollItem}>
+            <Card key={book.name} book={book} />
+          </div>
+        ))}
+      </div>
+    </>
   )
 }
