@@ -31,13 +31,7 @@ export const useAuth = () => {
     return currentToken
   }, [])
 
-  // useEffect(() => {
-  //   const newToken = getItem(tokenName)
-  //   // if (newToken) dispatch(setToken({token: newToken}))
-  // }, [ dispatch, getItem ])
-
   useEffect(() => {
-      console.log('useEffect works')
     if (token) {
       login(token)
     }
