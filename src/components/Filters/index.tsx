@@ -1,4 +1,5 @@
-import { VFC, useState, useCallback } from 'react'
+import { VFC, useState, useCallback, useEffect } from 'react'
+import { useDebounce } from 'src/hooks/useDebounce'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
@@ -25,6 +26,10 @@ export const Filters: VFC = () => {
     searchPhrase: '',
     year: new Date().getFullYear()
   })
+
+  useEffect(() => {
+    console.log('send request')
+  }, [ useDebounce(filters, 1000) ])
 
   const fieldChangeHandler = useCallback(
     e => {
@@ -76,25 +81,36 @@ export const Filters: VFC = () => {
     [ filters ]
   )
 
+  const yearHandler = useCallback(
+    e => {
+      setFilters({
+        ...filters,
+        year: +e.target.value
+      })
+    },
+    [ filters ]
+  )
+
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMore />}>
         <Typography variant='h6'>Filters</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <form>
+        <form className={classes.root}>
           <TextField
             id='author'
             label='Author'
             variant='outlined'
             margin='normal'
+            className={classes.author}
             value={filters.author}
             onChange={fieldChangeHandler}
           />
           <FormControl
             variant='outlined'
             margin='normal'
-          // className={classes.select}
+            className={classes.genre}
           >
             <InputLabel id='genre-label'>Genre</InputLabel>
             <Select
@@ -125,6 +141,7 @@ export const Filters: VFC = () => {
             label='Search phrase'
             margin='normal'
             variant='outlined'
+            className={classes.searchPhrase}
             value={filters.searchPhrase}
             onChange={fieldChangeHandler}
           />
@@ -135,8 +152,9 @@ export const Filters: VFC = () => {
             label='Release year'
             variant='outlined'
             margin='normal'
+            className={classes.year}
             value={filters.year}
-            onChange={fieldChangeHandler}
+            onChange={yearHandler}
           />
 
           <TextField
@@ -145,6 +163,7 @@ export const Filters: VFC = () => {
             variant='outlined'
             margin='normal'
             type='number'
+            className={classes.minPriceInput}
             value={filters.price[0]}
             onChange={minPriceHandler}
           />
@@ -154,10 +173,12 @@ export const Filters: VFC = () => {
             variant='outlined'
             margin='normal'
             type='number'
+            className={classes.maxPriceInput}
             value={filters.price[1]}
             onChange={maxPriceHandler}
           />
           <Slider
+            className={classes.priceSlider}
             value={filters.price}
             onChange={priceChangeHandler}
             min={0}
