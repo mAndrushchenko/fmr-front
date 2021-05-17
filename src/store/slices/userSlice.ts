@@ -14,6 +14,7 @@ import {
 
 const initialState: TUserData = {
   token: '',
+  name: '',
   lastReqType: '',
   isAdmin: false,
   basket: [],

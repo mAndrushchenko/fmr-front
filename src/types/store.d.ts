@@ -26,6 +26,7 @@ export type TToken = {
 export type TUserData = TToken & {
   isAdmin: boolean
   basket: TBook[]
+  name: string
   uploadedBooks: TBook[]
   purchasedBooks: TBook[],
   lastReqType: string | null

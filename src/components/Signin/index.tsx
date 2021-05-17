@@ -69,6 +69,7 @@ export const Signin: VFC = () => {
         email: form.email,
         password: form.password
       }, 'ssh')
+      console.log('here', token)
       dispatch(signinUserAction({ token }))
     }
     setError(newError)

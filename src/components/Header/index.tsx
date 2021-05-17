@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback } from 'react'
+import { VFC, useState, useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
@@ -16,13 +16,30 @@ import { MobileMenu } from './MobileMenu/MobileMenu'
 import { DesktopMenu } from './DesktopMenu/DesktopMenu'
 
 import { styles } from './styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { signinUserAction, userSelector } from '../../store/slices/userSlice'
+import { useAuth } from '../../hooks/useAuth'
+import { TAppDispatch } from '../../types/store'
 
 export const Header: VFC = () => {
   const classes = styles()
+  const dispatch = useDispatch<TAppDispatch>()
+  const user = useSelector(userSelector)
+  const { login, savedToken, isTokenExist } = useAuth()
 
   const [ search, setSearch ] = useState('')
   const [ open, setOpen ] = useState(false)
   const [ isDark, setIsDark ] = useState(true)
+
+  useEffect(() => {
+    console.log(savedToken)
+    isTokenExist()
+    if (!savedToken && user.token)  {
+      login(user.token)
+    } else if (savedToken && !user.token) {
+      dispatch(signinUserAction({ token: savedToken }))
+    }
+  }, [user, savedToken])
 
   const searchChangeHandler = useCallback(e => {
     setSearch(e.target.value)

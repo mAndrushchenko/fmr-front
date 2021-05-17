@@ -9,5 +9,12 @@ export const styles = makeStyles({
 
   button: {
     marginTop: '30px'
+  },
+
+  singnup: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
   }
+
 })
