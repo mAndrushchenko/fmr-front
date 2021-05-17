@@ -30,6 +30,7 @@ export const Header: VFC = () => {
   const [ search, setSearch ] = useState('')
   const [ open, setOpen ] = useState(false)
   const [ isDark, setIsDark ] = useState(true)
+  const [ searchField, setSerarchField ] = useState(false)
 
   useEffect(() => {
     console.log(savedToken)
@@ -40,6 +41,10 @@ export const Header: VFC = () => {
       dispatch(signinUserAction({ token: savedToken }))
     }
   }, [user, savedToken])
+
+  const toggleSearch = useCallback(() => {
+    setSerarchField( prevState => !prevState)
+  }, [])
 
   const searchChangeHandler = useCallback(e => {
     setSearch(e.target.value)
@@ -56,6 +61,7 @@ export const Header: VFC = () => {
   }, [ search ])
 
   const searchButtonHandler = useCallback(() => {
+    toggleSearch()
     if (search) {
       console.log(search)
     }
@@ -73,10 +79,12 @@ export const Header: VFC = () => {
             className={classes.label}
             to='/'
           >
-            <img src={logo} className={classes.image} alt='logo' />
+            <img src={logo} className={classes.image} alt='logo'/>
           </Link>
           <DesktopMenu />
-          <div className={classes.search}>
+          <div
+            className={searchField ? classes.searchActive : classes.search}
+            >
             <InputBase
               placeholder='Search a book...'
               className={classes.input}

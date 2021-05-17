@@ -16,18 +16,28 @@ export const styles = makeStyles((theme: Theme) =>
     input: {
       width: '100%',
       background: 'rgba(255, 255, 255, 0.15)',
-      padding: '1px 10px',
+      // padding: '1px 10px',
       borderRadius: '5px',
       color: 'inherit'
     },
     search: {
+      width: 0,
+      display: 'hidden',
+      [theme.breakpoints.up('md')]: {
+        width: 0
+      },
+      transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'
+    },
+    searchActive: {
       position: 'relative',
       minWidth: '170px',
       maxWidth: '500px',
       width: '40%',
       [theme.breakpoints.up('md')]: {
         width: '30%'
-      }
+      },
+      transition: 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'
+
     },
     searchIcon: {
       position: 'absolute',
