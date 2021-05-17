@@ -21,9 +21,10 @@ export const styles = makeStyles({
       fontSize: 0,
       background: 'none',
       zIndex: 1000,
+      cursor: 'pointer',
       // creating arrow
       border: 'solid black',
-      borderWidth: '0 3px 3px 0',
+      borderWidth: '0 2.5px 2.5px 0',
       display: 'inline-block',
       padding: '10px',
       transition: 'all 0.3s ease-in-out',
@@ -37,7 +38,7 @@ export const styles = makeStyles({
       },
       // disablded arrows
       '&.slick-disabled': {
-        borderColor: 'rgba(0, 0, 0, 0.5)'
+        borderColor: 'rgba(0, 0, 0, 0.3)'
       }
     }
   }
