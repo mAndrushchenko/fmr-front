@@ -1,54 +1,25 @@
-import { VFC } from 'react'
+import { useCallback, VFC } from 'react'
 import { Link } from 'react-router-dom'
 import Drawer from '@material-ui/core/Drawer'
 import IconButton from '@material-ui/core/IconButton'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import Divider from '@material-ui/core/Divider'
 import Badge from '@material-ui/core/Badge'
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 
-const style = makeStyles((theme: Theme) =>
-  createStyles({
-    drawerHeader: {
-      display: 'flex',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      padding: theme.spacing(1, 0),
-      ...theme.mixins.toolbar
-    },
-    drawer: {
-      width: '100%',
-      maxWidth: '576px',
-      flexShrink: 0,
-      [theme.breakpoints.up(576)]: {
-        width: 480
-      },
-      [theme.breakpoints.up('md')]: {
-        display: 'none'
-      }
-    },
-    drawerPaper: {
-      width: '100%',
-      maxWidth: '576px',
-      [theme.breakpoints.up(576)]: {
-        width: 480
-      }
-    },
-    link: {
-      lineHeight: 1.75,
-      textTransform: 'uppercase',
-      textAlign: 'center',
-      textDecoration: 'none',
-      color: 'inherit',
-      padding: '6px 8px',
-      fontWeight: 500
-    }
-  }))
+import { Typography } from '@material-ui/core'
+import { useSelector } from 'react-redux'
+import { userSelector } from 'src/store/slices/userSlice'
+import { useAuth } from 'src/hooks/useAuth'
+import { styles } from './styles'
 
-export const MobileMenu: VFC<{
-  open: boolean, toggle: () => void
-}> = ({ open, toggle }) => {
-  const classes = style()
+export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, toggle }) => {
+  const { savedToken, logout } = useAuth()
+  const { name } = useSelector(userSelector)
+  const classes = styles()
+
+  const onLogout = useCallback(() => {
+    logout()
+  }, [])
 
   return (
     <Drawer
@@ -64,6 +35,7 @@ export const MobileMenu: VFC<{
         <IconButton onClick={toggle}>
           <ChevronRightIcon />
         </IconButton>
+        <Typography className={classes.userName}>{name}</Typography>
       </div>
       <Divider />
       <Link
@@ -108,13 +80,9 @@ export const MobileMenu: VFC<{
       >
         About us
       </Link>
-      <Link
-        className={classes.link}
-        onClick={toggle}
-        to='/signin'
-      >
-        Log in
-      </Link>
+      {!savedToken
+        ? <Link className={classes.link} to='/signin'>Log in</Link>
+        : <Link className={classes.link} to='/' onClick={onLogout}>Log out</Link>}
     </Drawer>
   )
 }

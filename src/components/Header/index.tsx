@@ -1,9 +1,9 @@
-import { VFC, useState, useCallback } from 'react'
+import { VFC, useState, useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
 import Toolbar from '@material-ui/core/Toolbar'
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import InputBase from '@material-ui/core/InputBase'
 import Button from '@material-ui/core/Button'
 
@@ -11,72 +11,38 @@ import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 import Brightness7Icon from '@material-ui/icons/Brightness7'
 import Brightness4Icon from '@material-ui/icons/Brightness4'
+import { Typography } from '@material-ui/core'
 
 import logo from '../../assets/img/logo/dark.png'
-import { MobileMenu } from './MobileMenu'
-import { DesktopMenu } from './DesktopMenu'
+import { MobileMenu } from './MobileMenu/MobileMenu'
+import { DesktopMenu } from './DesktopMenu/DesktopMenu'
 
-const styles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      padding: '0.5rem 3%',
-      [theme.breakpoints.up('md')]: {
-        justifyContent: 'space-between'
-      }
-    },
-    burger: {
-      [theme.breakpoints.up('md')]: {
-        display: 'none'
-      }
-    },
-    input: {
-      width: '100%',
-      background: 'rgba(255, 255, 255, 0.15)',
-      padding: '1px 10px',
-      borderRadius: '5px',
-      color: 'inherit'
-    },
-    search: {
-      position: 'relative',
-      minWidth: '170px',
-      maxWidth: '500px',
-      width: '40%',
-      [theme.breakpoints.up('md')]: {
-        width: '30%'
-      }
-    },
-    searchIcon: {
-      position: 'absolute',
-      zIndex: 500,
-      right: '20px',
-      top: '50%',
-      transform: 'translateY(-50%)'
-    },
-    label: {
-      width: '48px',
-      height: '48px',
-      marginRight: 'auto',
-      [theme.breakpoints.up('md')]: {
-        marginRight: '0'
-      }
-    },
-    image: {
-      width: '100%'
-    },
-    themeIcon: {
-      width: '36px',
-      height: '36px',
-      minWidth: 0,
-      color: 'inherit'
-    }
-  }))
+import { styles } from './styles'
+import { signinUserAction, userSelector } from '../../store/slices/userSlice'
+import { useAuth } from '../../hooks/useAuth'
+import { TAppDispatch } from '../../types/store'
 
 export const Header: VFC = () => {
   const classes = styles()
+  const dispatch = useDispatch<TAppDispatch>()
+  const user = useSelector(userSelector)
+  const { savedToken, isTokenExist } = useAuth()
 
   const [ search, setSearch ] = useState('')
   const [ open, setOpen ] = useState(false)
   const [ isDark, setIsDark ] = useState(true)
+  const [ searchField, setSearchField ] = useState(false)
+
+  useEffect(() => {
+    isTokenExist()
+    if (savedToken) {
+      dispatch(signinUserAction({ token: savedToken }))
+    }
+  }, [ savedToken ])
+
+  const toggleSearch = useCallback(() => {
+    setSearchField(prevState => !prevState)
+  }, [])
 
   const searchChangeHandler = useCallback(e => {
     setSearch(e.target.value)
@@ -93,6 +59,7 @@ export const Header: VFC = () => {
   }, [ search ])
 
   const searchButtonHandler = useCallback(() => {
+    toggleSearch()
     if (search) {
       console.log(search)
     }
@@ -112,23 +79,36 @@ export const Header: VFC = () => {
           >
             <img src={logo} className={classes.image} alt='logo' />
           </Link>
-          <DesktopMenu />
-          <div className={classes.search}>
-            <InputBase
-              placeholder='Search a book...'
-              className={classes.input}
-              value={search}
-              onChange={searchChangeHandler}
-              onKeyPress={inputKeyHandler}
-            />
-            <SearchIcon
-              className={classes.searchIcon}
-              onClick={searchButtonHandler}
-            />
+          <div className={classes.linkGroup}>
+            {user.name &&
+            <Typography
+              className={searchField ? classes.userName : classes.userNameActive}
+              variant='body1'
+            >
+              {user.name}
+            </Typography>}
+            <DesktopMenu />
           </div>
-          <Button className={classes.themeIcon} onClick={toggleTheme}>
-            {isDark ? <Brightness4Icon /> : <Brightness7Icon />}
-          </Button>
+          <div className={classes.buttonGroup}>
+            <div
+              className={searchField ? classes.searchActive : classes.search}
+            >
+              <InputBase
+                placeholder='Search a book...'
+                className={searchField ? classes.inputActive : classes.input}
+                value={search}
+                onChange={searchChangeHandler}
+                onKeyPress={inputKeyHandler}
+              />
+              <SearchIcon
+                className={classes.searchIcon}
+                onClick={searchButtonHandler}
+              />
+            </div>
+            <Button className={classes.themeIcon} onClick={toggleTheme}>
+              {isDark ? <Brightness4Icon /> : <Brightness7Icon />}
+            </Button>
+          </div>
           <IconButton
             onClick={toggleMenu}
             className={classes.burger}

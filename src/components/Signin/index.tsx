@@ -2,7 +2,6 @@ import { VFC, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { sign } from 'jsonwebtoken'
 
-import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -12,25 +11,13 @@ import { useDispatch } from 'react-redux'
 import { TAppDispatch } from '../../types/store'
 import { signinUserAction } from '../../store/slices/userSlice'
 
+import { styles } from './styles'
+
 const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
 const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
 
 const emailError = 'Check your email. It is incorrect'
 const passwordError = 'Password must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
-
-const styles = makeStyles({
-  root: {
-    maxWidth: '900px',
-    margin: '0 auto',
-    minWidth: '300px',
-    padding: '30px 30px 0'
-  },
-
-  link: {
-    display: 'block',
-    margin: '10px 0 20px'
-  }
-})
 
 export const Signin: VFC = () => {
   const classes = styles()
@@ -149,7 +136,6 @@ export const Signin: VFC = () => {
         >
           Forgot password?
         </Link>
-
         <Button
           variant='outlined'
           type='submit'

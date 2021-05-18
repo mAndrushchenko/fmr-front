@@ -24,33 +24,29 @@ export const readerSlice = createSlice({
   name: 'reader',
   initialState,
   reducers: {
-    getBookAction: (state, action: PayloadAction<TGetReaderBook>) => ({
-      ...state, lastReqType: action.type
-    }),
+    getBookAction: (state, action: PayloadAction<TGetReaderBook>) => void (state.lastReqType = action.type),
 
-    setReaderPages: (state, action: PayloadAction<TBookPage[]>) => ({
-      ...state, pages: action.payload
-    }),
+    setReaderPages: (state, { payload }: PayloadAction<TBookPage[]>) => void (state.pages = payload),
 
-    setReaderPage: (state, action: PayloadAction<TReaderSelectedPage>) => ({
-      ...state, ...action.payload
-    }),
+    setReaderPage: (state, { payload }: PayloadAction<TReaderSelectedPage>) => {
+      state.selectedPage = payload.selectedPage
+    },
 
-    setReaderWord: (state, action: PayloadAction<TReaderSelectedWord>) => ({
-      ...state, ...action.payload
-    }),
+    setReaderWord: (state, { payload }: PayloadAction<TReaderSelectedWord>) => {
+      state.selectedWord = payload.selectedWord
+    },
 
-    setCacheSize: (state, action: PayloadAction<TReaderCacheSize>) => ({
-      ...state, ...action.payload
-    }),
+    setCacheSize: (state, { payload }: PayloadAction<TReaderCacheSize>) => {
+      state.cacheSize = payload.cacheSize
+    },
 
-    setReaderBook: (state, action: PayloadAction<TReaderBook>) => ({
+    setReaderBook: (state, { payload }: PayloadAction<TReaderBook>) => ({
       ...state,
       selectedPage: 0,
       selectedWord: 0,
-      totalPages: action.payload.totalPages,
-      book: action.payload.book,
-      pages: action.payload.pages
+      totalPages: payload.totalPages,
+      book: payload.book,
+      pages: payload.pages
     })
   }
 })

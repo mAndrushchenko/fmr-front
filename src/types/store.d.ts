@@ -1,5 +1,5 @@
-import { store } from '@store/index'
-import { rootReducer } from '@store/redux'
+import { store } from 'src/store'
+import { rootReducer } from 'src/store/redux'
 
 export type TReducer = ReturnType<typeof rootReducer>
 
@@ -26,6 +26,7 @@ export type TToken = {
 export type TUserData = TToken & {
   isAdmin: boolean
   basket: TBook[]
+  name: string
   uploadedBooks: TBook[]
   purchasedBooks: TBook[],
   lastReqType: string | null
@@ -51,8 +52,7 @@ export type TBook = TId & {
 
 export type TUploadBook = {
   name: string
-  image: FormData | null
-  keywords: string
+  keywords: string[]
   releaseYear: number
   author: string
   genre: string
