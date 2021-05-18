@@ -61,15 +61,12 @@ export const Signin: VFC = () => {
     e.preventDefault()
 
     const newError = validation()
-    console.log(form)
 
     if (!newError.email && !newError.password) {
-      console.log(form)
       const token = sign({
         email: form.email,
         password: form.password
       }, 'ssh')
-      console.log('here', token)
       dispatch(signinUserAction({ token }))
     }
     setError(newError)
@@ -139,7 +136,6 @@ export const Signin: VFC = () => {
         >
           Forgot password?
         </Link>
-
         <Button
           variant='outlined'
           type='submit'

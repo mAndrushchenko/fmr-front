@@ -44,6 +44,8 @@ export const userSlice = createSlice({
 
     setUserData: (state, { payload }: PayloadAction<TUserData>) => payload,
 
+    delUserData: () => initialState,
+
     addToBasket: (state, { payload }: PayloadAction<TBook>) => {
       state.basket = [ ...state.basket, payload ]
     },
@@ -67,6 +69,7 @@ export const {
   uploadBook,
   addToBasket,
   setUserData,
+  delUserData,
   delFromBasket,
   buyBooksAction,
   signinUserAction,

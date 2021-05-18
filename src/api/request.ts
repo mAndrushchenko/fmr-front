@@ -17,7 +17,7 @@ export const request = async ({
       body = fd.bookData
       body.append('bookInfo', blob)
       // log for develop
-      for (let key of body) {
+      for (const key of body) {
         console.log(key)
       }
     }

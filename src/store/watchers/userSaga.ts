@@ -44,7 +44,6 @@ function* makeUserRequest({ payload, serverAction }:
 
 function* checkStatus({ response, action, actionPayload }: any) {
   const { data, message, status } = response
-  console.log(data)
   if (status && data) {
     // make some operations with response data
     yield put(action(data))

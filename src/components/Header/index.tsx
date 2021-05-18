@@ -1,4 +1,5 @@
 import { VFC, useState, useCallback, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
@@ -10,13 +11,13 @@ import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 import Brightness7Icon from '@material-ui/icons/Brightness7'
 import Brightness4Icon from '@material-ui/icons/Brightness4'
+import { Typography } from '@material-ui/core'
 
 import logo from '../../assets/img/logo/dark.png'
 import { MobileMenu } from './MobileMenu/MobileMenu'
 import { DesktopMenu } from './DesktopMenu/DesktopMenu'
 
 import { styles } from './styles'
-import { useDispatch, useSelector } from 'react-redux'
 import { signinUserAction, userSelector } from '../../store/slices/userSlice'
 import { useAuth } from '../../hooks/useAuth'
 import { TAppDispatch } from '../../types/store'
@@ -25,25 +26,22 @@ export const Header: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
   const user = useSelector(userSelector)
-  const { login, savedToken, isTokenExist } = useAuth()
+  const { savedToken, isTokenExist } = useAuth()
 
   const [ search, setSearch ] = useState('')
   const [ open, setOpen ] = useState(false)
   const [ isDark, setIsDark ] = useState(true)
-  const [ searchField, setSerarchField ] = useState(false)
+  const [ searchField, setSearchField ] = useState(false)
 
   useEffect(() => {
-    console.log(savedToken)
     isTokenExist()
-    if (!savedToken && user.token)  {
-      login(user.token)
-    } else if (savedToken && !user.token) {
+    if (savedToken) {
       dispatch(signinUserAction({ token: savedToken }))
     }
-  }, [user, savedToken])
+  }, [ savedToken ])
 
   const toggleSearch = useCallback(() => {
-    setSerarchField( prevState => !prevState)
+    setSearchField(prevState => !prevState)
   }, [])
 
   const searchChangeHandler = useCallback(e => {
@@ -79,27 +77,38 @@ export const Header: VFC = () => {
             className={classes.label}
             to='/'
           >
-            <img src={logo} className={classes.image} alt='logo'/>
+            <img src={logo} className={classes.image} alt='logo' />
           </Link>
-          <DesktopMenu />
-          <div
-            className={searchField ? classes.searchActive : classes.search}
+          <div className={classes.linkGroup}>
+            {user.name &&
+            <Typography
+              className={searchField ? classes.userName : classes.userNameActive}
+              variant='body1'
             >
-            <InputBase
-              placeholder='Search a book...'
-              className={classes.input}
-              value={search}
-              onChange={searchChangeHandler}
-              onKeyPress={inputKeyHandler}
-            />
-            <SearchIcon
-              className={classes.searchIcon}
-              onClick={searchButtonHandler}
-            />
+              {user.name}
+            </Typography>}
+            <DesktopMenu />
           </div>
-          <Button className={classes.themeIcon} onClick={toggleTheme}>
-            {isDark ? <Brightness4Icon /> : <Brightness7Icon />}
-          </Button>
+          <div className={classes.buttonGroup}>
+            <div
+              className={searchField ? classes.searchActive : classes.search}
+            >
+              <InputBase
+                placeholder='Search a book...'
+                className={searchField ? classes.inputActive : classes.input}
+                value={search}
+                onChange={searchChangeHandler}
+                onKeyPress={inputKeyHandler}
+              />
+              <SearchIcon
+                className={classes.searchIcon}
+                onClick={searchButtonHandler}
+              />
+            </div>
+            <Button className={classes.themeIcon} onClick={toggleTheme}>
+              {isDark ? <Brightness4Icon /> : <Brightness7Icon />}
+            </Button>
+          </div>
           <IconButton
             onClick={toggleMenu}
             className={classes.burger}

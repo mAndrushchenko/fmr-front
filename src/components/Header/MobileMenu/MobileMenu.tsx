@@ -1,4 +1,4 @@
-import { VFC } from 'react'
+import { useCallback, VFC } from 'react'
 import { Link } from 'react-router-dom'
 import Drawer from '@material-ui/core/Drawer'
 import IconButton from '@material-ui/core/IconButton'
@@ -6,10 +6,20 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import Divider from '@material-ui/core/Divider'
 import Badge from '@material-ui/core/Badge'
 
+import { Typography } from '@material-ui/core'
+import { useSelector } from 'react-redux'
+import { userSelector } from 'src/store/slices/userSlice'
+import { useAuth } from 'src/hooks/useAuth'
 import { styles } from './styles'
 
 export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, toggle }) => {
+  const { savedToken, logout } = useAuth()
+  const { name } = useSelector(userSelector)
   const classes = styles()
+
+  const onLogout = useCallback(() => {
+    logout()
+  }, [])
 
   return (
     <Drawer
@@ -25,6 +35,7 @@ export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, t
         <IconButton onClick={toggle}>
           <ChevronRightIcon />
         </IconButton>
+        <Typography className={classes.userName}>{name}</Typography>
       </div>
       <Divider />
       <Link
@@ -69,13 +80,9 @@ export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, t
       >
         About us
       </Link>
-      <Link
-        className={classes.link}
-        onClick={toggle}
-        to='/signin'
-      >
-        Log in
-      </Link>
+      {!savedToken
+        ? <Link className={classes.link} to='/signin'>Log in</Link>
+        : <Link className={classes.link} to='/' onClick={onLogout}>Log out</Link>}
     </Drawer>
   )
 }

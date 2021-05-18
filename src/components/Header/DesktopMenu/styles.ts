@@ -6,7 +6,10 @@ export const styles = makeStyles((theme: Theme) =>
       display: 'none',
       color: 'inherit',
       [theme.breakpoints.up('md')]: {
-        display: 'block'
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        whiteSpace: 'nowrap'
       }
     },
     link: {

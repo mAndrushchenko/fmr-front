@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
-import { userSelector } from 'src/store/slices/userSlice'
+import { userSelector, delUserData } from 'src/store/slices/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
 
 const tokenName = 'token'
-const userName = 'user'
+// const userName = 'user'
 
 export const useAuth = () => {
   const { token } = useSelector(userSelector)
@@ -15,18 +15,22 @@ export const useAuth = () => {
   const login = useCallback((jwtToken: string | null) => {
     if (jwtToken) {
       document.cookie = `${tokenName}=${jwtToken}`
+      setSavedToken(jwtToken)
     }
   }, [ dispatch ])
 
   const logout = useCallback(() => {
     document.cookie = `${tokenName}=`
+    dispatch(delUserData())
+    setSavedToken(null)
   }, [ dispatch ])
 
   const getItem = useCallback((key: string): string | null => {
     let currentToken: string | null = null
     document.cookie.split('; ').forEach((field: string) => {
       const currentField = field.split('=')
-      if (key === currentField[0]) currentToken = currentField[1]
+      const [ cookieKey, cookieValue ] = currentField
+      if (key === cookieKey) currentToken = cookieValue
     })
     return currentToken
   }, [])
@@ -37,11 +41,9 @@ export const useAuth = () => {
     }
   }, [ login, token ])
 
-
   const isTokenExist = useCallback(() => {
     setSavedToken(getItem(tokenName))
   }, [ getItem ])
 
   return { login, logout, isTokenExist, savedToken }
 }
-
