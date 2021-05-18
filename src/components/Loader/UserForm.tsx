@@ -8,12 +8,14 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 
-import { makeStyles } from '@material-ui/core/styles'
-
 import { TUsersBookLoader } from 'src/types/bookLoader'
 import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from '../../types/store'
 import { uploadBookAction, userSelector } from '../../store/slices/userSlice'
+import { bookNameRegexp } from '../../shared/constant/regExp'
+import { nameBookError, uploadBookError } from '../../shared/constant/errorMasseges'
+
+import { styles } from './styles'
 
 const initialBookState: TUsersBookLoader = {
   bookInfo: {
@@ -23,24 +25,6 @@ const initialBookState: TUsersBookLoader = {
   },
   bookData: new FormData()
 }
-
-const styles = makeStyles({
-  fileUpload: {
-    display: 'none'
-  },
-  select: {
-    width: '100%'
-  },
-  button: {
-    marginTop: '16px',
-    marginRight: '15px'
-  },
-  submit: {
-    marginTop: '24px'
-  }
-})
-
-const nameRegexp = /^[a-z0-9]+[.,]?(\s[a-z0-9]+[.,]?)*$/i
 
 export const UserForm: VFC = () => {
   const classes = styles()
@@ -88,10 +72,10 @@ export const UserForm: VFC = () => {
     e.preventDefault()
 
     if (!form.bookData.get('book')) {
-      return setError('You had not uploaded book file!')
+      return setError(uploadBookError)
     }
-    if (!nameRegexp.test(form.bookInfo.name.trim())) {
-      return setError('Invalid name of book')
+    if (!bookNameRegexp.test(form.bookInfo.name.trim())) {
+      return setError(nameBookError)
     }
 
     dispatch(uploadBookAction({ token, book: form }))

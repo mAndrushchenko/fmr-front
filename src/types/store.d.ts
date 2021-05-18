@@ -61,7 +61,7 @@ export type TUploadBook = {
 
 export type TShopFilters = {
   year: number | null
-  price: number | null
+  price: number[] | null
   genre: string | null
   searchPhrase: string | null
   author: string | null
@@ -99,4 +99,9 @@ export type TShop = {
   books: TBook[]
   filters: TShopFilters
   lastReqType: string | null
+}
+
+
+export type TSpinner = {
+  spin: boolean
 }

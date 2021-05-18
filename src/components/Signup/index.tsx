@@ -1,25 +1,20 @@
 import { VFC, useState, useCallback } from 'react'
 import { sign } from 'jsonwebtoken'
 
-import TextField from '@material-ui/core/TextField'
-import Checkbox from '@material-ui/core/Checkbox'
-import { Button } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
+import {
+  Button,
+  Checkbox,
+  TextField,
+  Typography,
+  FormControlLabel
+} from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
 import { signupUserAction } from 'src/store/slices/userSlice'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+import { passwordRegexp, emailRegexp, nameRegexp } from 'src/shared/constant/regExp'
+import { passwordError, emailError, nameError } from 'src/shared/constant/errorMasseges'
 import { AfterRegComp } from './AfterRegComp'
-
 import { styles } from './styles'
-
-const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
-const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
-const nameRegexp = /^[a-zA-Z]+(\s[a-zA-Z]+)?$/
-
-const nameError = 'Your name should consist only of English letters'
-const emailError = 'Check your email. It is incorrect'
-const passwordError = 'Password must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
 
 const formInitialState = {
   email: '',
@@ -36,11 +31,8 @@ export const Signup: VFC = () => {
 
   //  Before token works correctly, use boolean to check on user logged
   const [ register, setRegister ] = useState(false)
-
   const [ form, setForm ] = useState(formInitialState)
-
   const [ ignoreEmail, setIgnore ] = useState(false)
-
   const [ error, setError ] = useState({
     email: '',
     name: '',
@@ -105,7 +97,6 @@ export const Signup: VFC = () => {
 
   return (
     <div className={classes.root}>
-
       {register
         ? <AfterRegComp />
         : <div className={classes.singnup}>
