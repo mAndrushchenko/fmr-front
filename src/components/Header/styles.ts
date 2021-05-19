@@ -51,10 +51,22 @@ export const styles = makeStyles((theme: Theme) =>
       },
       transition: animationStyle
     },
-
     userName: {
-      display: 'none',
-      transition: animationStyle
+      transition: animationStyle,
+      [theme.breakpoints.up('md')]: {
+        lineHeight: 1.75,
+        marginRight: 20,
+        textTransform: 'uppercase',
+        fontSize: 14,
+        textAlign: 'center',
+        textDecoration: 'none',
+        color: 'inherit',
+        fontWeight: 500,
+        maxWidth: 180
+      },
+      [theme.breakpoints.down('md')]: {
+        display: 'none',
+      }
     },
 
     search: {
