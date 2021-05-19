@@ -94,7 +94,12 @@ export type TShop = {
   lastReqType: string | null
 }
 
+export type TSpinnerPayload = {
+  error: boolean,
+  message: string | null
+}
 
-export type TSpinner = {
+export type TSpinner = TSpinnerPayload &{
   spin: boolean
 }
+

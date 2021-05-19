@@ -7,7 +7,7 @@ import {
   Checkbox,
   TextField,
   Typography,
-  FormControlLabel
+  FormControlLabel, CircularProgress
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
@@ -29,7 +29,7 @@ export const Signup: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
   const { token } = useSelector(userSelector)
-  const { spin } = useSelector(spinnerSelector)
+  const { spin, error: err } = useSelector(spinnerSelector)
   const [ register, setRegister ] = useState(false)
   const [ form, setForm ] = useState(formInitialState)
   const [ ignoreEmail, setIgnore ] = useState(false)
@@ -98,7 +98,7 @@ export const Signup: VFC = () => {
 
   return (
     <div className={classes.root}>
-      {(register && !spin)
+      {(register && !spin && !err)
         ? <AfterRegComp />
         : <div className={classes.singnup}>
             <Typography variant='h4'>
@@ -180,12 +180,14 @@ export const Signup: VFC = () => {
                 variant='outlined'
                 color='primary'
                 className={classes.button}
+                disabled={spin}
               >
                 Sign up
               </Button>
             </form>
           </div>}
       {token && <Redirect to='/' />}
+      {spin && <div className={classes.spinner}><CircularProgress /></div>}
     </div>
   )
 }

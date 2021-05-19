@@ -7,7 +7,7 @@ import {
   Checkbox,
   TextField,
   Typography,
-  FormControlLabel
+  FormControlLabel, CircularProgress
 } from '@material-ui/core'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -20,16 +20,10 @@ import { AfterRecoveryComponent } from './AfterRecoveryComponent'
 import { styles } from './styles'
 import { spinnerSelector, startSpin } from '../../../store/slices/spinnerSlice'
 
-const formInitialState = {
-  email: '',
-  firstPassword: '',
-  secondPassword: ''
-}
-
 export const PasswordRecovery: VFC = () => {
   const classes = styles()
   const [ recoverReq, setRecoverReq ] = useState(false)
-  const { spin } = useSelector(spinnerSelector)
+  const { spin, error: err } = useSelector(spinnerSelector)
   const dispatch = useDispatch<TAppDispatch>()
   const { token } = useSelector(userSelector)
   const [ form, setForm ] = useState({
@@ -93,14 +87,13 @@ export const PasswordRecovery: VFC = () => {
       dispatch(startSpin())
       dispatch(passwordRecoveryAction({ token: newToken }))
       setRecoverReq(true)
-      setForm(formInitialState)
     }
     setError(newError)
   }, [ dispatch, form ])
 
   return (
     <div className={classes.root}>
-      {(recoverReq && !spin)
+      {(recoverReq && !spin && !err)
         ? <AfterRecoveryComponent />
         : <div className={classes.passwordRecovery}>
             <Typography variant='h4'>
@@ -177,6 +170,7 @@ export const PasswordRecovery: VFC = () => {
               {token && <Redirect to='/' />}
             </form>
           </div>}
+      {spin && <div className={classes.spinner}><CircularProgress /></div>}
     </div>
   )
 }

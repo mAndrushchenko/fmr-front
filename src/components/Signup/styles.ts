@@ -18,6 +18,7 @@ export const styles = makeStyles({
   },
 
   cardRoot: {
+    margin: '0 auto',
     maxWidth: 345
   },
   media: {
@@ -32,6 +33,11 @@ export const styles = makeStyles({
   btn: {
     width: '100%',
     textAlign: 'center'
+  },
+  spinner: {
+    position: 'fixed',
+    left: '50%',
+    top: '50%'
   }
 
 })

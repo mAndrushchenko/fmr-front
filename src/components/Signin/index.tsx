@@ -24,7 +24,7 @@ export const Signin: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
   const { token } = useSelector(userSelector)
-  const { spin } = useSelector(spinnerSelector)
+  const { spin, error: err } = useSelector(spinnerSelector)
   const [ form, setForm ] = useState({
     email: '',
     password: ''
@@ -146,7 +146,7 @@ export const Signin: VFC = () => {
         >
           Login
         </Button>
-        {token && <Redirect to='/' />}
+        {token && !err && <Redirect to='/' />}
         {spin && <div className={classes.spinner}><CircularProgress /></div>}
       </form>
     </div>
