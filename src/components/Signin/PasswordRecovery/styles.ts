@@ -16,11 +16,6 @@ export const styles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'center'
   },
-  spinner: {
-    position: 'fixed',
-    left: '50%',
-    top: '50%'
-  },
   cardRoot: {
     maxWidth: 345
   },

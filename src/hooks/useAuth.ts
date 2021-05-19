@@ -17,7 +17,6 @@ export const useAuth = () => {
       document.cookie = `${tokenName}=${jwtToken}`
       setSavedToken(jwtToken)
     }
-    console.log('useAuth')
   }, [ dispatch ])
 
   const logout = useCallback(() => {

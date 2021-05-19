@@ -7,8 +7,7 @@ import {
   Checkbox,
   TextField,
   Typography,
-  FormControlLabel,
-  CircularProgress
+  FormControlLabel
 } from '@material-ui/core'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -147,7 +146,6 @@ export const Signin: VFC = () => {
           Login
         </Button>
         {token && !err && <Redirect to='/' />}
-        {spin && <div className={classes.spinner}><CircularProgress /></div>}
       </form>
     </div>
   )

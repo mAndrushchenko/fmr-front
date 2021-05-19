@@ -7,7 +7,7 @@ import {
   Checkbox,
   TextField,
   Typography,
-  FormControlLabel, CircularProgress
+  FormControlLabel
 } from '@material-ui/core'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -170,7 +170,6 @@ export const PasswordRecovery: VFC = () => {
               {token && <Redirect to='/' />}
             </form>
           </div>}
-      {spin && <div className={classes.spinner}><CircularProgress /></div>}
     </div>
   )
 }

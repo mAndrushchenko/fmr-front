@@ -7,7 +7,7 @@ import {
   Checkbox,
   TextField,
   Typography,
-  FormControlLabel, CircularProgress
+  FormControlLabel
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
@@ -18,12 +18,6 @@ import { AfterRegComp } from './AfterRegComp'
 import { styles } from './styles'
 import { spinnerSelector, startSpin } from '../../store/slices/spinnerSlice'
 
-const formInitialState = {
-  email: '',
-  name: '',
-  firstPassword: '',
-  secondPassword: ''
-}
 
 export const Signup: VFC = () => {
   const classes = styles()
@@ -31,7 +25,12 @@ export const Signup: VFC = () => {
   const { token } = useSelector(userSelector)
   const { spin, error: err } = useSelector(spinnerSelector)
   const [ register, setRegister ] = useState(false)
-  const [ form, setForm ] = useState(formInitialState)
+  const [ form, setForm ] = useState({
+    email: '',
+    name: '',
+    firstPassword: '',
+    secondPassword: ''
+  })
   const [ ignoreEmail, setIgnore ] = useState(false)
   const [ error, setError ] = useState({
     email: '',
@@ -40,7 +39,7 @@ export const Signup: VFC = () => {
   })
 
   const validation = useCallback(() => {
-    let passwordProblem = ''
+    let passwordProblem: string
 
     if (form.firstPassword !== form.secondPassword) {
       passwordProblem = 'You password does not match'
@@ -91,7 +90,6 @@ export const Signup: VFC = () => {
       dispatch(startSpin())
       dispatch(signupUserAction({ token: newToken }))
       setRegister(true)
-      setForm(formInitialState)
     }
     setError(newError)
   }, [ dispatch, form ])
@@ -187,7 +185,6 @@ export const Signup: VFC = () => {
             </form>
           </div>}
       {token && <Redirect to='/' />}
-      {spin && <div className={classes.spinner}><CircularProgress /></div>}
     </div>
   )
 }
