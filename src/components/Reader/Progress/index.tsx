@@ -4,13 +4,8 @@ import {
   VFC,
   MouseEvent
 } from 'react'
-import {
-  styled,
-  withStyles,
-  Slider,
-  SliderTypeMap
-} from '@material-ui/core'
-import type { OverrideProps } from '../../../utils/OverrideProps'
+import { Slider } from '@material-ui/core'
+import { useStyles, useProgressSliderStyles } from './styles'
 
 interface ProgressBarProps {
   value: number
@@ -18,50 +13,14 @@ interface ProgressBarProps {
   onPause?: (state?: boolean) => void
 }
 
-interface ProgressSliderProps {
-  animate?: boolean
-}
-
-const ProgressRoot = styled('div')({
-  padding: '10px'
-})
-
-const ProgressText = styled('p')({
-  fontSize: '16px',
-  textAlign: 'center',
-  margin: '8px 0'
-})
-
-const ProgressSlider = withStyles({
-  track: {
-    width: 0,
-    height: 10,
-    borderRadius: '5px',
-    transition: ({ animate }: ProgressSliderProps) =>
-      animate ? 'width .4s linear' : ''
-  },
-  rail: {
-    height: 10,
-    borderRadius: 5
-  },
-  thumb: {
-    display: 'none'
-  }
-// Self made OverrideProps with SliderTypeMap instead of SliderProps,
-// because of a bug in SliderProps, which caused to incorrect props override
-})((
-  props: OverrideProps<'span', SliderTypeMap['props']> & ProgressSliderProps
-) => {
-  const { animate, ...others } = props
-  return <Slider {...others} />
-})
-
 export const Progress: VFC<ProgressBarProps> = ({
   value,
   onChange,
   onPause
 }) => {
+  const classes = useStyles()
   const [ animated, setAnimated ] = useState(true)
+  const sliderClasses = useProgressSliderStyles({ animate: animated })
   const sliderChangeCommitedHandler = useCallback(() => setAnimated(true), [])
   const sliderChangeHandler = useCallback(
     (_: unknown, newValue: number | number[]) => {
@@ -77,14 +36,14 @@ export const Progress: VFC<ProgressBarProps> = ({
   )
 
   return (
-    <ProgressRoot onClick={pauseClickHandler}>
-      <ProgressSlider
+    <div className={classes.root} onClick={pauseClickHandler}>
+      <Slider
         value={value}
-        animate={animated}
+        classes={sliderClasses}
         onChange={sliderChangeHandler}
         onChangeCommitted={sliderChangeCommitedHandler}
       />
-      <ProgressText>{`${value.toFixed()}% / 100%`}</ProgressText>
-    </ProgressRoot>
+      <p className={classes.text}>{`${value.toFixed()}% / 100%`}</p>
+    </div>
   )
 }

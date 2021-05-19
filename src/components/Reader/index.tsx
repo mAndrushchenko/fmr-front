@@ -1,5 +1,5 @@
 import { useCallback, useState, VFC, MouseEvent } from 'react'
-import { styled } from '@material-ui/core'
+import { useStyles } from './styles'
 import { Visualizer } from './Visualizer'
 import { Controls } from './Controls'
 import { Progress } from './Progress'
@@ -24,27 +24,8 @@ const tokenList = [
   'nulla.'
 ]
 
-const ReaderRoot = styled('div')(({ theme }) => ({
-  [theme.breakpoints.down('xs')]: {
-    width: '100%'
-  },
-  [theme.breakpoints.up('sm')]: {
-    width: '70%'
-  },
-  [theme.breakpoints.up('md')]: {
-    width: '50%'
-  },
-  [theme.breakpoints.up('lg')]: {
-    width: '30%'
-  },
-  height: '100%',
-  margin: 'auto',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between'
-}))
-
 export const Reader: VFC = () => {
+  const classes = useStyles()
   const [ speed, setSpeed ] = useState(200)
   const [ isPaused, togglePause ] = useToggle(true)
   const [ fontSize, setFontSize ] = useState(28)
@@ -58,7 +39,7 @@ export const Reader: VFC = () => {
     (value: number) => {
       const nextIndex = +((value / 100) * tokenList.length - 1).toFixed()
       togglePause(true)
-      // For unknown reason, this formula gives -1 when value === 0
+      // For unknown reason, nextIndex === -1 when value === 0
       setCurrentIndex(nextIndex > 0 ? nextIndex : 0)
     },
     []
@@ -66,7 +47,7 @@ export const Reader: VFC = () => {
   const progress = (currentIndex / (tokenList.length - 1)) * 100
 
   return (
-    <ReaderRoot onClick={pauseClickHandler}>
+    <div className={classes.root} onClick={pauseClickHandler}>
       <Progress
         value={progress}
         onChange={progressChangeHandler}
@@ -88,6 +69,6 @@ export const Reader: VFC = () => {
         onSpeedChange={setSpeed}
         onPause={togglePause}
       />
-    </ReaderRoot>
+    </div>
   )
 }
