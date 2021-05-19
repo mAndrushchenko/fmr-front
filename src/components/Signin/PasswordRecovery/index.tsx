@@ -9,39 +9,44 @@ import {
   Typography,
   FormControlLabel
 } from '@material-ui/core'
+
 import { useDispatch, useSelector } from 'react-redux'
+import { emailRegexp, passwordRegexp } from 'src/shared/constant/regExp'
+import { passwordError, emailError } from 'src/shared/constant/errorMasseges'
+import { passwordRecoveryAction, userSelector } from 'src/store/slices/userSlice'
 import { TAppDispatch } from 'src/types/store'
-import { signupUserAction, userSelector } from 'src/store/slices/userSlice'
-import { passwordRegexp, emailRegexp, nameRegexp } from 'src/shared/constant/regExp'
-import { passwordError, emailError, nameError } from 'src/shared/constant/errorMasseges'
-import { AfterRegComp } from './AfterRegComp'
+
+import { AfterRecoveryComponent } from './AfterRecoveryComponent'
 import { styles } from './styles'
-import { spinnerSelector, startSpin } from '../../store/slices/spinnerSlice'
+import { spinnerSelector, startSpin } from '../../../store/slices/spinnerSlice'
 
 const formInitialState = {
   email: '',
-  name: '',
   firstPassword: '',
   secondPassword: ''
 }
 
-export const Signup: VFC = () => {
+export const PasswordRecovery: VFC = () => {
   const classes = styles()
+  const [ recoverReq, setRecoverReq ] = useState(false)
+  const { spin } = useSelector(spinnerSelector)
   const dispatch = useDispatch<TAppDispatch>()
   const { token } = useSelector(userSelector)
-  const { spin } = useSelector(spinnerSelector)
-  const [ register, setRegister ] = useState(false)
-  const [ form, setForm ] = useState(formInitialState)
+  const [ form, setForm ] = useState({
+    email: '',
+    firstPassword: '',
+    secondPassword: ''
+  })
+
   const [ ignoreEmail, setIgnore ] = useState(false)
+
   const [ error, setError ] = useState({
     email: '',
-    name: '',
     firstPassword: ''
   })
 
   const validation = useCallback(() => {
-    let passwordProblem = ''
-
+    let passwordProblem: string
     if (form.firstPassword !== form.secondPassword) {
       passwordProblem = 'You password does not match'
     } else if (!passwordRegexp.test(form.firstPassword)) {
@@ -52,9 +57,11 @@ export const Signup: VFC = () => {
 
     return {
       email: (ignoreEmail || emailRegexp.test(form.email)) ? '' : emailError,
-      name: nameRegexp.test(form.name.trim()) ? '' : nameError,
       firstPassword: passwordProblem
     }
+  }, [ form ])
+  const onBlurHandler = useCallback(() => {
+    setError(validation())
   }, [ form ])
 
   const fieldChangeHandler = useCallback(e => {
@@ -73,24 +80,19 @@ export const Signup: VFC = () => {
     })
   }, [ form, error ])
 
-  const onBlurHandler = useCallback(() => {
-    setError(validation())
-  }, [ form ])
-
   const submitHandler = useCallback(e => {
     e.preventDefault()
 
     const newError = validation()
 
-    if (!newError.email && !newError.name && !newError.firstPassword) {
+    if (!newError.email && !newError.firstPassword) {
       const newToken = sign({
         email: form.email,
-        name: form.name,
         password: form.firstPassword
       }, 'ssh')
       dispatch(startSpin())
-      dispatch(signupUserAction({ token: newToken }))
-      setRegister(true)
+      dispatch(passwordRecoveryAction({ token: newToken }))
+      setRecoverReq(true)
       setForm(formInitialState)
     }
     setError(newError)
@@ -98,35 +100,24 @@ export const Signup: VFC = () => {
 
   return (
     <div className={classes.root}>
-      {(register && !spin)
-        ? <AfterRegComp />
-        : <div className={classes.singnup}>
+      {(recoverReq && !spin)
+        ? <AfterRecoveryComponent />
+        : <div className={classes.passwordRecovery}>
             <Typography variant='h4'>
-                Sign-up to start using our service with all features.
+              Password recovery
             </Typography>
+
+            <p>
+              Write your email here
+            </p>
 
             <form onSubmit={submitHandler}>
               <TextField
-                label='Name'
-                type='text'
-                variant='outlined'
-                margin='normal'
-                id='name'
-                fullWidth
-                required
-                value={form.name}
-                error={!!error.name}
-                helperText={error.name}
-                onChange={fieldChangeHandler}
-                onBlur={onBlurHandler}
-              />
-
-              <TextField
                 label='Email'
+                id='email'
                 type='email'
                 variant='outlined'
                 margin='normal'
-                id='email'
                 required
                 fullWidth
                 value={form.email}
@@ -148,7 +139,7 @@ export const Signup: VFC = () => {
               />
 
               <TextField
-                label='Password'
+                label='New password'
                 type='password'
                 variant='outlined'
                 margin='normal'
@@ -176,16 +167,16 @@ export const Signup: VFC = () => {
               />
 
               <Button
-                type='submit'
                 variant='outlined'
+                type='submit'
                 color='primary'
-                className={classes.button}
+                disabled={spin}
               >
-                Sign up
+                Recover password
               </Button>
+              {token && <Redirect to='/' />}
             </form>
           </div>}
-      {token && <Redirect to='/' />}
     </div>
   )
 }

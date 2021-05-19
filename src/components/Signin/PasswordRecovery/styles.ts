@@ -2,21 +2,25 @@ import { makeStyles } from '@material-ui/core/styles'
 
 export const styles = makeStyles({
   root: {
-    maxWidth: '1000px',
-    padding: '30px 30px 0',
-    margin: '0 auto'
+    maxWidth: '900px',
+    margin: '0 auto',
+    minWidth: '300px',
+    padding: '30px 30px 0'
   },
-
-  button: {
-    marginTop: '30px'
+  link: {
+    display: 'block',
+    margin: '10px 0 20px'
   },
-
-  singnup: {
+  passwordRecovery: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center'
   },
-
+  spinner: {
+    position: 'fixed',
+    left: '50%',
+    top: '50%'
+  },
   cardRoot: {
     maxWidth: 345
   },
@@ -33,5 +37,4 @@ export const styles = makeStyles({
     width: '100%',
     textAlign: 'center'
   }
-
 })

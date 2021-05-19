@@ -56,7 +56,7 @@ export const Signin: VFC = () => {
       email: (e.target.checked ||
         emailRegexp.test(form.email)) ? '' : emailError
     })
-  }, [ form ])
+  }, [ form, error ])
 
   const submitHandler = useCallback(e => {
     e.preventDefault()
@@ -132,7 +132,7 @@ export const Signin: VFC = () => {
         />
 
         <Link
-          to='/reset-password'
+          to='/password-recovery'
           className={classes.link}
         >
           Forgot password?

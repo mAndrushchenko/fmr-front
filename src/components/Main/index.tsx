@@ -6,6 +6,7 @@ import { Header } from '../Header'
 import { Loader } from '../Loader'
 import { Signin } from '../Signin'
 import { Signup } from '../Signup'
+import { PasswordRecovery } from '../Signin/PasswordRecovery'
 
 const MainRoot = styled('main')({
   height: '100%',
@@ -28,6 +29,9 @@ export const Main: VFC = () => (
         </Route>
         <Route path='/online-reader'>
           <Reader />
+        </Route>
+        <Route path='/password-recovery'>
+          <PasswordRecovery />
         </Route>
       </Switch>
     </Router>

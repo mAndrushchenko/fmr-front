@@ -1,21 +1,22 @@
-import React from 'react'
+import React, { VFC } from 'react'
 import { Link } from 'react-router-dom'
+
 import {
   Card,
   Button,
   Typography,
-  CardActions,
   CardContent,
+  CardActions,
   CardActionArea
 } from '@material-ui/core'
 
 import { styles } from './styles'
 
-export const AfterRegComp = () => {
+export const AfterRecoveryComponent: VFC = () => {
   const classes = styles()
 
   return (
-    <Card className={classes.cardRoot}>
+    <Card className={classes.root}>
       <CardActionArea>
         <CardContent>
           <Typography
@@ -24,7 +25,7 @@ export const AfterRegComp = () => {
             variant='h5'
             component='h2'
           >
-            Brilliant!
+            Perfect!
           </Typography>
           <Typography
             className={classes.message}
@@ -33,7 +34,7 @@ export const AfterRegComp = () => {
             component='p'
           >
             We have been sent you a letter on your email.
-            Please, confirm your registration and come back to us and sign in! 🙂
+            Please, confirm password recovery and come back to us and sign in! 😜
           </Typography>
         </CardContent>
       </CardActionArea>

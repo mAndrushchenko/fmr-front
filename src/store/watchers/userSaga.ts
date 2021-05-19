@@ -72,6 +72,7 @@ function* signinWorker(action: PayloadAction<TToken>) {
       response, action: setUserData
     })
   } catch (e) {
+    yield put(stopSpin())
     console.error(e.message) // Just for now. Next use Material notification
   }
 }
@@ -86,6 +87,7 @@ function* getUserDataWorker(action: PayloadAction<TToken>) {
       response, action: setUserData
     })
   } catch (e) {
+    yield put(stopSpin())
     console.error(e.message) // Just for now. Next use Material notification
   }
 }
@@ -100,6 +102,7 @@ function* signupUserWorker(action: PayloadAction<TToken>) {
       response
     })
   } catch (e) {
+    yield put(stopSpin())
     console.error(e.message) // Just for now. Next use Material notification
   }
 }
@@ -112,6 +115,7 @@ function* passwordRecoveryWorker(action: PayloadAction<TToken>) {
 
     yield checkStatus({ response })
   } catch (e) {
+    yield put(stopSpin())
     console.error(e.message) // Just for now. Next use Material notification
   }
 }
@@ -127,6 +131,7 @@ function* addToBasketWorker(action: PayloadAction<TBookWithToken>) {
       response, action: addToBasket, actionPayload: book
     })
   } catch (e) {
+    yield put(stopSpin())
     console.error(e.message) // Just for now. Next use Material notification
   }
 }
@@ -142,6 +147,7 @@ function* delFromBasketWorker(action: PayloadAction<TBookWithToken>) {
       response, action: delFromBasket, actionPayload: book
     })
   } catch (e) {
+    yield put(stopSpin())
     console.error(e.message) // Just for now. Next use Material notification
   }
 }
@@ -156,6 +162,7 @@ function* uploadBookWorker(action: PayloadAction<TUploadBook>) {
       response, action: uploadBook
     })
   } catch (e) {
+    yield put(stopSpin())
     console.error(e.message) // Just for now. Next use Material notification
   }
 }
@@ -171,6 +178,7 @@ function* buyBooksWorker(action: PayloadAction<TBuyBooks>) {
       response, action: buyBooks, actionPayload: basket
     })
   } catch (e) {
+    yield put(stopSpin())
     console.error(e.message) // Just for now. Next use Material notification
   }
 }

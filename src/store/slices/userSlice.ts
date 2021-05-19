@@ -3,8 +3,7 @@ import {
   TBook,
   TReducer,
   TToken,
-  TUserData,
-  TUserEmail
+  TUserData
 } from 'src/types/store'
 import {
   TBuyBooks,
@@ -30,7 +29,7 @@ export const userSlice = createSlice({
 
     signupUserAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
-    passwordRecoveryAction: (state, { type }: PayloadAction<TUserEmail>) => void (state.lastReqType = type),
+    passwordRecoveryAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
     setUserDataAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
