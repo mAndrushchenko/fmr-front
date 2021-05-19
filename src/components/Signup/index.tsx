@@ -18,7 +18,6 @@ import { AfterRegComp } from './AfterRegComp'
 import { styles } from './styles'
 import { spinnerSelector, startSpin } from '../../store/slices/spinnerSlice'
 
-
 export const Signup: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()

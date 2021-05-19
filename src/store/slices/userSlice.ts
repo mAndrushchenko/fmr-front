@@ -37,11 +37,13 @@ export const userSlice = createSlice({
 
     delFromBasketAction: (state, { type }: PayloadAction<TBookWithToken>) => void (state.lastReqType = type),
 
+    setUserToken: (state, { payload }: PayloadAction<TToken>) => ({ ...state, ...payload }),
+
     uploadBookAction: (state, { type }: PayloadAction<TUploadBook>) => void (state.lastReqType = type),
 
     buyBooksAction: (state, { type }: PayloadAction<TBuyBooks>) => void (state.lastReqType = type),
 
-    setUserData: (state, { payload }: PayloadAction<TUserData>) => payload,
+    setUserData: (state, { payload }: PayloadAction<TUserData>) => ({ ...state, ...payload }),
 
     delUserData: () => initialState,
 
@@ -69,6 +71,7 @@ export const {
   addToBasket,
   setUserData,
   delUserData,
+  setUserToken,
   delFromBasket,
   buyBooksAction,
   signinUserAction,
