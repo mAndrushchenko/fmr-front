@@ -73,13 +73,13 @@ export const Header: VFC = () => {
     <>
       <AppBar>
         <Toolbar className={classes.root}>
-          <Link
-            className={classes.label}
-            to='/'
-          >
-            <img src={logo} className={classes.image} alt='logo' />
-          </Link>
           <div className={classes.linkGroup}>
+            <Link
+              className={classes.label}
+              to='/'
+            >
+              <img src={logo} className={classes.image} alt='logo' />
+            </Link>
             {user.name &&
             <Typography
               className={searchField ? classes.userName : classes.userNameActive}
@@ -87,8 +87,8 @@ export const Header: VFC = () => {
             >
               {user.name}
             </Typography>}
-            <DesktopMenu />
           </div>
+          <DesktopMenu />
           <div className={classes.buttonGroup}>
             <div
               className={searchField ? classes.searchActive : classes.search}
