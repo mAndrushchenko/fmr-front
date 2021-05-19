@@ -21,7 +21,8 @@ const initialBookState: TUsersBookLoader = {
   bookInfo: {
     name: '',
     author: '',
-    genre: ''
+    genre: '',
+    description: ''
   },
   bookData: new FormData()
 }
@@ -77,7 +78,6 @@ export const UserForm: VFC = () => {
     if (!bookNameRegexp.test(form.bookInfo.name.trim())) {
       return setError(nameBookError)
     }
-
     dispatch(uploadBookAction({ token, book: form }))
     return setForm(initialBookState)
   }, [ form ])
@@ -136,6 +136,16 @@ export const UserForm: VFC = () => {
 
           </Select>
         </FormControl>
+        <TextField
+          id='description'
+          variant='outlined'
+          margin='normal'
+          label='Description'
+          value={form.bookInfo.description}
+          onChange={fieldChangeHandler}
+          fullWidth
+          required
+        />
         <div>
           <TextField
             type='file'

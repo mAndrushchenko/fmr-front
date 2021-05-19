@@ -25,6 +25,7 @@ const initialBookState: TAdminBookLoader = {
     genre: '',
     keywords: [],
     price: 0,
+    description: '',
     releaseYear: new Date().getFullYear()
   },
   bookData: new FormData()
@@ -150,6 +151,16 @@ export const AdminForm: VFC = () => {
             <MenuItem value='History'>History</MenuItem>
           </Select>
         </FormControl>
+        <TextField
+          id='description'
+          variant='outlined'
+          margin='normal'
+          label='Description'
+          value={form.bookInfo.description}
+          onChange={fieldChangeHandler}
+          fullWidth
+          required
+        />
         <TextField
           type='file'
           id='image'

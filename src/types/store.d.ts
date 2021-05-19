@@ -40,16 +40,6 @@ export type TRandomUser = {
   basket: TBook[]
 }
 
-export type TBook = TId & {
-  name: string
-  image: string
-  keywords: string[]
-  releaseYear: number
-  author: string
-  genre: string
-  price: number
-}
-
 export type TUploadBook = {
   name: string
   keywords: string[]
@@ -57,7 +47,10 @@ export type TUploadBook = {
   author: string
   genre: string
   price: number
+  description: string
 }
+
+export type TBook = TId & TUploadBook
 
 export type TShopFilters = {
   year: number | null
