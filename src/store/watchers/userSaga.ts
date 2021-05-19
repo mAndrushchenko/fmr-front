@@ -34,6 +34,7 @@ import {
   delFromBasketAction,
   passwordRecoveryAction
 } from '../slices/userSlice'
+import { stopSpin } from '../slices/spinnerSlice'
 
 function* makeUserRequest({ payload, serverAction }:
   { payload: TUserActionPayload, serverAction: any }) {
@@ -58,6 +59,7 @@ function* checkStatus({ response, action, actionPayload }: any) {
     // here might be something like put(onError(message))
     console.error(message) // Just for now. Next use Material notification
   }
+  yield put(stopSpin())
 }
 
 function* signinWorker(action: PayloadAction<TToken>) {

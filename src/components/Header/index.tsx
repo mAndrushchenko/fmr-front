@@ -18,7 +18,7 @@ import { MobileMenu } from './MobileMenu/MobileMenu'
 import { DesktopMenu } from './DesktopMenu/DesktopMenu'
 
 import { styles } from './styles'
-import { signinUserAction, userSelector } from '../../store/slices/userSlice'
+import { setUserDataAction, userSelector } from '../../store/slices/userSlice'
 import { useAuth } from '../../hooks/useAuth'
 import { TAppDispatch } from '../../types/store'
 
@@ -35,10 +35,10 @@ export const Header: VFC = () => {
 
   useEffect(() => {
     isTokenExist()
-    if (savedToken) {
-      dispatch(signinUserAction({ token: savedToken }))
+    if (savedToken && !user.token) {
+      dispatch(setUserDataAction({ token: savedToken }))
     }
-  }, [ savedToken ])
+  }, [ savedToken, user ])
 
   const toggleSearch = useCallback(() => {
     setSearchField(prevState => !prevState)

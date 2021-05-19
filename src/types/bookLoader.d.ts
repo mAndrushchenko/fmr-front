@@ -10,6 +10,7 @@ export type TUsersBookLoader = {
     name: string
     author: string
     genre: string
+    description: string
   }
   bookData: FormData
 }

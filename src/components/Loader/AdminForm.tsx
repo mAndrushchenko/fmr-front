@@ -8,28 +8,15 @@ import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 
-import { makeStyles } from '@material-ui/core/styles'
-
 import { TAdminBookLoader } from 'src/types/bookLoader'
 import { Divider } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from '../../types/store'
 import { uploadBookAction, userSelector } from '../../store/slices/userSlice'
+import { bookNameRegexp } from '../../shared/constant/regExp'
 
-const styles = makeStyles({
-  fileUpload: {
-    display: 'none'
-  },
-  submit: {
-    marginTop: '24px'
-  },
-  button: {
-    marginTop: '16px'
-  },
-  divider: {
-    marginTop: '24px'
-  }
-})
+import { styles } from './styles'
+import { keywordsError, nameBookError, uploadBookError } from '../../shared/constant/errorMasseges'
 
 const initialBookState: TAdminBookLoader = {
   bookInfo: {
@@ -38,12 +25,11 @@ const initialBookState: TAdminBookLoader = {
     genre: '',
     keywords: [],
     price: 0,
+    description: '',
     releaseYear: new Date().getFullYear()
   },
   bookData: new FormData()
 }
-
-const nameRegexp = /^[a-z0-9]+[.,]?(\s[a-z0-9]+[.,]?)*$/i
 
 export const AdminForm: VFC = () => {
   const classes = styles()
@@ -97,13 +83,13 @@ export const AdminForm: VFC = () => {
   const submitHandler = useCallback(e => {
     e.preventDefault()
     if (!form.bookData.get('book')) {
-      return setError('You had not uploaded book')
+      return setError(uploadBookError)
     }
-    if (!nameRegexp.test(form.bookInfo.name.trim())) {
-      return setError('Invalid name of book')
+    if (!bookNameRegexp.test(form.bookInfo.name.trim())) {
+      return setError(nameBookError)
     }
     if (!keywords) {
-      return setError('Please, write keywords')
+      return setError(keywordsError)
     }
     const arrOfKeywords = keywords.split(',').map(word => word.trim())
     const book = {
@@ -165,6 +151,16 @@ export const AdminForm: VFC = () => {
             <MenuItem value='History'>History</MenuItem>
           </Select>
         </FormControl>
+        <TextField
+          id='description'
+          variant='outlined'
+          margin='normal'
+          label='Description'
+          value={form.bookInfo.description}
+          onChange={fieldChangeHandler}
+          fullWidth
+          required
+        />
         <TextField
           type='file'
           id='image'
