@@ -1,13 +1,16 @@
 import {
   TSigninReq,
   TSignupReq,
+  TGetBookReq,
   TBuyBookReq,
   TGetUserReq,
+  TGetShopBooks,
   TUploadBookReq,
   TAddToBasketReq,
   TDelFromBasketReq,
-  TPasswordRecoveryReq, TGetShopBooks
-} from '../types/api'
+  TPasswordRecoveryReq
+} from 'src/types/api'
+
 
 export const signinReq: TSigninReq = ({ token }) => ({
   url: '/signin',
@@ -46,10 +49,11 @@ export const delFromBasketReq: TDelFromBasketReq = ({ token, book: body }) => ({
   token
 })
 
-export const uploadBookReq: TUploadBookReq = ({ token, book: body }) => ({
+export const uploadBookReq: TUploadBookReq = ({ token, book: fd }) => ({
   url: 'user/upload',
-  method: 'POST',
-  body,
+  method: 'PUT',
+  fd,
+
   token
 })
 
@@ -65,3 +69,15 @@ export const getShopBooksReq: TGetShopBooks = body => ({
   method: 'POST',
   body
 })
+
+export const getReaderBookReq: TGetBookReq = ({
+  id,
+  token,
+  cacheSize,
+  selectedPage
+}) => ({
+  url: `reader?bookId=${id}&page=${selectedPage}&cache=${cacheSize}`,
+  method: 'GET',
+  token
+})
+

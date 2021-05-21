@@ -1,9 +1,13 @@
-import { store } from '@store/index'
-import { rootReducer } from '@store/redux'
+import { store } from 'src/store'
+import { rootReducer } from 'src/store/redux'
 
 export type TReducer = ReturnType<typeof rootReducer>
 
 export type TAppDispatch = typeof store.dispatch
+
+export type TId = {
+  id: number | string
+}
 
 export type TCandidate = {
   name: string
@@ -15,14 +19,14 @@ export type TCandidate = {
   basket: TBook[]
 }
 
-export type TAuthUser = {
+export type TToken = {
   token: string
 }
 
-export type TUserData = {
-  token: string
+export type TUserData = TToken & {
   isAdmin: boolean
   basket: TBook[]
+  name: string
   uploadedBooks: TBook[]
   purchasedBooks: TBook[],
   lastReqType: string | null
@@ -36,28 +40,46 @@ export type TRandomUser = {
   basket: TBook[]
 }
 
-export type TBook = {
-  id: number
+export type TUploadBook = {
   name: string
-  image: string
   keywords: string[]
   releaseYear: number
   author: string
   genre: string
   price: number
+  description: string
 }
+
+export type TBook = TId & TUploadBook
 
 export type TShopFilters = {
   year: number | null
-  price: number | null
+  price: number[] | null
   genre: string | null
   searchPhrase: string | null
   author: string | null
 }
 
-export type TReaderBook = {
-  text: string[]
+export type TBookPage = string[]
+
+export type TReaderSelectedPage = { selectedPage: number }
+
+export type TReaderSelectedWord = { selectedWord: number }
+
+export type TReaderCacheSize = { cacheSize: number }
+
+export type TReaderTotalPages = { totalPages: number }
+
+export type TReaderBook = TReaderTotalPages & {
+  pages: TBookPage[]
   book: TBook
+}
+
+export type TReaderBookState = TReaderSelectedPage &
+  TReaderSelectedWord & TReaderCacheSize & TReaderTotalPages & {
+  pages: TBookPage[]
+  book: TBook | null,
+  lastReqType: string | null
 }
 
 export type TFirstLoadBooksLists = {
@@ -70,4 +92,8 @@ export type TShop = {
   books: TBook[]
   filters: TShopFilters
   lastReqType: string | null
+}
+
+export type TSpinner = {
+  spin: boolean
 }

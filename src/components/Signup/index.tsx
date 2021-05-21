@@ -1,38 +1,40 @@
 import { VFC, useState, useCallback } from 'react'
 import { sign } from 'jsonwebtoken'
 
-import TextField from '@material-ui/core/TextField'
-import { Button } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
+import {
+  Button,
+  Checkbox,
+  TextField,
+  Typography,
+  FormControlLabel
+} from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
-import { signupUserAction } from '../../store/slices/userSlice'
-
+import { signupUserAction } from 'src/store/slices/userSlice'
+import { passwordRegexp, emailRegexp, nameRegexp } from 'src/shared/constant/regExp'
+import { passwordError, emailError, nameError } from 'src/shared/constant/errorMasseges'
+import { AfterRegComp } from './AfterRegComp'
 import { styles } from './styles'
 
-const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
-const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
-const nameRegexp = /^[a-zA-Z]+(\s[a-zA-Z]+)?$/
-
-const nameError = 'Your name should consist only of English letters'
-const emailError = 'Check your email. It is incorrect'
-const passwordError = 'Password must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
+const formInitialState = {
+  email: '',
+  name: '',
+  firstPassword: '',
+  secondPassword: ''
+}
 
 export const Signup: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
 
-  const [ form, setForm ] = useState({
-    email: '',
-    name: '',
-    firstPassword: '',
-    secondPassword: ''
-  })
+  // If token exist, we redirect user to the home page
+  // const { token } = useSelector(userSelector)
 
+
+  //  Before token works correctly, use boolean to check on user logged
+  const [ register, setRegister ] = useState(false)
+  const [ form, setForm ] = useState(formInitialState)
   const [ ignoreEmail, setIgnore ] = useState(false)
-
   const [ error, setError ] = useState({
     email: '',
     name: '',
@@ -68,7 +70,8 @@ export const Signup: VFC = () => {
     setIgnore(e.target.checked)
     setError({
       ...error,
-      email: (e.target.checked || emailRegexp.test(form.email)) ? '' : emailError
+      email: (e.target.checked ||
+        emailRegexp.test(form.email)) ? '' : emailError
     })
   }, [ form ])
 
@@ -88,96 +91,101 @@ export const Signup: VFC = () => {
         password: form.firstPassword
       }, 'ssh')
       dispatch(signupUserAction({ token }))
-      console.log(token)
+      setRegister(true)
+      setForm(formInitialState)
     }
     setError(newError)
   }, [ dispatch, form ])
 
   return (
     <div className={classes.root}>
-      <Typography variant='h4'>
-        Sign-up to start using our service with all features.
-      </Typography>
+      {register
+        ? <AfterRegComp />
+        : <div className={classes.singnup}>
+            <Typography variant='h4'>
+                Sign-up to start using our service with all features.
+            </Typography>
 
-      <form onSubmit={submitHandler}>
-        <TextField
-          label='Name'
-          type='text'
-          variant='outlined'
-          margin='normal'
-          id='name'
-          fullWidth
-          required
-          value={form.name}
-          error={!!error.name}
-          helperText={error.name}
-          onChange={fieldChangeHandler}
-          onBlur={onBlurHandler}
-        />
+            <form onSubmit={submitHandler}>
+              <TextField
+                label='Name'
+                type='text'
+                variant='outlined'
+                margin='normal'
+                id='name'
+                fullWidth
+                required
+                value={form.name}
+                error={!!error.name}
+                helperText={error.name}
+                onChange={fieldChangeHandler}
+                onBlur={onBlurHandler}
+              />
 
-        <TextField
-          label='Email'
-          type='email'
-          variant='outlined'
-          margin='normal'
-          id='email'
-          required
-          fullWidth
-          value={form.email}
-          error={!!error.email}
-          helperText={error.email}
-          onChange={fieldChangeHandler}
-          onBlur={onBlurHandler}
-        />
+              <TextField
+                label='Email'
+                type='email'
+                variant='outlined'
+                margin='normal'
+                id='email'
+                required
+                fullWidth
+                value={form.email}
+                error={!!error.email}
+                helperText={error.email}
+                onChange={fieldChangeHandler}
+                onBlur={onBlurHandler}
+              />
 
-        <FormControlLabel
-          control={
-            <Checkbox
-              color='primary'
-              checked={ignoreEmail}
-              onChange={checkboxHandler}
-            />
-          }
-          label='I am sure my email is correct'
-        />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color='primary'
+                    checked={ignoreEmail}
+                    onChange={checkboxHandler}
+                  />
+                }
+                label='I am sure my email is correct'
+              />
 
-        <TextField
-          label='Password'
-          type='password'
-          variant='outlined'
-          margin='normal'
-          id='firstPassword'
-          fullWidth
-          required
-          value={form.firstPassword}
-          error={!!error.firstPassword}
-          helperText={error.firstPassword}
-          onChange={fieldChangeHandler}
-          onBlur={onBlurHandler}
-        />
+              <TextField
+                label='Password'
+                type='password'
+                variant='outlined'
+                margin='normal'
+                id='firstPassword'
+                fullWidth
+                required
+                value={form.firstPassword}
+                error={!!error.firstPassword}
+                helperText={error.firstPassword}
+                onChange={fieldChangeHandler}
+                onBlur={onBlurHandler}
+              />
 
-        <TextField
-          label='Repeat password'
-          type='password'
-          variant='outlined'
-          margin='normal'
-          id='secondPassword'
-          fullWidth
-          required
-          value={form.secondPassword}
-          onChange={fieldChangeHandler}
-          onBlur={onBlurHandler}
-        />
+              <TextField
+                label='Repeat password'
+                type='password'
+                variant='outlined'
+                margin='normal'
+                id='secondPassword'
+                fullWidth
+                required
+                value={form.secondPassword}
+                onChange={fieldChangeHandler}
+                onBlur={onBlurHandler}
+              />
 
-        <Button
-          type='submit'
-          variant='outlined'
-          color='primary'
-          className={classes.button}
-        >
-          Sign up
-        </Button>
-      </form>
+              <Button
+                type='submit'
+                variant='outlined'
+                color='primary'
+                className={classes.button}
+              >
+                Sign up
+              </Button>
+            </form>
+          </div>}
     </div>
   )
 }

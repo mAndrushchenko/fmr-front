@@ -11,7 +11,16 @@ export const request = async ({
       body = JSON.stringify(bodyData)
       headers['Content-Type'] = 'application/json'
     } else if (fd) {
-      body = JSON.stringify(fd)
+      const blob = new Blob(
+        [ JSON.stringify(fd.bookInfo) ],
+        { type: 'application/json' }
+      )
+      body = fd.bookData
+      body.append('bookInfo', blob)
+      // log for develop
+      for (const key of body) {
+        console.log(key)
+      }
     }
     if (token) {
       headers.authorization = `Bearer ${token}`

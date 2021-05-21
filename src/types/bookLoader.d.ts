@@ -1,15 +1,21 @@
-import { TBook } from './store'
+import { TUploadBook } from './store'
+
+  /*
+  * bookInfo describes common information about book
+  * bookData includes a data and an image of book
+  * */
 
 export type TUsersBookLoader = {
-  id: number
-  name: string
-  image: string | null
-  author: string
-  genre: string
-  bookFile: FormData
+  bookInfo: {
+    name: string
+    author: string
+    genre: string
+    description: string
+  }
+  bookData: FormData
 }
 
 export type TAdminBookLoader = {
-  bookInfo: TBook
+  bookInfo: TUploadBook
   bookData: FormData
 }

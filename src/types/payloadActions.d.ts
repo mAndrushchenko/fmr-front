@@ -1,24 +1,26 @@
-import { TAuthUser, TBook, TUserEmail } from './store'
+import { TToken, TBook, TId, TReaderCacheSize, TReaderSelectedPage, TUserEmail } from './store'
 import { TAdminBookLoader, TUsersBookLoader } from './bookLoader'
 
-export type TAddToBasket = {
-  token: string
+export type TBookWithToken = TToken & {
   book: TBook
 }
 
-export type TDelFromBasket = {
-  token: string
-  book: TBook
-}
+// export type TIdWithToken = TToken & TId
 
-export type TUploadBook = {
-  token: string
+export type TGetReaderBook = TBookWithToken & TReaderCacheSize & TReaderSelectedPage & TId
+
+export type TUploadBook = TToken & {
   book: TUsersBookLoader | TAdminBookLoader
 }
 
-export type TBuyBooks = {
-  token: string
+export type TBuyBooks = TToken & {
   basket: TBook[]
 }
 
-export type TUserActionPayload = TAuthUser | TUserEmail | TAddToBasket | TDelFromBasket | TUploadBook | TBuyBooks
+export type TUserActionPayload = TToken | TUserEmail | TBookWithToken | TUploadBook | TBuyBooks
+
+// reader
+
+// export type TPagesWithToken = TToken & TReaderSelectedPage & TReaderCacheSize & TId
+
+export type TGetPagesWithToken = TToken & TReaderSelectedPage & TReaderCacheSize

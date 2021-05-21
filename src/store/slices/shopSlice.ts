@@ -22,17 +22,12 @@ export const shopSlice = createSlice({
   name: 'shop',
   initialState,
   reducers: {
-    getBooksAction: (state, action: PayloadAction<TShopFilters>) => ({
-      ...state, lastReqType: action.type
-    }),
+    getBooksAction: (state, { type }: PayloadAction<TShopFilters>) => void (state.lastReqType = type),
 
-    setShopBooks: (state, action: PayloadAction<TBook[]>) => ({
-      ...state, books: action.payload
-    }),
+    setShopBooks: (state, { payload }: PayloadAction<TBook[]>) => void (state.books = payload),
 
-    setShopFilters: (state, action: PayloadAction<TShopFilters>) => ({
-      ...state, filters: action.payload
-    })
+    setShopFilters: (state, { payload }: PayloadAction<TShopFilters>) => void (state.filters = payload)
+
   }
 })
 
