@@ -1,4 +1,4 @@
-import { VFC, useRef, useCallback } from 'react'
+import React, { VFC, useRef, useCallback } from 'react'
 import { styled } from '@material-ui/core'
 import { PauseRounded } from '@material-ui/icons'
 import { useInterval } from '../../../hooks/useInterval'

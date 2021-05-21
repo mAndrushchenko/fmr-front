@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback } from 'react'
+import React, { VFC, useState, useCallback } from 'react'
 import { Redirect } from 'react-router-dom'
 import { sign } from 'jsonwebtoken'
 
