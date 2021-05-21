@@ -94,7 +94,6 @@ export type TShop = {
   lastReqType: string | null
 }
 
-
 export type TSpinner = {
   spin: boolean
 }

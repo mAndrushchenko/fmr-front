@@ -18,6 +18,7 @@ import { signinUserAction, userSelector } from 'src/store/slices/userSlice'
 import { spinnerSelector, startSpin } from 'src/store/slices/spinnerSlice'
 import { TAppDispatch } from 'src/types/store'
 
+
 import { styles } from './styles'
 
 export const Signin: VFC = () => {
@@ -25,6 +26,7 @@ export const Signin: VFC = () => {
   const dispatch = useDispatch<TAppDispatch>()
   const { token } = useSelector(userSelector)
   const { spin } = useSelector(spinnerSelector)
+
   const [ form, setForm ] = useState({
     email: '',
     password: ''

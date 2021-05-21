@@ -83,6 +83,7 @@ export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, t
       {!savedToken
         ? <Link className={classes.link} to='/signin'>Log in</Link>
         : <Link className={classes.link} to='/' onClick={onLogout}>Log out</Link>}
+
     </Drawer>
   )
 }

@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { ThemeProvider } from '@material-ui/core'
 import { App } from './App'
 import reportWebVitals from './reportWebVitals'
+
 import { theme } from './theme'
 import { store } from './store'
 
@@ -13,6 +14,7 @@ ReactDOM.render(
       <App />
     </ThemeProvider>
   </Provider>,
+
   document.getElementById('root')
 )
 

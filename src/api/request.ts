@@ -5,6 +5,7 @@ export const request = async ({
 }: IEndpoint): Promise<TResponse> => {
   let body
   const headers: IHeaders = {}
+
   try {
     if (bodyData) {
       body = JSON.stringify(bodyData)
