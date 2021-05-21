@@ -1,0 +1,81 @@
+env:
+  browser: true
+  es2021: true
+extends:
+  - 'plugin:react/recommended'
+  - 'airbnb-typescript'
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 12
+  sourceType: module
+  project: './tsconfig.json'
+plugins:
+  - react
+  - '@typescript-eslint'
+  - only-warn
+rules:
+  no-console: 'off'
+  import/no-named-default: 'off'
+  implicit-arrow-linebreak: 'off'
+  react/react-in-jsx-scope: 'off'
+  react/prop-types: 'off'
+  import/prefer-default-export: 'off'
+  react/destructuring-assignment: 'off'
+  react/jsx-props-no-spreading: 'off'
+  no-restricted-syntax: 'off'
+  '@typescript-eslint/indent': 'off'
+  '@typescript-eslint/semi':
+    - 'error'
+    - 'never'
+  '@typescript-eslint/comma-dangle':
+    - 'error'
+    - 'never'
+  indent:
+    - 'error'
+    - 2
+    - offsetTernaryExpressions: true
+      SwitchCase: 1
+  react/jsx-closing-bracket-location:
+    - 'error'
+    - 'tag-aligned'
+  arrow-parens:
+    - 'error'
+    - 'as-needed'
+  jsx-quotes:
+    - 'error'
+    - 'prefer-single'
+  operator-linebreak:
+    - 'error'
+    - 'after'
+    - overrides:
+        '?': before
+        ':': before
+  array-bracket-spacing:
+    - 'error'
+    - 'always'
+  jsx-a11y/label-has-associated-control:
+    - 'error'
+    - assert: 'either'
+  object-curly-newline:
+    - 'error'
+    - ImportDeclaration:
+        multiline: true
+        minProperties: 5
+      ExportDeclaration:
+        multiline: true
+        minProperties: 5
+  max-len:
+    - 'warn'
+    - code: 80
+      tabWidth: 2
+  react/jsx-wrap-multilines:
+    - 'error'
+    - declaration: 'parens'
+      assignment: 'parens'
+      return: 'parens'
+      arrow: 'parens'
+      condition: 'ignore'
+      logical: 'ignore'
+      prop: 'ignore'
