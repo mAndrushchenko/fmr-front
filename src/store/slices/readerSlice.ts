@@ -59,4 +59,4 @@ export const {
   setReaderPages
 } = readerSlice.actions
 
-export const userSelector = (state: TReducer) => state.readerSlice
+export const readerSelector = (state: TReducer) => state.readerSlice
