@@ -26,8 +26,10 @@ const formInitialState = {
 export const Signup: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
+
   // If token exist, we redirect user to the home page
   // const { token } = useSelector(userSelector)
+
 
   //  Before token works correctly, use boolean to check on user logged
   const [ register, setRegister ] = useState(false)

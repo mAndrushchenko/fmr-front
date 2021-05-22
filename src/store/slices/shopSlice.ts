@@ -27,6 +27,7 @@ export const shopSlice = createSlice({
     setShopBooks: (state, { payload }: PayloadAction<TBook[]>) => void (state.books = payload),
 
     setShopFilters: (state, { payload }: PayloadAction<TShopFilters>) => void (state.filters = payload)
+
   }
 })
 
