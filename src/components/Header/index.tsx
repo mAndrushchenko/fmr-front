@@ -1,4 +1,5 @@
 import { VFC, useState, useCallback } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
@@ -10,19 +11,27 @@ import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 import Brightness7Icon from '@material-ui/icons/Brightness7'
 import Brightness4Icon from '@material-ui/icons/Brightness4'
+import { Typography } from '@material-ui/core'
 
 import logo from '../../assets/img/logo/dark.png'
 import { MobileMenu } from './MobileMenu/MobileMenu'
 import { DesktopMenu } from './DesktopMenu/DesktopMenu'
 
 import { styles } from './styles'
+import { userSelector } from '../../store/slices/userSlice'
 
 export const Header: VFC = () => {
   const classes = styles()
+  const user = useSelector(userSelector)
 
   const [ search, setSearch ] = useState('')
   const [ open, setOpen ] = useState(false)
   const [ isDark, setIsDark ] = useState(true)
+  const [ searchField, setSearchField ] = useState(false)
+
+  const toggleSearch = useCallback(() => {
+    setSearchField(prevState => !prevState)
+  }, [])
 
   const searchChangeHandler = useCallback(e => {
     setSearch(e.target.value)
@@ -39,6 +48,7 @@ export const Header: VFC = () => {
   }, [ search ])
 
   const searchButtonHandler = useCallback(() => {
+    toggleSearch()
     if (search) {
       console.log(search)
     }
@@ -52,29 +62,42 @@ export const Header: VFC = () => {
     <>
       <AppBar>
         <Toolbar className={classes.root}>
-          <Link
-            className={classes.label}
-            to='/'
-          >
-            <img src={logo} className={classes.image} alt='logo' />
-          </Link>
-          <DesktopMenu />
-          <div className={classes.search}>
-            <InputBase
-              placeholder='Search a book...'
-              className={classes.input}
-              value={search}
-              onChange={searchChangeHandler}
-              onKeyPress={inputKeyHandler}
-            />
-            <SearchIcon
-              className={classes.searchIcon}
-              onClick={searchButtonHandler}
-            />
+          <div className={classes.linkGroup}>
+            <Link
+              className={classes.label}
+              to='/'
+            >
+              <img src={logo} className={classes.image} alt='logo' />
+            </Link>
+            {user.name &&
+            <Typography
+              className={searchField ? classes.userName : classes.userNameActive}
+              variant='body1'
+            >
+              {user.name}
+            </Typography>}
           </div>
-          <Button className={classes.themeIcon} onClick={toggleTheme}>
-            {isDark ? <Brightness4Icon /> : <Brightness7Icon />}
-          </Button>
+          <DesktopMenu />
+          <div className={classes.buttonGroup}>
+            <div
+              className={searchField ? classes.searchActive : classes.search}
+            >
+              <InputBase
+                placeholder='Search a book...'
+                className={searchField ? classes.inputActive : classes.input}
+                value={search}
+                onChange={searchChangeHandler}
+                onKeyPress={inputKeyHandler}
+              />
+              <SearchIcon
+                className={classes.searchIcon}
+                onClick={searchButtonHandler}
+              />
+            </div>
+            <Button className={classes.themeIcon} onClick={toggleTheme}>
+              {isDark ? <Brightness4Icon /> : <Brightness7Icon />}
+            </Button>
+          </div>
           <IconButton
             onClick={toggleMenu}
             className={classes.burger}

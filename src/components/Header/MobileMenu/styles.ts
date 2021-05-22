@@ -10,6 +10,7 @@ export const styles = makeStyles((theme: Theme) =>
       ...theme.mixins.toolbar
     },
     drawer: {
+      postion: 'relative',
       width: '100%',
       maxWidth: '576px',
       flexShrink: 0,
@@ -27,6 +28,15 @@ export const styles = makeStyles((theme: Theme) =>
         width: 480
       }
     },
+    userName: {
+      textAlign: 'center',
+      width: '200px',
+      position: 'absolute',
+      left: 'calc(50% - 100px)',
+      textTransform: 'uppercase',
+      fontSize: 14
+    },
+
     link: {
       lineHeight: 1.75,
       textTransform: 'uppercase',

@@ -48,10 +48,10 @@ export const delFromBasketReq: TDelFromBasketReq = ({ token, book: body }) => ({
   token
 })
 
-export const uploadBookReq: TUploadBookReq = ({ token, book: body }) => ({
+export const uploadBookReq: TUploadBookReq = ({ token, book: fd }) => ({
   url: 'user/upload',
-  method: 'POST',
-  body,
+  method: 'PUT',
+  fd,
   token
 })
 

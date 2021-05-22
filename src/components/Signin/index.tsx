@@ -1,28 +1,29 @@
 import { VFC, useState, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { sign } from 'jsonwebtoken'
 
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import Typography from '@material-ui/core/Typography'
-import { useDispatch } from 'react-redux'
-import { TAppDispatch } from '../../types/store'
-import { signinUserAction } from '../../store/slices/userSlice'
+import {
+  Button,
+  Checkbox,
+  TextField,
+  Typography,
+  FormControlLabel
+} from '@material-ui/core'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { emailRegexp, passwordRegexp } from 'src/shared/constant/regExp'
+import { passwordError, emailError } from 'src/shared/constant/errorMasseges'
+import { signinUserAction, userSelector } from 'src/store/slices/userSlice'
+import { spinnerSelector, startSpin } from 'src/store/slices/spinnerSlice'
+import { TAppDispatch } from 'src/types/store'
 
 import { styles } from './styles'
-
-const emailRegexp = /^[a-zA-Z]+[0-9]*([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)*@([.\-_]?[0-9]*[a-zA-Z]+[0-9]*)+\.[a-zA-Z]+$/
-const passwordRegexp = /((?=.*[a-z])|(?=.*[а-я])).*((?=.*[A-Z])|(?=.*[А-Я])).*(?=.*\d).*/
-
-const emailError = 'Check your email. It is incorrect'
-const passwordError = 'Password must consist of capital and lowercase letters, numbers and be at least 8-symbol length'
 
 export const Signin: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
-
+  const { token } = useSelector(userSelector)
+  const { spin, error: err } = useSelector(spinnerSelector)
   const [ form, setForm ] = useState({
     email: '',
     password: ''
@@ -38,8 +39,7 @@ export const Signin: VFC = () => {
   const validation = useCallback(() => ({
     email: (ignoreEmail || emailRegexp.test(form.email)) ? '' : emailError,
     password: passwordRegexp.test(form.password) ? '' : passwordError
-  }
-  ), [ form, ignoreEmail ])
+  }), [ form, ignoreEmail ])
 
   const fieldChangeHandler = useCallback(e => {
     setForm({
@@ -55,19 +55,19 @@ export const Signin: VFC = () => {
       email: (e.target.checked ||
         emailRegexp.test(form.email)) ? '' : emailError
     })
-  }, [ form ])
+  }, [ form, error ])
 
   const submitHandler = useCallback(e => {
     e.preventDefault()
-
     const newError = validation()
 
     if (!newError.email && !newError.password) {
-      const token = sign({
+      const newToken = sign({
         email: form.email,
         password: form.password
       }, 'ssh')
-      dispatch(signinUserAction({ token }))
+      dispatch(startSpin())
+      dispatch(signinUserAction({ token: newToken }))
     }
     setError(newError)
   }, [ dispatch, form ])
@@ -131,7 +131,7 @@ export const Signin: VFC = () => {
         />
 
         <Link
-          to='/reset-password'
+          to='/password-recovery'
           className={classes.link}
         >
           Forgot password?
@@ -141,9 +141,11 @@ export const Signin: VFC = () => {
           variant='outlined'
           type='submit'
           color='primary'
+          disabled={spin}
         >
           Login
         </Button>
+        {token && !err && <Redirect to='/' />}
       </form>
     </div>
   )

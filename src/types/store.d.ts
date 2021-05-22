@@ -1,5 +1,5 @@
-import { store } from '@store/index'
-import { rootReducer } from '@store/redux'
+import { store } from 'src/store'
+import { rootReducer } from 'src/store/redux'
 
 export type TReducer = ReturnType<typeof rootReducer>
 
@@ -26,6 +26,7 @@ export type TToken = {
 export type TUserData = TToken & {
   isAdmin: boolean
   basket: TBook[]
+  name: string
   uploadedBooks: TBook[]
   purchasedBooks: TBook[],
   lastReqType: string | null
@@ -39,29 +40,21 @@ export type TRandomUser = {
   basket: TBook[]
 }
 
-export type TBook = TId & {
+export type TUploadBook = {
   name: string
-  image: string
   keywords: string[]
   releaseYear: number
   author: string
   genre: string
   price: number
+  description: string
 }
 
-export type TUploadBook = {
-  name: string
-  image: FormData | null
-  keywords: string
-  releaseYear: number
-  author: string
-  genre: string
-  price: number
-}
+export type TBook = TId & TUploadBook
 
 export type TShopFilters = {
   year: number | null
-  price: number | null
+  price: number[] | null
   genre: string | null
   searchPhrase: string | null
   author: string | null
@@ -100,3 +93,13 @@ export type TShop = {
   filters: TShopFilters
   lastReqType: string | null
 }
+
+export type TSpinnerPayload = {
+  error: boolean,
+  message: string | null
+}
+
+export type TSpinner = TSpinnerPayload &{
+  spin: boolean
+}
+

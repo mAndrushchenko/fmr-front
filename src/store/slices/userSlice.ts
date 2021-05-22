@@ -3,8 +3,7 @@ import {
   TBook,
   TReducer,
   TToken,
-  TUserData,
-  TUserEmail
+  TUserData
 } from 'src/types/store'
 import {
   TBuyBooks,
@@ -14,6 +13,7 @@ import {
 
 const initialState: TUserData = {
   token: '',
+  name: '',
   lastReqType: '',
   isAdmin: false,
   basket: [],
@@ -25,55 +25,42 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    signinUserAction: (state, action: PayloadAction<TToken>) => ({
-      ...state, lastReqType: action.type
-    }),
+    signinUserAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
-    signupUserAction: (state, action: PayloadAction<TToken>) => ({
-      ...state, lastReqType: action.type
-    }),
+    signupUserAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
-    passwordRecoveryAction: (state, action: PayloadAction<TUserEmail>) => ({
-      ...state, lastReqType: action.type
-    }),
+    passwordRecoveryAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
-    setUserDataAction: (state, action: PayloadAction<TToken>) => ({
-      ...state, lastReqType: action.type
-    }),
+    setUserDataAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
-    addToBasketAction: (state, action: PayloadAction<TBookWithToken>) => ({
-      ...state, lastReqType: action.type
-    }),
+    addToBasketAction: (state, { type }: PayloadAction<TBookWithToken>) => void (state.lastReqType = type),
 
-    delFromBasketAction: (state, action: PayloadAction<TBookWithToken>) => ({
-      ...state, lastReqType: action.type
-    }),
+    delFromBasketAction: (state, { type }: PayloadAction<TBookWithToken>) => void (state.lastReqType = type),
 
-    uploadBookAction: (state, action: PayloadAction<TUploadBook>) => ({
-      ...state, lastReqType: action.type
-    }),
+    setUserToken: (state, { payload }: PayloadAction<TToken>) => ({ ...state, ...payload }),
 
-    buyBooksAction: (state, action: PayloadAction<TBuyBooks>) => ({
-      ...state, lastReqType: action.type
-    }),
+    uploadBookAction: (state, { type }: PayloadAction<TUploadBook>) => void (state.lastReqType = type),
 
-    setUserData: (state, action: PayloadAction<TUserData>) => action.payload,
+    buyBooksAction: (state, { type }: PayloadAction<TBuyBooks>) => void (state.lastReqType = type),
 
-    addToBasket: (state, action: PayloadAction<TBook>) => ({
-      ...state, basket: [ ...state.basket, action.payload ]
-    }),
+    setUserData: (state, { payload }: PayloadAction<TUserData>) => ({ ...state, ...payload }),
 
-    delFromBasket: (state, action: PayloadAction<TBook>) => ({
-      ...state,
-      basket: state.basket.filter(book => book.id !== action.payload.id)
-    }),
+    delUserData: () => initialState,
 
-    uploadBook: (state, action: PayloadAction<TBook>) => ({
-      ...state, uploadedBooks: [ ...state.uploadedBooks, action.payload ]
-    }),
+    addToBasket: (state, { payload }: PayloadAction<TBook>) => {
+      state.basket = [ ...state.basket, payload ]
+    },
 
-    buyBooks: (state, action: PayloadAction<TBook[]>) => ({
-      ...state, purchasedBooks: [ ...state.purchasedBooks, ...action.payload ]
+    delFromBasket: (state, { payload }: PayloadAction<TBook>) => {
+      state.basket = state.basket.filter(book => book.id !== payload.id)
+    },
+
+    uploadBook: (state, { payload }: PayloadAction<TBook>) => {
+      state.uploadedBooks = [ ...state.uploadedBooks, payload ]
+    },
+
+    buyBooks: (state, { payload }: PayloadAction<TBook[]>) => ({
+      ...state, purchasedBooks: [ ...state.purchasedBooks, ...payload ]
     })
   }
 })
@@ -83,6 +70,8 @@ export const {
   uploadBook,
   addToBasket,
   setUserData,
+  delUserData,
+  setUserToken,
   delFromBasket,
   buyBooksAction,
   signinUserAction,
