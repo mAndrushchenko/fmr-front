@@ -1,14 +1,22 @@
 import React, { useEffect, VFC } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { spinnerSelector } from 'src/store/slices/spinnerSlice'
 import { CircularProgress } from '@material-ui/core'
+import {
+  setUserDataAction,
+  setUserToken,
+  userSelector
+} from 'src/store/slices/userSlice'
+import { TAppDispatch } from 'src/types/store'
+import { useAuth } from 'src/hooks/useAuth'
 import { Reader } from '../Reader'
 import { Header } from '../Header'
 import { Loader } from '../Loader'
+import { Home } from '../Home'
 import { Signin } from '../Signin'
 import { Signup } from '../Signup'
 import { PasswordRecovery } from '../Signin/PasswordRecovery'
-import { spinnerSelector } from '../../store/slices/spinnerSlice'
 import { styles } from './styles'
 import { setUserDataAction, setUserToken, userSelector } from '../../store/slices/userSlice'
 import { TAppDispatch } from '../../types/store'
@@ -53,6 +61,9 @@ export const Main: VFC = () => {
           </Route>
           <Route path='/password-recovery'>
             <PasswordRecovery />
+          </Route>
+          <Route path='/'>
+            <Home />
           </Route>
         </Switch>
       </Router>

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
-  TBook,
   TShop,
   TReducer,
+  TShopBook,
   TShopFilters
 } from 'src/types/store'
 
@@ -24,7 +24,7 @@ export const shopSlice = createSlice({
   reducers: {
     getBooksAction: (state, { type }: PayloadAction<TShopFilters>) => void (state.lastReqType = type),
 
-    setShopBooks: (state, { payload }: PayloadAction<TBook[]>) => void (state.books = payload),
+    setShopBooks: (state, { payload }: PayloadAction<TShopBook[]>) => void (state.books = payload),
 
     setShopFilters: (state, { payload }: PayloadAction<TShopFilters>) => void (state.filters = payload)
   }
