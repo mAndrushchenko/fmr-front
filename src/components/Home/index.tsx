@@ -1,13 +1,14 @@
 import { Typography } from '@material-ui/core'
 import { VFC } from 'react'
-import { TBook } from 'src/types/store'
+import { TShopBook } from 'src/types/store'
 import { Filters } from '../Filters'
 import { CardSlider } from '../Slider'
 
 import { styles } from './styles'
 
 // next code only for develop
-const book: TBook = {
+const book: TShopBook = {
+  description: 'Very long description',
   id: 9898,
   name: 'dfvdf',
   author: 'dfvdf',
@@ -18,7 +19,7 @@ const book: TBook = {
   releaseYear: 2003
 }
 let count = 0
-const arrOfBook: TBook[] = []
+const arrOfBook: TShopBook[] = []
 while (count < 15) {
   arrOfBook.push(book)
   count++
@@ -28,9 +29,9 @@ while (count < 15) {
 export const Home: VFC = () => {
   const classes = styles()
 
-  const newBooks: TBook[] = arrOfBook
-  const personalOfferBooks: TBook[] = arrOfBook
-  const popularBooks: TBook[] = arrOfBook
+  const newBooks: TShopBook[] = arrOfBook
+  const personalOfferBooks: TShopBook[] = arrOfBook
+  const popularBooks: TShopBook[] = arrOfBook
 
   return (
     <div className={classes.root}>
