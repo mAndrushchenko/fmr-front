@@ -3,57 +3,47 @@ import TextField from '@material-ui/core/TextField'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 
-import { TAdminBookLoader } from 'src/types/bookLoader'
+import { TUsersBookLoader } from 'src/types/bookLoader'
 import { useDispatch, useSelector } from 'react-redux'
-import { TAppDispatch } from '../../types/store'
-import { uploadBookAction, userSelector } from '../../store/slices/userSlice'
-import { bookNameRegexp } from '../../shared/constant/regExp'
+import { TAppDispatch } from '../../../types/store'
+import { uploadBookAction, userSelector } from '../../../store/slices/userSlice'
+import { bookNameRegexp } from '../../../shared/constant/regExp'
+import { nameBookError, uploadBookError } from '../../../shared/constant/errorMasseges'
 
-import { keywordsError, nameBookError, uploadBookError } from '../../shared/constant/errorMasseges'
-import { Genres } from '../Genres'
+import { Genres } from '../../Genres'
 
-const initialBookState: TAdminBookLoader = {
+const initialBookState: TUsersBookLoader = {
   bookInfo: {
     name: '',
     author: '',
     genre: '',
-    keywords: [],
-    price: 0,
-    description: '',
-    releaseYear: new Date().getFullYear()
+    description: ''
   },
   bookData: new FormData()
 }
 
-export const AdminForm: VFC = () => {
+export const UserForm: VFC = () => {
   const dispatch = useDispatch<TAppDispatch>()
   const { token } = useSelector(userSelector)
+  const [ form, setForm ] = useState<TUsersBookLoader>(initialBookState)
 
   const [ error, setError ] = useState('')
-  const [ keywords, setKeywords ] = useState('')
-
-  const [ form, setForm ] = useState<TAdminBookLoader>(initialBookState)
 
   const fieldChangeHandler = useCallback(e => {
     setForm({
       ...form,
       bookInfo: {
         ...form.bookInfo,
-        [e.target.id]: e.target.value
+        [e.target.id || 'genre']: e.target.value
       }
     })
   }, [ form ])
-
-  const keywordsChangeHandler = useCallback(e => {
-    setKeywords(e.target.value)
-  }, [])
 
   const genreChangeHandler = useCallback(e => {
     setForm({
       ...form,
       bookInfo: {
-        ...form.bookInfo,
-        genre: e.target.value
+        ...form.bookInfo, genre: e.target.value
       }
     })
   }, [ form ])
@@ -64,27 +54,16 @@ export const AdminForm: VFC = () => {
 
   const submitHandler = useCallback(e => {
     e.preventDefault()
+
     if (!form.bookData.get('book')) {
       return setError(uploadBookError)
     }
     if (!bookNameRegexp.test(form.bookInfo.name.trim())) {
       return setError(nameBookError)
     }
-    if (!keywords) {
-      return setError(keywordsError)
-    }
-    const arrOfKeywords = keywords.split(',').map(word => word.trim())
-    const book = {
-      ...form,
-      bookInfo: {
-        ...form.bookInfo,
-        keywords: arrOfKeywords,
-        price: +form.bookInfo.price
-      }
-    }
-    dispatch(uploadBookAction({ book, token }))
+    dispatch(uploadBookAction({ token, book: form }))
     return setForm(initialBookState)
-  }, [ form, keywords, token ])
+  }, [ form ])
 
   return (
     <>
@@ -93,7 +72,7 @@ export const AdminForm: VFC = () => {
           id='name'
           variant='outlined'
           margin='normal'
-          label='Name'
+          label='Name of book'
           value={form.bookInfo.name}
           onChange={fieldChangeHandler}
           fullWidth
@@ -120,47 +99,15 @@ export const AdminForm: VFC = () => {
           fullWidth
           required
         />
-        <TextField
-          id='keywords'
-          variant='outlined'
-          margin='normal'
-          label='Keywords'
-          value={keywords}
-          onChange={keywordsChangeHandler}
-          fullWidth
-          required
-        />
-        <TextField
-          id='releaseYear'
-          type='number'
-          variant='outlined'
-          margin='normal'
-          label='Release year'
-          value={form.bookInfo.releaseYear}
-          onChange={fieldChangeHandler}
-          fullWidth
-          required
-        />
-        <TextField
-          id='price'
-          type='number'
-          variant='outlined'
-          margin='normal'
-          label='Price'
-          value={form.bookInfo.price}
-          onChange={fieldChangeHandler}
-          fullWidth
-          required
-        />
       </form>
-
       <Snackbar
-        open={!!error}
-        onClose={closeHandler}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center'
         }}
+        open={!!error}
+        autoHideDuration={3000}
+        onClose={closeHandler}
       >
         <Alert severity='warning'>{error}</Alert>
       </Snackbar>

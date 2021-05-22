@@ -3,21 +3,22 @@ import Stepper from '@material-ui/core/Stepper'
 import StepLabel from '@material-ui/core/StepLabel'
 import Button from '@material-ui/core/Button'
 import Step from '@material-ui/core/Step'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
 import { BookInfo } from './BookInfo'
-import { AdminForm } from './AdminForm'
-import { UserForm } from './UserForm'
 
 import { loaderStyles } from './styles'
-import { Typography } from '@material-ui/core'
+import { UploadImage } from './UploadImage'
+import { UploadBook } from './UploadBook'
 
 const getStepContent = (step: number) => {
   switch (step) {
     case 0:
       return <BookInfo />
     case 1:
-      return <AdminForm />
+      return <UploadImage />
     case 2:
-      return <UserForm />
+      return <UploadBook />
     default:
       return <BookInfo />
   }
@@ -26,14 +27,14 @@ const getStepContent = (step: number) => {
 export const Loader: VFC = () => {
   const classes = loaderStyles()
   const [ activeStep, setActiveStep ] = useState(0)
-  const [ skipped, setIsSkipped ] = useState(new Set<number>())
   const steps: string[] = [ 'Add book information', 'Upload book image', 'Upload book file' ]
 
   const handleBack = useCallback(() => {
     setActiveStep(activeStep - 1 || 0)
   }, [ activeStep ])
 
-  const handleNext = useCallback(() =>{
+  const handleNext = useCallback(() => {
+    // send request
     setActiveStep(activeStep + 1)
   }, [ activeStep ])
 
@@ -41,17 +42,19 @@ export const Loader: VFC = () => {
     setActiveStep(0)
   }, [ activeStep ])
 
+  const handleSkip = useCallback(() => {
+    setActiveStep(activeStep + 1)
+  }, [ activeStep ])
+
   return (
     <div className={classes.root}>
       <div>
         <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label, index) => {
-            return (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            )
-          })}
+          {steps.map(label => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
         </Stepper>
       </div>
       <div>
@@ -62,18 +65,36 @@ export const Loader: VFC = () => {
           </>
         ) : (
           <>
+            <Typography className={classes.title} variant='h4'>{steps[activeStep]}</Typography>
             {getStepContent(activeStep)}
+            <Divider className={classes.divider} />
             <div>
-              <Button color='primary' variant='contained' disabled={activeStep === 0} onClick={handleBack}>
+              <Button
+                color='primary'
+                variant='contained'
+                className={classes.stepperButton}
+                disabled={activeStep === 0}
+                onClick={handleBack}
+              >
                 Back
               </Button>
               {
                 activeStep === 1 &&
-                <Button color='primary' variant='contained'>
+                <Button
+                  color='primary'
+                  variant='contained'
+                  className={classes.stepperButton}
+                  onClick={handleSkip}
+                >
                   Skip
                 </Button>
               }
-              <Button color='primary' variant='contained' onClick={handleNext}>
+              <Button
+                color='primary'
+                variant='contained'
+                className={classes.stepperButton}
+                onClick={handleNext}
+              >
                 {activeStep === steps.length - 1 ? 'send book' : 'next'}
               </Button>
             </div>

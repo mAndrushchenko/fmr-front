@@ -11,7 +11,6 @@ import {
   TPasswordRecoveryReq
 } from 'src/types/api'
 
-
 export const signinReq: TSigninReq = ({ token }) => ({
   url: '/signin',
   method: 'POST',
@@ -80,4 +79,3 @@ export const getReaderBookReq: TGetBookReq = ({
   method: 'GET',
   token
 })
-

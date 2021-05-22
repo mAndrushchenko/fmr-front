@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { genres } from 'src/shared/constant/genres'
 import { styles } from './styles'
 
-export const Genres: VFC<{value: string, setValue: (e: ChangeEvent<{ value: unknown }>) => void}> = ({ value, setValue }) => {
+export const Genres: VFC<{ value: string, setValue: (e: ChangeEvent<{ value: unknown }>) => void }> = ({ value, setValue }) => {
   const classes = styles()
 
   return (
@@ -22,7 +22,7 @@ export const Genres: VFC<{value: string, setValue: (e: ChangeEvent<{ value: unkn
         className={classes.selectValue}
       >
         {genres.map(genre => (
-          <MenuItem className={classes.genreText} value={genre}>{genre}</MenuItem>
+          <MenuItem key={genre} className={classes.genreText} value={genre}>{genre}</MenuItem>
         ))}
       </Select>
     </FormControl>

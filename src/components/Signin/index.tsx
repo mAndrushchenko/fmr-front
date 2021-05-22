@@ -17,7 +17,6 @@ import { signinUserAction, userSelector } from 'src/store/slices/userSlice'
 import { spinnerSelector, startSpin } from 'src/store/slices/spinnerSlice'
 import { TAppDispatch } from 'src/types/store'
 
-
 import { styles } from './styles'
 
 export const Signin: VFC = () => {

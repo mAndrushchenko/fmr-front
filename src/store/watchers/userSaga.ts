@@ -65,7 +65,6 @@ function* checkStatus({ response, action, actionPayload, errorAction }: any) {
 }
 
 function* signinWorker(action: PayloadAction<TToken>) {
-
   try {
     const response: TUserDataRes = yield makeUserRequest({
       payload: action.payload, serverAction: signinReq
