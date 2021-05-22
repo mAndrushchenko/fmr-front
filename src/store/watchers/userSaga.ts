@@ -32,7 +32,7 @@ import {
   setUserDataAction,
   addToBasketAction,
   delFromBasketAction,
-  passwordRecoveryAction
+  passwordRecoveryAction, delUserData
 } from '../slices/userSlice'
 
 import { stopSpin } from '../slices/spinnerSlice'
@@ -44,24 +44,24 @@ function* makeUserRequest({ payload, serverAction }:
   return response
 }
 
-function* checkStatus({ response, action, actionPayload }: any) {
+function* checkStatus({ response, action, actionPayload, errorAction }: any) {
   const { data, message, status } = response
   if (status && data) {
     // make some operations with response data
     yield put(action(data))
-    console.log(message) // Just for now. Next use Material notification
+    yield put(stopSpin({ message, error: false }))
   } else if (status && actionPayload) {
     // make some operations with action payload data
     yield put(action(actionPayload))
-    console.log(message) // Just for now. Next use Material notification
+    yield put(stopSpin({ message, error: false }))
   } else if (status) {
-    console.log(message) // Just for now. Next use Material notification
+    yield put(stopSpin({ message, error: false }))
+  } else if (!status && errorAction) {
+    yield put(errorAction())
+    yield put(stopSpin({ message, error: true }))
   } else {
-    // here might be something like put(onError(message))
-    console.error(message) // Just for now. Next use Material notification
+    yield put(stopSpin({ message, error: true }))
   }
-
-  yield put(stopSpin())
 }
 
 function* signinWorker(action: PayloadAction<TToken>) {
@@ -74,8 +74,8 @@ function* signinWorker(action: PayloadAction<TToken>) {
     yield checkStatus({
       response, action: setUserData
     })
-  } catch (e) {
-    console.error(e.message) // Just for now. Next use Material notification
+  } catch ({ message }) {
+    yield put(stopSpin({ message, error: true }))
   }
 }
 
@@ -86,10 +86,10 @@ function* getUserDataWorker(action: PayloadAction<TToken>) {
     })
 
     yield checkStatus({
-      response, action: setUserData
+      response, action: setUserData, errorAction: delUserData
     })
-  } catch (e) {
-    console.error(e.message) // Just for now. Next use Material notification
+  } catch ({ message }) {
+    yield put(stopSpin({ message, error: true }))
   }
 }
 
@@ -102,8 +102,8 @@ function* signupUserWorker(action: PayloadAction<TToken>) {
     yield checkStatus({
       response
     })
-  } catch (e) {
-    console.error(e.message) // Just for now. Next use Material notification
+  } catch ({ message }) {
+    yield put(stopSpin({ message, error: true }))
   }
 }
 
@@ -114,8 +114,8 @@ function* passwordRecoveryWorker(action: PayloadAction<TToken>) {
     })
 
     yield checkStatus({ response })
-  } catch (e) {
-    console.error(e.message) // Just for now. Next use Material notification
+  } catch ({ message }) {
+    yield put(stopSpin({ message, error: true }))
   }
 }
 
@@ -129,8 +129,8 @@ function* addToBasketWorker(action: PayloadAction<TBookWithToken>) {
     yield checkStatus({
       response, action: addToBasket, actionPayload: book
     })
-  } catch (e) {
-    console.error(e.message) // Just for now. Next use Material notification
+  } catch ({ message }) {
+    yield put(stopSpin({ message, error: true }))
   }
 }
 
@@ -144,8 +144,8 @@ function* delFromBasketWorker(action: PayloadAction<TBookWithToken>) {
     yield checkStatus({
       response, action: delFromBasket, actionPayload: book
     })
-  } catch (e) {
-    console.error(e.message) // Just for now. Next use Material notification
+  } catch ({ message }) {
+    yield put(stopSpin({ message, error: true }))
   }
 }
 
@@ -158,8 +158,8 @@ function* uploadBookWorker(action: PayloadAction<TUploadBook>) {
     yield checkStatus({
       response, action: uploadBook
     })
-  } catch (e) {
-    console.error(e.message) // Just for now. Next use Material notification
+  } catch ({ message }) {
+    yield put(stopSpin({ message, error: true }))
   }
 }
 
@@ -173,8 +173,8 @@ function* buyBooksWorker(action: PayloadAction<TBuyBooks>) {
     yield checkStatus({
       response, action: buyBooks, actionPayload: basket
     })
-  } catch (e) {
-    console.error(e.message) // Just for now. Next use Material notification
+  } catch ({ message }) {
+    yield put(stopSpin({ message, error: true }))
   }
 }
 

@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback } from 'react'
+import React, { VFC, useState, useCallback } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { sign } from 'jsonwebtoken'
 
@@ -7,8 +7,7 @@ import {
   Checkbox,
   TextField,
   Typography,
-  FormControlLabel,
-  CircularProgress
+  FormControlLabel
 } from '@material-ui/core'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -25,8 +24,7 @@ export const Signin: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
   const { token } = useSelector(userSelector)
-  const { spin } = useSelector(spinnerSelector)
-
+  const { spin, error: err } = useSelector(spinnerSelector)
   const [ form, setForm ] = useState({
     email: '',
     password: ''
@@ -58,7 +56,7 @@ export const Signin: VFC = () => {
       email: (e.target.checked ||
         emailRegexp.test(form.email)) ? '' : emailError
     })
-  }, [ form ])
+  }, [ form, error ])
 
   const submitHandler = useCallback(e => {
     e.preventDefault()
@@ -134,7 +132,7 @@ export const Signin: VFC = () => {
         />
 
         <Link
-          to='/reset-password'
+          to='/password-recovery'
           className={classes.link}
         >
           Forgot password?
@@ -148,8 +146,7 @@ export const Signin: VFC = () => {
         >
           Login
         </Button>
-        {token && <Redirect to='/' />}
-        {spin && <div className={classes.spinner}><CircularProgress /></div>}
+        {token && !err && <Redirect to='/' />}
       </form>
     </div>
   )

@@ -1,5 +1,5 @@
+import React, { useCallback, VFC, MouseEvent } from 'react'
 import { styled, Slider } from '@material-ui/core'
-import { useCallback, VFC, MouseEvent } from 'react'
 
 interface ControlItemProps {
   name: string

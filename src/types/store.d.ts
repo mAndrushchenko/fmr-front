@@ -57,7 +57,7 @@ export type TShopFilters = {
   price: number[] | null
   genre: string | null
   searchPhrase: string | null
-  author: string | null
+  author: string | null,
 }
 
 export type TBookPage = string[]
@@ -88,12 +88,21 @@ export type TFirstLoadBooksLists = {
   random: TBook[]
 }
 
+export type TShopBook = TUploadBook & TId & {
+  image: string
+}
+
 export type TShop = {
-  books: TBook[]
+  books: TShopBook[]
   filters: TShopFilters
   lastReqType: string | null
 }
 
-export type TSpinner = {
+export type TSpinnerPayload = {
+  error: boolean,
+  message: string | null
+}
+
+export type TSpinner = TSpinnerPayload &{
   spin: boolean
 }

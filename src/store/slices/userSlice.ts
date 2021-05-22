@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { setTokenToCookie } from 'src/hooks/useAuth'
 import {
   TBook,
   TReducer,
   TToken,
-  TUserData,
-  TUserEmail
+  TUserData
 } from 'src/types/store'
 import {
   TBuyBooks,
@@ -30,7 +30,7 @@ export const userSlice = createSlice({
 
     signupUserAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
-    passwordRecoveryAction: (state, { type }: PayloadAction<TUserEmail>) => void (state.lastReqType = type),
+    passwordRecoveryAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
     setUserDataAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
@@ -38,13 +38,18 @@ export const userSlice = createSlice({
 
     delFromBasketAction: (state, { type }: PayloadAction<TBookWithToken>) => void (state.lastReqType = type),
 
+    setUserToken: (state, { payload }: PayloadAction<TToken>) => ({ ...state, ...payload }),
+
     uploadBookAction: (state, { type }: PayloadAction<TUploadBook>) => void (state.lastReqType = type),
 
     buyBooksAction: (state, { type }: PayloadAction<TBuyBooks>) => void (state.lastReqType = type),
 
-    setUserData: (state, { payload }: PayloadAction<TUserData>) => payload,
+    setUserData: (state, { payload }: PayloadAction<TUserData>) => ({ ...state, ...payload }),
 
-    delUserData: () => initialState,
+    delUserData: () => {
+      setTokenToCookie()
+      return initialState
+    },
 
     addToBasket: (state, { payload }: PayloadAction<TBook>) => {
       state.basket = [ ...state.basket, payload ]
@@ -70,6 +75,7 @@ export const {
   addToBasket,
   setUserData,
   delUserData,
+  setUserToken,
   delFromBasket,
   buyBooksAction,
   signinUserAction,

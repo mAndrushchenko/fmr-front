@@ -1,4 +1,4 @@
-import { useCallback, useState, VFC, MouseEvent } from 'react'
+import React, { useCallback, useState, VFC, MouseEvent } from 'react'
 import { styled } from '@material-ui/core'
 import { Visualizer } from './Visualizer'
 import { Controls } from './Controls'

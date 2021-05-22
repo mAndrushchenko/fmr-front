@@ -1,10 +1,5 @@
 import { VFC, useState, useCallback } from 'react'
 import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import InputLabel from '@material-ui/core/InputLabel'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 
@@ -15,7 +10,7 @@ import { uploadBookAction, userSelector } from '../../store/slices/userSlice'
 import { bookNameRegexp } from '../../shared/constant/regExp'
 import { nameBookError, uploadBookError } from '../../shared/constant/errorMasseges'
 
-import { styles } from './styles'
+import { Genres } from '../Genres'
 
 const initialBookState: TUsersBookLoader = {
   bookInfo: {
@@ -28,7 +23,6 @@ const initialBookState: TUsersBookLoader = {
 }
 
 export const UserForm: VFC = () => {
-  const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
   const { token } = useSelector(userSelector)
   const [ form, setForm ] = useState<TUsersBookLoader>(initialBookState)
@@ -45,12 +39,6 @@ export const UserForm: VFC = () => {
     })
   }, [ form ])
 
-  const imageHandler = useCallback(e => {
-    const bookData = new FormData()
-    bookData.append('image', e.target.files[0])
-    setForm({ ...form, bookData })
-  }, [ form ])
-
   const genreChangeHandler = useCallback(e => {
     setForm({
       ...form,
@@ -58,11 +46,6 @@ export const UserForm: VFC = () => {
         ...form.bookInfo, genre: e.target.value
       }
     })
-  }, [ form ])
-
-  const bookHandler = useCallback(e => {
-    form.bookData.append('book', e.target.files[0])
-    setForm({ ...form })
   }, [ form ])
 
   const closeHandler = useCallback(() => {
@@ -105,37 +88,7 @@ export const UserForm: VFC = () => {
           fullWidth
           required
         />
-        <FormControl
-          variant='outlined'
-          margin='normal'
-          className={classes.select}
-          required
-        >
-          <InputLabel id='genre-label'>Genre</InputLabel>
-          <Select
-            labelId='genre-label'
-            id='genre'
-            label='Genre'
-            value={form.bookInfo.genre}
-            onChange={genreChangeHandler}
-            fullWidth
-          >
-            <MenuItem value='Detective'>Detective</MenuItem>
-            <MenuItem value='Fantastic'>Fantastic</MenuItem>
-            <MenuItem value='Psychology'>Psychology</MenuItem>
-            <MenuItem value='Roman'>Roman</MenuItem>
-            <MenuItem value='Fantasy'>Fantasy</MenuItem>
-            <MenuItem value='Business'>Business</MenuItem>
-            <MenuItem value='Autobiography'>Autobiography</MenuItem>
-            <MenuItem value='Thrillers'>Thrillers</MenuItem>
-            <MenuItem value='Horror'>Horror</MenuItem>
-            <MenuItem value='Poem'>Poem</MenuItem>
-            <MenuItem value='Comics'>Comics</MenuItem>
-            <MenuItem value='Memoirs'>Memoirs</MenuItem>
-            <MenuItem value='History'>History</MenuItem>
-
-          </Select>
-        </FormControl>
+        <Genres value={form.bookInfo.genre} setValue={genreChangeHandler} />
         <TextField
           id='description'
           variant='outlined'
@@ -146,55 +99,6 @@ export const UserForm: VFC = () => {
           fullWidth
           required
         />
-        <div>
-          <TextField
-            type='file'
-            id='image'
-            inputProps={{
-              accept: '.jpg, .jpeg, .png'
-            }}
-            className={classes.fileUpload}
-            onChange={imageHandler}
-          />
-          <label htmlFor='image'>
-            <Button
-              component='span'
-              color='primary'
-              variant='outlined'
-              className={classes.button}
-            >
-              Upload image
-            </Button>
-          </label>
-
-          <TextField
-            type='file'
-            id='bookFile'
-            inputProps={{
-              accept: '.txt, .epub, .fb2, .doc, .docx, .odt'
-            }}
-            className={classes.fileUpload}
-            onChange={bookHandler}
-          />
-          <label htmlFor='bookFile'>
-            <Button
-              component='span'
-              color='primary'
-              variant='outlined'
-              className={classes.button}
-            >
-              Upload book
-            </Button>
-          </label>
-        </div>
-        <Button
-          type='submit'
-          variant='outlined'
-          color='primary'
-          className={classes.submit}
-        >
-          Add book
-        </Button>
       </form>
       <Snackbar
         anchorOrigin={{

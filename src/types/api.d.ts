@@ -4,7 +4,7 @@ import {
   TToken,
   TUserData,
   TReaderBook,
-  TShopFilters
+  TShopFilters, TShopBook
 } from 'src/types/store'
 import {
   TBuyBooks,
@@ -52,7 +52,7 @@ export type TBookRes = TResInformation & {
 }
 
 export type TBooksRes = TResInformation & {
-  data: TBook[]
+  data: TShopBook[]
 }
 
 export type TReaderRes = TResInformation & {

@@ -1,5 +1,5 @@
-import { VFC, useState, useCallback, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { VFC, useState, useCallback } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
@@ -14,31 +14,20 @@ import Brightness4Icon from '@material-ui/icons/Brightness4'
 import { Typography } from '@material-ui/core'
 
 import logo from '../../assets/img/logo/dark.png'
-import { MobileMenu } from './MobileMenu/MobileMenu'
-import { DesktopMenu } from './DesktopMenu/DesktopMenu'
+import { MobileMenu } from './MobileMenu'
+import { DesktopMenu } from './DesktopMenu'
 
 import { styles } from './styles'
-import { setUserDataAction, userSelector } from '../../store/slices/userSlice'
-import { useAuth } from '../../hooks/useAuth'
-import { TAppDispatch } from '../../types/store'
+import { userSelector } from '../../store/slices/userSlice'
 
 export const Header: VFC = () => {
   const classes = styles()
-  const dispatch = useDispatch<TAppDispatch>()
   const user = useSelector(userSelector)
-  const { savedToken, isTokenExist } = useAuth()
 
   const [ search, setSearch ] = useState('')
   const [ open, setOpen ] = useState(false)
   const [ isDark, setIsDark ] = useState(true)
   const [ searchField, setSearchField ] = useState(false)
-
-  useEffect(() => {
-    isTokenExist()
-    if (savedToken && !user.token) {
-      dispatch(setUserDataAction({ token: savedToken }))
-    }
-  }, [ savedToken, user ])
 
   const toggleSearch = useCallback(() => {
     setSearchField(prevState => !prevState)
@@ -73,13 +62,13 @@ export const Header: VFC = () => {
     <>
       <AppBar>
         <Toolbar className={classes.root}>
-          <Link
-            className={classes.label}
-            to='/'
-          >
-            <img src={logo} className={classes.image} alt='logo' />
-          </Link>
           <div className={classes.linkGroup}>
+            <Link
+              className={classes.label}
+              to='/'
+            >
+              <img src={logo} className={classes.image} alt='logo' />
+            </Link>
             {user.name &&
             <Typography
               className={searchField ? classes.userName : classes.userNameActive}
@@ -87,8 +76,8 @@ export const Header: VFC = () => {
             >
               {user.name}
             </Typography>}
-            <DesktopMenu />
           </div>
+          <DesktopMenu />
           <div className={classes.buttonGroup}>
             <div
               className={searchField ? classes.searchActive : classes.search}

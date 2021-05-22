@@ -1,22 +1,16 @@
 import { VFC, useState, useCallback } from 'react'
 import TextField from '@material-ui/core/TextField'
-import Select from '@material-ui/core/Select'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import Button from '@material-ui/core/Button'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 
 import { TAdminBookLoader } from 'src/types/bookLoader'
-import { Divider } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from '../../types/store'
 import { uploadBookAction, userSelector } from '../../store/slices/userSlice'
 import { bookNameRegexp } from '../../shared/constant/regExp'
 
-import { styles } from './styles'
 import { keywordsError, nameBookError, uploadBookError } from '../../shared/constant/errorMasseges'
+import { Genres } from '../Genres'
 
 const initialBookState: TAdminBookLoader = {
   bookInfo: {
@@ -32,7 +26,6 @@ const initialBookState: TAdminBookLoader = {
 }
 
 export const AdminForm: VFC = () => {
-  const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
   const { token } = useSelector(userSelector)
 
@@ -63,17 +56,6 @@ export const AdminForm: VFC = () => {
         genre: e.target.value
       }
     })
-  }, [ form ])
-
-  const imageHandler = useCallback(async e => {
-    const bookData = new FormData()
-    await bookData.append('image', e.target.files[0])
-    setForm({ ...form, bookData })
-  }, [ form ])
-
-  const bookHandler = useCallback(async e => {
-    form.bookData.append('book', e.target.files[0])
-    setForm({ ...form })
   }, [ form ])
 
   const closeHandler = useCallback(() => {
@@ -127,30 +109,7 @@ export const AdminForm: VFC = () => {
           fullWidth
           required
         />
-        <FormControl variant='outlined' fullWidth margin='normal' required>
-          <InputLabel id='genre-label'>Genre</InputLabel>
-          <Select
-            labelId='genre-label'
-            label='Genre'
-            id='genre'
-            value={form.bookInfo.genre}
-            onChange={genreChangeHandler}
-          >
-            <MenuItem value='Detective'>Detective</MenuItem>
-            <MenuItem value='Fantastic'>Fantastic</MenuItem>
-            <MenuItem value='Psychology'>Psychology</MenuItem>
-            <MenuItem value='Roman'>Roman</MenuItem>
-            <MenuItem value='Fantasy'>Fantasy</MenuItem>
-            <MenuItem value='Business'>Business</MenuItem>
-            <MenuItem value='Autobiography'>Autobiography</MenuItem>
-            <MenuItem value='Thrillers'>Thrillers</MenuItem>
-            <MenuItem value='Horror'>Horror</MenuItem>
-            <MenuItem value='Poem'>Poem</MenuItem>
-            <MenuItem value='Comics'>Comics</MenuItem>
-            <MenuItem value='Memoirs'>Memoirs</MenuItem>
-            <MenuItem value='History'>History</MenuItem>
-          </Select>
-        </FormControl>
+        <Genres value={form.bookInfo.genre} setValue={genreChangeHandler} />
         <TextField
           id='description'
           variant='outlined'
@@ -161,25 +120,6 @@ export const AdminForm: VFC = () => {
           fullWidth
           required
         />
-        <TextField
-          type='file'
-          id='image'
-          inputProps={{
-            accept: '.jpg, .jpeg, .png'
-          }}
-          className={classes.fileUpload}
-          onChange={imageHandler}
-        />
-        <label htmlFor='image'>
-          <Button
-            component='span'
-            color='primary'
-            variant='outlined'
-            className={classes.button}
-          >
-            Upload image
-          </Button>
-        </label>
         <TextField
           id='keywords'
           variant='outlined'
@@ -212,37 +152,6 @@ export const AdminForm: VFC = () => {
           fullWidth
           required
         />
-
-        <TextField
-          type='file'
-          id='bookFile'
-          inputProps={{
-            accept: '.txt, .epub, .fb2, .doc, .docx, .odt'
-          }}
-          className={classes.fileUpload}
-          onChange={bookHandler}
-        />
-        <label htmlFor='bookFile'>
-          <Button
-            component='span'
-            color='primary'
-            variant='outlined'
-            className={classes.button}
-          >
-            Upload book
-          </Button>
-        </label>
-
-        <Divider className={classes.divider} />
-
-        <Button
-          color='primary'
-          variant='outlined'
-          type='submit'
-          className={classes.submit}
-        >
-          Add book
-        </Button>
       </form>
 
       <Snackbar

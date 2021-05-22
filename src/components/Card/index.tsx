@@ -1,10 +1,10 @@
 import { VFC } from 'react'
 
-import { TBook } from 'src/types/store'
+import { TShopBook } from 'src/types/store'
 
 import { styles } from './styles'
 
-export const Card: VFC<{ book: TBook }> = ({ book }) => {
+export const Card: VFC<{ book: TShopBook }> = ({ book }) => {
   const classes = styles()
 
   return (

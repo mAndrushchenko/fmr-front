@@ -15,7 +15,8 @@ export const BookInfo: VFC = () => {
       <Typography variant='h4'>
         Upload your book
       </Typography>
-      {token && (isAdmin ? <AdminForm /> : <UserForm />)}
+      <AdminForm />
+      {/* {token && (isAdmin ? <AdminForm /> : <UserForm />)} */}
     </div>
   )
 }
