@@ -8,31 +8,31 @@ import {
   signupReq,
   getUserReq,
   buyBookReq,
-  uploadBookReq,
   addToBasketReq,
   delFromBasketReq,
-  passwordRecoveryReq
+  passwordRecoveryReq, uploadBookImageReq, uploadBookDataReq, uploadBookInfoReq
 } from 'src/api/server-actions'
 import {
   TBuyBooks,
-  TUploadBook,
   TBookWithToken,
-  TUserActionPayload
+  TUserActionPayload, TUploadInfo, TUploadData, TUploadImage
 } from 'src/types/payloadActions'
 import {
   buyBooks,
-  uploadBook,
   addToBasket,
   setUserData,
+  delUserData,
   delFromBasket,
   buyBooksAction,
-  uploadBookAction,
   signinUserAction,
   signupUserAction,
   setUserDataAction,
   addToBasketAction,
   delFromBasketAction,
-  passwordRecoveryAction, delUserData
+  passwordRecoveryAction,
+  uploadBookInfoAction,
+  uploadBookDataAction,
+  uploadBookImageAction
 } from '../slices/userSlice'
 import { stopSpin } from '../slices/spinnerSlice'
 
@@ -147,15 +147,37 @@ function* delFromBasketWorker(action: PayloadAction<TBookWithToken>) {
   }
 }
 
-function* uploadBookWorker(action: PayloadAction<TUploadBook>) {
+function* uploadBookInfoWorker(action: PayloadAction<TUploadInfo>) {
   try {
-    const response: TBookRes = yield makeUserRequest({
-      serverAction: uploadBookReq, payload: action.payload
+    const response: TEmptyRes = yield makeUserRequest({
+      serverAction: uploadBookInfoReq, payload: action.payload
     })
 
-    yield checkStatus({
-      response, action: uploadBook
+    yield checkStatus({ response })
+  } catch ({ message }) {
+    yield put(stopSpin({ message, error: true }))
+  }
+}
+
+function* uploadBookDataWorker(action: PayloadAction<TUploadData>) {
+  try {
+    const response: TEmptyRes = yield makeUserRequest({
+      serverAction: uploadBookDataReq, payload: action.payload
     })
+
+    yield checkStatus({ response })
+  } catch ({ message }) {
+    yield put(stopSpin({ message, error: true }))
+  }
+}
+
+function* uploadBookImageWorker(action: PayloadAction<TUploadImage>) {
+  try {
+    const response: TEmptyRes = yield makeUserRequest({
+      serverAction: uploadBookImageReq, payload: action.payload
+    })
+
+    yield checkStatus({ response })
   } catch ({ message }) {
     yield put(stopSpin({ message, error: true }))
   }
@@ -180,7 +202,9 @@ export function* userSaga() {
   yield takeEvery(signinUserAction.type, signinWorker)
   yield takeEvery(buyBooksAction.type, buyBooksWorker)
   yield takeEvery(signupUserAction.type, signupUserWorker)
-  yield takeEvery(uploadBookAction.type, uploadBookWorker)
+  yield takeEvery(uploadBookInfoAction.type, uploadBookInfoWorker)
+  yield takeEvery(uploadBookDataAction.type, uploadBookDataWorker)
+  yield takeEvery(uploadBookImageAction.type, uploadBookImageWorker)
   yield takeEvery(addToBasketAction.type, addToBasketWorker)
   yield takeEvery(setUserDataAction.type, getUserDataWorker)
   yield takeEvery(delFromBasketAction.type, delFromBasketWorker)

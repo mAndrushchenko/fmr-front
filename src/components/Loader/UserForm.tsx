@@ -8,16 +8,15 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 
-import { TUsersBookLoader } from 'src/types/bookLoader'
 import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from '../../types/store'
-import { uploadBookAction, userSelector } from '../../store/slices/userSlice'
+import { userSelector } from '../../store/slices/userSlice'
 import { bookNameRegexp } from '../../shared/constant/regExp'
 import { nameBookError, uploadBookError } from '../../shared/constant/errorMasseges'
 
 import { styles } from './styles'
 
-const initialBookState: TUsersBookLoader = {
+const initialBookState = {
   bookInfo: {
     name: '',
     author: '',
@@ -31,7 +30,7 @@ export const UserForm: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
   const { token } = useSelector(userSelector)
-  const [ form, setForm ] = useState<TUsersBookLoader>(initialBookState)
+  const [ form, setForm ] = useState(initialBookState)
 
   const [ error, setError ] = useState('')
 
@@ -78,7 +77,7 @@ export const UserForm: VFC = () => {
     if (!bookNameRegexp.test(form.bookInfo.name.trim())) {
       return setError(nameBookError)
     }
-    dispatch(uploadBookAction({ token, book: form }))
+    // dispatch(uploadBookAction({ token, book: form }))
     return setForm(initialBookState)
   }, [ form ])
 

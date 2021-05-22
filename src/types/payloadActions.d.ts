@@ -1,5 +1,5 @@
 import { TToken, TBook, TId, TReaderCacheSize, TReaderSelectedPage, TUserEmail } from './store'
-import { TAdminBookLoader, TUsersBookLoader } from './bookLoader'
+import { TAdminBookLoader, TBookDataLoader, TBookImageLoader, TBookInfoLoader, TUsersBookLoader } from './bookLoader'
 
 export type TBookWithToken = TToken & {
   book: TBook
@@ -12,6 +12,12 @@ export type TGetReaderBook = TBookWithToken & TReaderCacheSize & TReaderSelected
 export type TUploadBook = TToken & {
   book: TUsersBookLoader | TAdminBookLoader
 }
+
+export type TUploadInfo = TToken & {bookInfo: TBookInfoLoader}
+
+export type TUploadData = TToken & {bookData: TBookDataLoader}
+
+export type TUploadImage = TToken & {bookImage: TBookImageLoader}
 
 export type TBuyBooks = TToken & {
   basket: TBook[]
