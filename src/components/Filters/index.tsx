@@ -28,6 +28,7 @@ export const Filters: VFC = () => {
   })
 
   useEffect(() => {
+// console for develop
     console.log('send request')
   }, [ useDebounce(filters, 1000) ])
 

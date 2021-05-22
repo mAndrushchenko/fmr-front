@@ -18,9 +18,6 @@ import { Signin } from '../Signin'
 import { Signup } from '../Signup'
 import { PasswordRecovery } from '../Signin/PasswordRecovery'
 import { styles } from './styles'
-import { setUserDataAction, setUserToken, userSelector } from '../../store/slices/userSlice'
-import { TAppDispatch } from '../../types/store'
-import { useAuth } from '../../hooks/useAuth'
 import { Library } from '../Library'
 
 export const Main: VFC = () => {
