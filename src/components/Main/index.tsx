@@ -13,6 +13,7 @@ import { styles } from './styles'
 import { setUserDataAction, setUserToken, userSelector } from '../../store/slices/userSlice'
 import { TAppDispatch } from '../../types/store'
 import { useAuth } from '../../hooks/useAuth'
+import { Library } from '../Library'
 
 export const Main: VFC = () => {
   const { spin } = useSelector(spinnerSelector)
@@ -46,6 +47,9 @@ export const Main: VFC = () => {
           </Route>
           <Route path='/online-reader'>
             <Reader />
+          </Route>
+          <Route path='/library'>
+            <Library />
           </Route>
           <Route path='/password-recovery'>
             <PasswordRecovery />

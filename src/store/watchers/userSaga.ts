@@ -32,7 +32,7 @@ import {
   setUserDataAction,
   addToBasketAction,
   delFromBasketAction,
-  passwordRecoveryAction
+  passwordRecoveryAction, delUserData
 } from '../slices/userSlice'
 import { stopSpin } from '../slices/spinnerSlice'
 
@@ -43,7 +43,7 @@ function* makeUserRequest({ payload, serverAction }:
   return response
 }
 
-function* checkStatus({ response, action, actionPayload }: any) {
+function* checkStatus({ response, action, actionPayload, errorAction }: any) {
   const { data, message, status } = response
   if (status && data) {
     // make some operations with response data
@@ -55,6 +55,9 @@ function* checkStatus({ response, action, actionPayload }: any) {
     yield put(stopSpin({ message, error: false }))
   } else if (status) {
     yield put(stopSpin({ message, error: false }))
+  } else if (!status && errorAction) {
+    yield put(errorAction())
+    yield put(stopSpin({ message, error: true }))
   } else {
     yield put(stopSpin({ message, error: true }))
   }
@@ -81,7 +84,7 @@ function* getUserDataWorker(action: PayloadAction<TToken>) {
     })
 
     yield checkStatus({
-      response, action: setUserData
+      response, action: setUserData, errorAction: delUserData
     })
   } catch ({ message }) {
     yield put(stopSpin({ message, error: true }))

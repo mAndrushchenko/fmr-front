@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { setTokenToCookie } from 'src/hooks/useAuth'
 import {
   TBook,
   TReducer,
@@ -45,7 +46,10 @@ export const userSlice = createSlice({
 
     setUserData: (state, { payload }: PayloadAction<TUserData>) => ({ ...state, ...payload }),
 
-    delUserData: () => initialState,
+    delUserData: () => {
+      setTokenToCookie()
+      return initialState
+    },
 
     addToBasket: (state, { payload }: PayloadAction<TBook>) => {
       state.basket = [ ...state.basket, payload ]
