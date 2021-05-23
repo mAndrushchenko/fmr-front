@@ -1,18 +1,22 @@
 import { useCallback, VFC } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import { TBookImageLoader } from 'src/types/bookLoader'
 
 import { uploadStyles } from './styles'
 
-export const UploadImage: VFC = () => {
+interface IBookImage {
+  handleBookImage: (image: TBookImageLoader) => void
+}
+
+export const UploadImage: VFC<IBookImage> = ({ handleBookImage }) => {
   const classes = uploadStyles()
 
-  const bookImage = new FormData()
-
   const changeHandler = useCallback(e => {
+    const bookImage = new FormData()
     bookImage.set('image', e.target.files[0])
-    console.log(bookImage.get('image'))
-  }, [ bookImage ])
+    handleBookImage(bookImage)
+  }, [])
 
   return (
     <>

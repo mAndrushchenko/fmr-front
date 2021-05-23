@@ -162,6 +162,7 @@ function* uploadBookInfoWorker(action: PayloadAction<TUploadInfo>) {
 
 function* uploadBookDataWorker(action: PayloadAction<TUploadData>) {
   try {
+    console.log(action.payload)
     const response: TEmptyRes = yield makeUserRequest({
       serverAction: uploadBookDataReq, payload: action.payload
     })
@@ -174,6 +175,7 @@ function* uploadBookDataWorker(action: PayloadAction<TUploadData>) {
 
 function* uploadBookImageWorker(action: PayloadAction<TUploadImage>) {
   try {
+    console.log(action.payload)
     const response: TEmptyRes = yield makeUserRequest({
       serverAction: uploadBookImageReq, payload: action.payload
     })

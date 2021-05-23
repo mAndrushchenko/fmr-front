@@ -3,16 +3,20 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 
 import { uploadStyles } from './styles'
+import { TBookDataLoader } from 'src/types/bookLoader'
 
-export const UploadBook: VFC = () => {
+interface IBookData {
+  handleBookData: (data: TBookDataLoader) => void
+}
+
+export const UploadBook: VFC<IBookData> = ({ handleBookData }) => {
   const classes = uploadStyles()
 
-  const bookFile = new FormData()
-
   const changeHandler = useCallback(e => {
-    bookFile.set('book', e.target.files[0])
-    console.log(bookFile.get('book'))
-  }, [ bookFile ])
+    const bookData = new FormData()
+    bookData.set('book', e.target.files[0])
+    handleBookData(bookData)
+  }, [])
 
   return (
     <>
