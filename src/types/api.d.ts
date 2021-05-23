@@ -4,13 +4,13 @@ import {
   TToken,
   TUserData,
   TReaderBook,
-  TShopFilters
+  TShopFilters, TShopBook
 } from 'src/types/store'
 import {
   TBuyBooks,
   TUploadBook,
   TGetReaderBook,
-  TBookWithToken
+  TBookPayload
 } from './payloadActions'
 
 // request types
@@ -52,7 +52,7 @@ export type TBookRes = TResInformation & {
 }
 
 export type TBooksRes = TResInformation & {
-  data: TBook[]
+  data: TShopBook[]
 }
 
 export type TReaderRes = TResInformation & {
@@ -65,33 +65,33 @@ export type TResponse = TUserDataRes | TEmptyRes | TBookRes | TBooksRes | TReade
 // user
 export type TSigninReq = ({ token }: TToken) => (TToken & TPost & { url: '/signin' })
 
-export type TSignupReq = ({ token }: TToken) => (TToken & TPost & { url: '/signup' })
+export type TSignupReq = () => (TPost & { url: '/signup' })
 
-export type TGetUserReq = ({ token }: TToken) => (TToken & TGet & { url: '/user' })
+export type TGetUserReq = () => (TGet & { url: '/user' })
 
 export type TPasswordRecoveryReq = ({ token }: TToken) => (TToken & TPost & { url: '/password-recovery' })
 
-export type TAddToBasketReq = ({ token, book }: TBookWithToken) => (TToken & TPost & {
+export type TAddToBasketReq = ({ book }: TBookPayload) => (TPost & {
   url: 'user/basket/add',
   body: TBook,
 })
 
-export type TDelFromBasketReq = ({ token, book }: TBookWithToken) => (TToken & TDelete & {
+export type TDelFromBasketReq = ({ book }: TBookPayload) => (TDelete & {
   url: 'user/basket/delete',
   body: TBook,
 })
 
-export type TUploadBookReq = ({ token, book }: TUploadBook) => (TToken & TPut & {
+export type TUploadBookReq = ({ book }: TUploadBook) => (TPut & {
   url: 'user/upload',
   fd: TUsersBookLoader | TAdminBookLoader,
 })
 
-export type TBuyBookReq = ({ token, basket }: TBuyBooks) => (TToken & TPost & {
+export type TBuyBookReq = ({ basket }: TBuyBooks) => (TPost & {
   url: 'user/buy',
   body: TBook[],
 })
 
-export type TUserServerActions = TSigninReq |
+export type TUserServerActions = TSigninReq | TSignupReq |
   TBuyBookReq | TGetUserReq | TUploadBookReq |
   TAddToBasketReq | TDelFromBasketReq |
   TPasswordRecoveryReq
@@ -106,8 +106,10 @@ export type TGetShopBooks = (filters: TShopFilters) => ({
 
 // reader
 
-export type TGetBookReq = ({ token, cacheSize, selectedPage, id
-} : TGetReaderBook) => (TToken & TGet & {
+export type TGetBookReq = ({
+  cacheSize,
+  selectedPage,
+  id
+} : TGetReaderBook) => (TGet & {
   url: string,
 })
-

@@ -1,5 +1,5 @@
-import { Slider } from '@material-ui/core'
 import { useCallback, VFC, MouseEvent } from 'react'
+import { Slider } from '@material-ui/core'
 import { useControlItemStyles } from './styles'
 
 interface ControlItemProps {

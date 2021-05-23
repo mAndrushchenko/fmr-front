@@ -4,6 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
 
 const tokenName = 'token'
+
+export const setTokenToCookie = (jwtToken = '') => {
+  document.cookie = `${tokenName}=${jwtToken}`
+}
+
 // const userName = 'user'
 
 export const useAuth = () => {
@@ -14,13 +19,15 @@ export const useAuth = () => {
 
   const login = useCallback((jwtToken: string | null) => {
     if (jwtToken) {
-      document.cookie = `${tokenName}=${jwtToken}`
+      setTokenToCookie(jwtToken)
+      // document.cookie = `${tokenName}=${jwtToken}`
       setSavedToken(jwtToken)
     }
   }, [ dispatch, token ])
 
   const logout = useCallback(() => {
-    document.cookie = `${tokenName}=`
+    setTokenToCookie()
+    // document.cookie = `${tokenName}=`
     dispatch(delUserData())
     setSavedToken(null)
   }, [ dispatch ])

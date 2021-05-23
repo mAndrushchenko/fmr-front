@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback } from 'react'
+import React, { VFC, useState, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'
@@ -14,8 +14,8 @@ import Brightness4Icon from '@material-ui/icons/Brightness4'
 import { Typography } from '@material-ui/core'
 
 import logo from '../../assets/img/logo/dark.png'
-import { MobileMenu } from './MobileMenu/MobileMenu'
-import { DesktopMenu } from './DesktopMenu/DesktopMenu'
+import { MobileMenu } from './MobileMenu'
+import { DesktopMenu } from './DesktopMenu'
 
 import { styles } from './styles'
 import { userSelector } from '../../store/slices/userSlice'
