@@ -87,17 +87,17 @@ export type TDelFromBasketReq = ({ token, book }: TBookWithToken) => (TToken & T
   body: TBook,
 })
 
-export type TUploadBookInfoReq = ({ token, bookInfo }: TUploadInfo) => (TToken & TPut & {
+export type TUploadBookInfoReq = ({ token, bookInfo }: TUploadInfo) => (TToken & TPost & {
   url: 'user/upload/info',
   body: TBookInfoLoader,
 })
 
-export type TUploadBookDataReq = ({ token, bookData }: TUploadData) => (TToken & TPut & {
+export type TUploadBookDataReq = ({ token, bookData }: TUploadData) => (TToken & TPost & {
   url: 'user/upload/data',
   fd: TBookDataLoader
 })
 
-export type TUploadBookImageReq = ({ token, bookImage }: TUploadImage) => (TToken & TPut & {
+export type TUploadBookImageReq = ({ token, bookImage }: TUploadImage) => (TToken & TPost & {
   url: 'user/upload/image',
   fd: TBookImageLoader,
 })

@@ -52,21 +52,21 @@ export const delFromBasketReq: TDelFromBasketReq = ({ token, book: body }) => ({
 
 export const uploadBookInfoReq: TUploadBookInfoReq = ({ token, bookInfo: body }) => ({
   url: 'user/upload/info',
-  method: 'PUT',
+  method: 'POST',
   body,
   token
 })
 
 export const uploadBookDataReq: TUploadBookDataReq = ({ token, bookData: fd }) => ({
   url: 'user/upload/data',
-  method: 'PUT',
+  method: 'POST',
   fd,
   token
 })
 
 export const uploadBookImageReq: TUploadBookImageReq = ({ token, bookImage: fd }) => ({
   url: 'user/upload/image',
-  method: 'PUT',
+  method: 'POST',
   fd,
 
   token
