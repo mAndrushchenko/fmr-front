@@ -9,7 +9,7 @@ import {
 import {
   TBuyBooks,
   TUploadBook,
-  TBookWithToken
+  TBookPayload
 } from 'src/types/payloadActions'
 
 const initialState: TUserData = {
@@ -34,9 +34,9 @@ export const userSlice = createSlice({
 
     setUserDataAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
-    addToBasketAction: (state, { type }: PayloadAction<TBookWithToken>) => void (state.lastReqType = type),
+    addToBasketAction: (state, { type }: PayloadAction<TBookPayload>) => void (state.lastReqType = type),
 
-    delFromBasketAction: (state, { type }: PayloadAction<TBookWithToken>) => void (state.lastReqType = type),
+    delFromBasketAction: (state, { type }: PayloadAction<TBookPayload>) => void (state.lastReqType = type),
 
     setUserToken: (state, { payload }: PayloadAction<TToken>) => ({ ...state, ...payload }),
 

@@ -1,4 +1,4 @@
-import {
+import type {
   TSigninReq,
   TSignupReq,
   TGetBookReq,
@@ -17,49 +17,44 @@ export const signinReq: TSigninReq = ({ token }) => ({
   token
 })
 
-export const signupReq: TSignupReq = ({ token }) => ({
+export const signupReq: TSignupReq = () => ({
   url: '/signup',
-  method: 'POST',
-  token
+  method: 'POST'
 })
 
-export const getUserReq: TGetUserReq = ({ token }) => ({
+export const getUserReq: TGetUserReq = () => ({
   url: '/user',
-  method: 'GET',
-  token
+  method: 'GET'
 })
+
 export const passwordRecoveryReq: TPasswordRecoveryReq = ({ token }) => ({
   url: '/password-recovery',
   method: 'POST',
   token
 })
 
-export const addToBasketReq: TAddToBasketReq = ({ token, book: body }) => ({
+export const addToBasketReq: TAddToBasketReq = ({ book: body }) => ({
   url: 'user/basket/add',
   method: 'POST',
-  body,
-  token
+  body
 })
 
-export const delFromBasketReq: TDelFromBasketReq = ({ token, book: body }) => ({
+export const delFromBasketReq: TDelFromBasketReq = ({ book: body }) => ({
   url: 'user/basket/delete',
   method: 'DELETE',
-  body,
-  token
+  body
 })
 
-export const uploadBookReq: TUploadBookReq = ({ token, book: fd }) => ({
+export const uploadBookReq: TUploadBookReq = ({ book: fd }) => ({
   url: 'user/upload',
   method: 'PUT',
-  fd,
-  token
+  fd
 })
 
-export const buyBookReq: TBuyBookReq = ({ token, basket: body }) => ({
+export const buyBookReq: TBuyBookReq = ({ basket: body }) => ({
   url: 'user/buy',
   method: 'POST',
-  body,
-  token
+  body
 })
 
 export const getShopBooksReq: TGetShopBooks = body => ({
@@ -70,11 +65,9 @@ export const getShopBooksReq: TGetShopBooks = body => ({
 
 export const getReaderBookReq: TGetBookReq = ({
   id,
-  token,
   cacheSize,
   selectedPage
 }) => ({
   url: `reader?bookId=${id}&page=${selectedPage}&cache=${cacheSize}`,
-  method: 'GET',
-  token
+  method: 'GET'
 })
