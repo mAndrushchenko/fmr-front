@@ -1,4 +1,3 @@
-import { TBookRes, TEmptyRes, TResponse, TUserDataRes } from 'src/types/api'
 import { put, call, takeEvery } from 'redux-saga/effects'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { TToken } from 'src/types/store'
@@ -12,11 +11,15 @@ import {
   delFromBasketReq,
   passwordRecoveryReq, uploadBookImageReq, uploadBookDataReq, uploadBookInfoReq
 } from 'src/api/server-actions'
-import {
+import type {
   TBuyBooks,
+  TUploadInfo,
+  TUploadData,
+  TUploadImage,
   TBookWithToken,
-  TUserActionPayload, TUploadInfo, TUploadData, TUploadImage
+  TUserActionPayload
 } from 'src/types/payloadActions'
+import type { TEmptyRes, TResponse, TUserDataRes } from 'src/types/api'
 import {
   buyBooks,
   addToBasket,

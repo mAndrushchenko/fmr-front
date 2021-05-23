@@ -3,6 +3,7 @@ const messages = {
   passwordError: 'Password must consist of capital and lowercase letters, numbers and be at least 8-symbol length',
   nameError: 'Your name should consist only of English letters',
   uploadBookError: 'You had not uploaded book',
+  uploadImageError: 'Please, add image or skip this step',
   nameBookError: 'Invalid name of book',
   keywordsError: 'Please, write keywords. Words should be separated by comma.',
   bookInfoError: 'Write book data to the fields.',
@@ -23,5 +24,6 @@ export const {
   genreError,
   priceError,
   descriptionError,
-  authorError
+  authorError,
+  uploadImageError
 } = messages

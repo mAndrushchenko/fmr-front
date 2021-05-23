@@ -1,13 +1,5 @@
 import { VFC, useState, useCallback } from 'react'
 import TextField from '@material-ui/core/TextField'
-import Snackbar from '@material-ui/core/Snackbar'
-import Alert from '@material-ui/lab/Alert'
-
-// import { TUsersBookLoader } from 'src/types/bookLoader'
-import { useDispatch, useSelector } from 'react-redux'
-import { TAppDispatch } from 'src/types/store'
-import { userSelector } from 'src/store/slices/userSlice'
-
 import { Genres } from 'src/components/Genres'
 
 import type { TUsersBookInfoLoaderUser } from 'src/types/bookLoader'
@@ -24,29 +16,19 @@ const initialBookState = {
 }
 
 export const UserForm: VFC<IUserBookInfo> = ({ handleUserBookInfo }) => {
-  const dispatch = useDispatch<TAppDispatch>()
-  const { token } = useSelector(userSelector)
   const [ form, setForm ] = useState(initialBookState)
 
-  const [ error, setError ] = useState('')
-
   const fieldChangeHandler = useCallback(e => {
-    setForm({
-      ...form,
-      [e.target.id || 'genre']: e.target.value
-    })
+    const newForm = { ...form, [e.target.id]: e.target.value }
+    setForm(newForm)
+    handleUserBookInfo(newForm)
   }, [ form ])
 
   const genreChangeHandler = useCallback(e => {
-    setForm({
-      ...form,
-      genre: e.target.value
-    })
+    const newForm = { ...form, genre: e.target.value }
+    setForm(newForm)
+    handleUserBookInfo(newForm)
   }, [ form ])
-
-  const closeHandler = useCallback(() => {
-    setError('')
-  }, [])
 
   return (
     <>
@@ -70,7 +52,7 @@ export const UserForm: VFC<IUserBookInfo> = ({ handleUserBookInfo }) => {
         fullWidth
         required
       />
-      <Genres value={form.genre} setValue={genreChangeHandler}/>
+      <Genres value={form.genre} setValue={genreChangeHandler} />
       <TextField
         id='description'
         variant='outlined'

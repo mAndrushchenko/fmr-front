@@ -1,9 +1,9 @@
 import { VFC, useCallback } from 'react'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
+import type { TBookDataLoader } from 'src/types/bookLoader'
 
 import { uploadStyles } from './styles'
-import { TBookDataLoader } from 'src/types/bookLoader'
 
 interface IBookData {
   handleBookData: (data: TBookDataLoader) => void

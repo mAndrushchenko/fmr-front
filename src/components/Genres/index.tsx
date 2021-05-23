@@ -7,7 +7,12 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { genres } from 'src/shared/constant/genres'
 import { styles } from './styles'
 
-export const Genres: VFC<{ value: string, setValue: (e: ChangeEvent<{ value: unknown }>) => void }> = ({ value, setValue }) => {
+interface IGenres {
+  value: string,
+  setValue: (e: ChangeEvent<{ value: unknown }>) => void
+}
+
+export const Genres: VFC<IGenres> = ({ value, setValue }) => {
   const classes = styles()
 
   return (

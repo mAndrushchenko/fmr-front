@@ -68,7 +68,7 @@ export const AdminForm: VFC<IAdminBookInfo> = ({ handleAdminBookInfo }) => {
         fullWidth
         required
       />
-      <Genres value={form.genre} setValue={genreChangeHandler}/>
+      <Genres value={form.genre} setValue={genreChangeHandler} />
       <TextField
         id='description'
         variant='outlined'

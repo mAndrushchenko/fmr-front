@@ -1,45 +1,52 @@
 import { VFC, useState, useCallback, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Stepper from '@material-ui/core/Stepper'
 import StepLabel from '@material-ui/core/StepLabel'
 import Button from '@material-ui/core/Button'
 import Step from '@material-ui/core/Step'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
-import { BookInfo } from './BookInfo'
-import type { TBookImageLoader, TBookDataLoader, TUsersBookInfoLoaderUser } from 'src/types/bookLoader'
-
-import { loaderStyles } from './styles'
-import { UploadImage } from './UploadImage'
-import { UploadBook } from './UploadBook'
-import { useDispatch, useSelector } from 'react-redux'
-import type { TAppDispatch, TUploadBook } from 'src/types/store'
-import {
-  uploadBookDataAction,
-  uploadBookImageAction,
-  uploadBookInfoAction,
-  userSelector
-} from 'src/store/slices/userSlice'
-import { spinnerSelector } from 'src/store/slices/spinnerSlice'
-import { bookNameRegexp } from '../../shared/constant/regExp'
-import {
-  authorError,
-  bookInfoError,
-  descriptionError, genreError,
-  keywordsError,
-  nameBookError,
-  priceError
-} from '../../shared/constant/errorMasseges'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
+import {
+  userSelector,
+  uploadBookDataAction,
+  uploadBookInfoAction,
+  uploadBookImageAction
+} from 'src/store/slices/userSlice'
+import {
+  genreError,
+  priceError,
+  authorError,
+  bookInfoError,
+  keywordsError,
+  nameBookError,
+  uploadBookError,
+  descriptionError,
+  uploadImageError
+} from 'src/shared/constant/errorMasseges'
+import { bookNameRegexp } from 'src/shared/constant/regExp'
+import { BookInfo } from './BookInfo'
+import type {
+  TBookDataLoader,
+  TBookImageLoader,
+  TUsersBookInfoLoaderUser
+} from 'src/types/bookLoader'
+
+import { UploadImage } from './UploadImage'
+import { UploadBook } from './UploadBook'
+import type { TAppDispatch, TUploadBook } from 'src/types/store'
+
+import { loaderStyles } from './styles'
 
 export const Loader: VFC = () => {
   const classes = loaderStyles()
   const dispatch = useDispatch<TAppDispatch>()
-  const { spin } = useSelector(spinnerSelector)
-  const { token } = useSelector(userSelector)
   const steps: string[] = useMemo(() => [
     'Add book information', 'Upload book image', 'Upload book file'
   ], [])
+
+  const { token, isAdmin } = useSelector(userSelector)
 
   const [ adminBookInfo, setAdminBookInfo ] = useState<TUploadBook | null>(null)
   const [ userBookInfo, setUserBookInfo ] = useState<TUsersBookInfoLoaderUser | null>(null)
@@ -73,48 +80,75 @@ export const Loader: VFC = () => {
   }, [])
 
   const checkAdminFields = useCallback(() => {
+    let result = false
     if (!adminBookInfo) {
       setError(bookInfoError)
-      return false
     } else if (!bookNameRegexp.test(adminBookInfo.name.trim())) {
       setError(nameBookError)
-      return false
     } else if (!adminBookInfo.genre) {
       setError(genreError)
-      return false
     } else if (!adminBookInfo.author) {
       setError(authorError)
-      return false
     } else if (!adminBookInfo.description) {
       setError(descriptionError)
-      return false
     } else if (!adminBookInfo.keywords) {
       setError(keywordsError)
-      return false
     } else if (adminBookInfo.price < 0) {
       setError(priceError)
-      return false
     } else {
-      return true
+      result = true
     }
-  }, [ adminBookInfo, token ])
+    return result
+  }, [ adminBookInfo ])
+
+  const checkUserFields = useCallback(() => {
+    let result = false
+    if (!userBookInfo) {
+      setError(bookInfoError)
+    } else if (!bookNameRegexp.test(userBookInfo.name.trim())) {
+      setError(nameBookError)
+    } else if (!userBookInfo.author) {
+      setError(authorError)
+    } else if (!userBookInfo.genre) {
+      setError(genreError)
+    } else {
+      result = true
+    }
+    return result
+  }, [ userBookInfo ])
+
+  const resetFormData = useCallback(() => {
+    setAdminBookInfo(null)
+    setUserBookInfo(null)
+    setBookData(null)
+    setBookImage(null)
+  }, [])
 
   const handleNext = useCallback(() => {
-    // send request
-    if (activeStep === 0) {
+    if (activeStep === 0 && isAdmin) {
       if (!checkAdminFields() || !adminBookInfo) {
         return
       }
       dispatch(uploadBookInfoAction({ token, bookInfo: adminBookInfo }))
-    } else if (activeStep === 1 && bookImage) {
-      console.log(bookData)
+    } else if (activeStep === 0 && !isAdmin) {
+      if (!checkUserFields() || !userBookInfo) {
+        return
+      }
+      dispatch(uploadBookInfoAction({ token, bookInfo: userBookInfo }))
+    } else if (activeStep === 1) {
+      if (!bookImage) {
+        return setError(uploadImageError)
+      }
       dispatch(uploadBookImageAction({ token, bookImage }))
-    } else if (activeStep === 2 && bookData) {
-      console.log(bookData)
+    } else if (activeStep === 2) {
+      if (!bookData) {
+        return setError(uploadBookError)
+      }
       dispatch(uploadBookDataAction({ token, bookData }))
+      resetFormData()
     }
     setActiveStep(activeStep + 1)
-  }, [ activeStep, adminBookInfo, bookImage, bookData, token ])
+  }, [ activeStep, adminBookInfo, userBookInfo, bookImage, bookData, token ])
 
   const handleReset = useCallback(() => {
     setActiveStep(0)
@@ -144,13 +178,11 @@ export const Loader: VFC = () => {
           ) : (
             <>
               <Typography className={classes.title} variant='h4'>{steps[activeStep]}</Typography>
-              {activeStep === 0 && <BookInfo
-                handleAdminBookInfo={handleAdminBookInfo}
-                handleUserBookInfo={handleUserBookInfo}
-              />}
-              {activeStep === 1 && <UploadImage handleBookImage={handleBookImage}/>}
-              {activeStep === 2 && <UploadBook handleBookData={handleBookData}/>}
-              <Divider className={classes.divider}/>
+              {activeStep === 0 &&
+              <BookInfo handleAdminBookInfo={handleAdminBookInfo} handleUserBookInfo={handleUserBookInfo} />}
+              {activeStep === 1 && <UploadImage handleBookImage={handleBookImage} />}
+              {activeStep === 2 && <UploadBook handleBookData={handleBookData} />}
+              <Divider className={classes.divider} />
               <div>
                 <Button
                   color='primary'
