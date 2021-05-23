@@ -1,4 +1,4 @@
-import React, { VFC, useState, useCallback } from 'react'
+import { VFC, useState, useCallback } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
@@ -9,9 +9,9 @@ import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 
 import { TUsersBookLoader } from 'src/types/bookLoader'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { TAppDispatch } from '../../types/store'
-import { uploadBookAction, userSelector } from '../../store/slices/userSlice'
+import { uploadBookAction } from '../../store/slices/userSlice'
 import { bookNameRegexp } from '../../shared/constant/regExp'
 import { nameBookError, uploadBookError } from '../../shared/constant/errorMasseges'
 
@@ -30,7 +30,6 @@ const initialBookState: TUsersBookLoader = {
 export const UserForm: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
-  const { token } = useSelector(userSelector)
   const [ form, setForm ] = useState<TUsersBookLoader>(initialBookState)
 
   const [ error, setError ] = useState('')
@@ -78,7 +77,7 @@ export const UserForm: VFC = () => {
     if (!bookNameRegexp.test(form.bookInfo.name.trim())) {
       return setError(nameBookError)
     }
-    dispatch(uploadBookAction({ token, book: form }))
+    dispatch(uploadBookAction({ book: form }))
     return setForm(initialBookState)
   }, [ form ])
 

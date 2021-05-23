@@ -1,4 +1,4 @@
-import React, { VFC, useState, useCallback } from 'react'
+import { VFC, useState, useCallback } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Select from '@material-ui/core/Select'
 import FormControl from '@material-ui/core/FormControl'
@@ -10,9 +10,9 @@ import Alert from '@material-ui/lab/Alert'
 
 import { TAdminBookLoader } from 'src/types/bookLoader'
 import { Divider } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { TAppDispatch } from '../../types/store'
-import { uploadBookAction, userSelector } from '../../store/slices/userSlice'
+import { uploadBookAction } from '../../store/slices/userSlice'
 import { bookNameRegexp } from '../../shared/constant/regExp'
 
 import { styles } from './styles'
@@ -34,7 +34,6 @@ const initialBookState: TAdminBookLoader = {
 export const AdminForm: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
-  const { token } = useSelector(userSelector)
 
   const [ error, setError ] = useState('')
   const [ keywords, setKeywords ] = useState('')
@@ -100,9 +99,9 @@ export const AdminForm: VFC = () => {
         price: +form.bookInfo.price
       }
     }
-    dispatch(uploadBookAction({ book, token }))
+    dispatch(uploadBookAction({ book }))
     return setForm(initialBookState)
-  }, [ form, keywords, token ])
+  }, [ form, keywords ])
 
   return (
     <>
