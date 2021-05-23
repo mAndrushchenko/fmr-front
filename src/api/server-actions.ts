@@ -5,9 +5,11 @@ import {
   TBuyBookReq,
   TGetUserReq,
   TGetShopBooks,
-  TUploadBookReq,
   TAddToBasketReq,
   TDelFromBasketReq,
+  TUploadBookInfoReq,
+  TUploadBookDataReq,
+  TUploadBookImageReq,
   TPasswordRecoveryReq
 } from 'src/types/api'
 
@@ -48,8 +50,22 @@ export const delFromBasketReq: TDelFromBasketReq = ({ token, book: body }) => ({
   token
 })
 
-export const uploadBookReq: TUploadBookReq = ({ token, book: fd }) => ({
-  url: 'user/upload',
+export const uploadBookInfoReq: TUploadBookInfoReq = ({ token, bookInfo: body }) => ({
+  url: 'user/upload/info',
+  method: 'PUT',
+  body,
+  token
+})
+
+export const uploadBookDataReq: TUploadBookDataReq = ({ token, bookData: fd }) => ({
+  url: 'user/upload/data',
+  method: 'PUT',
+  fd,
+  token
+})
+
+export const uploadBookImageReq: TUploadBookImageReq = ({ token, bookImage: fd }) => ({
+  url: 'user/upload/image',
   method: 'PUT',
   fd,
 

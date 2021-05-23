@@ -2,13 +2,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { setTokenToCookie } from 'src/hooks/useAuth'
 import {
   TBook,
-  TReducer,
   TToken,
+  TReducer,
   TUserData
 } from 'src/types/store'
 import {
   TBuyBooks,
-  TUploadBook,
+  TUploadInfo,
+  TUploadData,
+  TUploadImage,
   TBookWithToken
 } from 'src/types/payloadActions'
 
@@ -40,7 +42,11 @@ export const userSlice = createSlice({
 
     setUserToken: (state, { payload }: PayloadAction<TToken>) => ({ ...state, ...payload }),
 
-    uploadBookAction: (state, { type }: PayloadAction<TUploadBook>) => void (state.lastReqType = type),
+    uploadBookInfoAction: (state, { type }: PayloadAction<TUploadInfo>) => void (state.lastReqType = type),
+
+    uploadBookDataAction: (state, { type }: PayloadAction<TUploadData>) => void (state.lastReqType = type),
+
+    uploadBookImageAction: (state, { type }: PayloadAction<TUploadImage>) => void (state.lastReqType = type),
 
     buyBooksAction: (state, { type }: PayloadAction<TBuyBooks>) => void (state.lastReqType = type),
 
@@ -59,10 +65,6 @@ export const userSlice = createSlice({
       state.basket = state.basket.filter(book => book.id !== payload.id)
     },
 
-    uploadBook: (state, { payload }: PayloadAction<TBook>) => {
-      state.uploadedBooks = [ ...state.uploadedBooks, payload ]
-    },
-
     buyBooks: (state, { payload }: PayloadAction<TBook[]>) => ({
       ...state, purchasedBooks: [ ...state.purchasedBooks, ...payload ]
     })
@@ -71,7 +73,6 @@ export const userSlice = createSlice({
 
 export const {
   buyBooks,
-  uploadBook,
   addToBasket,
   setUserData,
   delUserData,
@@ -80,7 +81,9 @@ export const {
   buyBooksAction,
   signinUserAction,
   signupUserAction,
-  uploadBookAction,
+  uploadBookInfoAction,
+  uploadBookDataAction,
+  uploadBookImageAction,
   addToBasketAction,
   setUserDataAction,
   delFromBasketAction,

@@ -1,9 +1,10 @@
-import { VFC, useState, useCallback } from 'react'
+import React, { VFC, useState, useCallback } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
-
+import { Genres } from '../../Genres'
 import { TAdminBookLoader } from 'src/types/bookLoader'
+import { Divider } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from '../../../types/store'
 import { uploadBookAction, userSelector } from '../../../store/slices/userSlice'
@@ -12,7 +13,8 @@ import { bookNameRegexp } from '../../../shared/constant/regExp'
 import { keywordsError, nameBookError, uploadBookError } from '../../../shared/constant/errorMasseges'
 import { Genres } from '../../Genres'
 
-const initialBookState: TAdminBookLoader = {
+
+const initialBookState = {
   bookInfo: {
     name: '',
     author: '',
@@ -32,7 +34,7 @@ export const AdminForm: VFC = () => {
   const [ error, setError ] = useState('')
   const [ keywords, setKeywords ] = useState('')
 
-  const [ form, setForm ] = useState<TAdminBookLoader>(initialBookState)
+  const [ form, setForm ] = useState(initialBookState)
 
   const fieldChangeHandler = useCallback(e => {
     setForm({
@@ -82,7 +84,7 @@ export const AdminForm: VFC = () => {
         price: +form.bookInfo.price
       }
     }
-    dispatch(uploadBookAction({ book, token }))
+    // dispatch(uploadBookAction({ book, token }))
     return setForm(initialBookState)
   }, [ form, keywords, token ])
 
