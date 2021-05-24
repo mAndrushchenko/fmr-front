@@ -9,87 +9,90 @@ import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import InputLabel from '@material-ui/core/InputLabel'
-
 import { styles } from './styles'
+import { Genres } from '../Genres'
 
 export const Filters: VFC = () => {
   const classes = styles()
 
-  const [ filters, setFilters ] = useState({
-    author: '',
-    genre: '',
-    price: [ 20, 80 ],
-    searchPhrase: '',
-    year: new Date().getFullYear()
+  const [ author, setAuthor ] = useState<string>('')
+  const [ genre, setGenre ] = useState<string>('')
+  const [ price, setPrice ] = useState<number[]>([ 20, 80 ])
+  const [ searchPhrase, setSearchPhrase ] = useState<string>('')
+  const [ year, setYear ] = useState<number>(new Date().getFullYear())
+
+  // const filters = useDebounce({
+  //   author,
+  //   genre,
+  //   price,
+  //   searchPhrase,
+  //   year
+  // }, 1000)
+
+  // counting re-renders
+  useEffect(() => {
+    console.log('filters re-render')
   })
 
-  useEffect(() => {
-// console for develop
-    console.log('send request')
-  }, [ useDebounce(filters, 1000) ])
+  // useEffect(() => {
+  //   // console for develop
+  //   console.log('send request')
+  // }, [ filters ])
 
-  const fieldChangeHandler = useCallback(
+  const authorHandler = useCallback(
     e => {
-      setFilters({
-        ...filters,
-        [e.target.id]: e.target.value
-      })
+      console.log('author changed')
+      setAuthor(e.target.value)
     },
-    [ filters ]
+    [ ]
   )
 
-  const genreChangeHandler = useCallback(
+  const genreHandler = useCallback(
     e => {
-      setFilters({
-        ...filters,
-        genre: e.target.value
-      })
+      console.log('genre changed')
+      setGenre(e.target.value)
     },
-    [ filters ]
+    [ ]
   )
 
-  const priceChangeHandler = useCallback(
+  const searchPhraseHandler = useCallback(
+    e => {
+      console.log('search changed')
+      setSearchPhrase(e.target.value)
+    },
+    [ ]
+  )
+
+  const priceHandler = useCallback(
     (e, value: number | number[]) => {
-      setFilters({
-        ...filters,
-        price: value as number[]
-      })
+      console.log('price changed')
+      setPrice(value as number[])
     },
-    [ filters ]
+    [ ]
   )
 
   const minPriceHandler = useCallback(
     e => {
-      setFilters({
-        ...filters,
-        price: [ +e.target.value, filters.price[1] ]
-      })
+      console.log('min price changed')
+      setPrice([ +e.target.value, price[1] ])
     },
-    [ filters ]
+    [ price ]
   )
 
   const maxPriceHandler = useCallback(
     e => {
-      setFilters({
-        ...filters,
-        price: [ filters.price[0], +e.target.value ]
-      })
+      console.log('max price changed')
+      setPrice([ price[0], +e.taget.value ])
     },
-    [ filters ]
+    [ price ]
   )
 
   const yearHandler = useCallback(
     e => {
-      setFilters({
-        ...filters,
-        year: +e.target.value
-      })
+      console.log('year changed')
+      setYear(+e.target.value)
     },
-    [ filters ]
+    [ ]
   )
 
   return (
@@ -105,37 +108,11 @@ export const Filters: VFC = () => {
             variant='outlined'
             margin='normal'
             className={classes.author}
-            value={filters.author}
-            onChange={fieldChangeHandler}
+            value={author}
+            onChange={authorHandler}
           />
-          <FormControl
-            variant='outlined'
-            margin='normal'
-            className={classes.genre}
-          >
-            <InputLabel id='genre-label'>Genre</InputLabel>
-            <Select
-              labelId='genre-label'
-              id='genre'
-              label='Genre'
-              value={filters.genre}
-              onChange={genreChangeHandler}
-            >
-              <MenuItem value='Detective'>Detective</MenuItem>
-              <MenuItem value='Fantastic'>Fantastic</MenuItem>
-              <MenuItem value='Psychology'>Psychology</MenuItem>
-              <MenuItem value='Roman'>Roman</MenuItem>
-              <MenuItem value='Fantasy'>Fantasy</MenuItem>
-              <MenuItem value='Business'>Business</MenuItem>
-              <MenuItem value='Autobiography'>Autobiography</MenuItem>
-              <MenuItem value='Thrillers'>Thrillers</MenuItem>
-              <MenuItem value='Horror'>Horror</MenuItem>
-              <MenuItem value='Poem'>Poem</MenuItem>
-              <MenuItem value='Comics'>Comics</MenuItem>
-              <MenuItem value='Memoirs'>Memoirs</MenuItem>
-              <MenuItem value='History'>History</MenuItem>
-            </Select>
-          </FormControl>
+
+          <Genres className={classes.genres} value={genre} setValue={genreHandler} />
 
           <TextField
             id='searchPhrase'
@@ -143,8 +120,8 @@ export const Filters: VFC = () => {
             margin='normal'
             variant='outlined'
             className={classes.searchPhrase}
-            value={filters.searchPhrase}
-            onChange={fieldChangeHandler}
+            value={searchPhrase}
+            onChange={searchPhraseHandler}
           />
 
           <TextField
@@ -154,7 +131,7 @@ export const Filters: VFC = () => {
             variant='outlined'
             margin='normal'
             className={classes.year}
-            value={filters.year}
+            value={year}
             onChange={yearHandler}
           />
 
@@ -165,7 +142,7 @@ export const Filters: VFC = () => {
             margin='normal'
             type='number'
             className={classes.minPriceInput}
-            value={filters.price[0]}
+            value={price[0]}
             onChange={minPriceHandler}
           />
           <TextField
@@ -175,13 +152,13 @@ export const Filters: VFC = () => {
             margin='normal'
             type='number'
             className={classes.maxPriceInput}
-            value={filters.price[1]}
+            value={price[1]}
             onChange={maxPriceHandler}
           />
           <Slider
             className={classes.priceSlider}
-            value={filters.price}
-            onChange={priceChangeHandler}
+            value={price}
+            onChange={priceHandler}
             min={0}
             max={100}
           />
