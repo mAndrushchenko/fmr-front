@@ -70,16 +70,19 @@ export type TReaderCacheSize = { cacheSize: number }
 
 export type TReaderTotalPages = { totalPages: number }
 
+export type TReaderBookLength = { bookLength: number }
+
 export type TReaderBook = TReaderTotalPages & {
-  pages: TBookPage[]
+  pages: Record<number, TBookPage | undefined>
   book: TBook
 }
 
-export type TReaderBookState = TReaderSelectedPage &
-  TReaderSelectedWord & TReaderCacheSize & TReaderTotalPages & {
-  pages: TBookPage[]
+export type TReaderBookState = TReaderCacheSize & TReaderTotalPages &
+  TReaderBookLength & TReaderSelectedWord & {
+  pages: Record<number, TBookPage | undefined>
   book: TBook | null,
   lastReqType: string | null
+  loadingPages: number[]
 }
 
 export type TFirstLoadBooksLists = {
@@ -106,4 +109,3 @@ export type TSpinnerPayload = {
 export type TSpinner = TSpinnerPayload &{
   spin: boolean
 }
-

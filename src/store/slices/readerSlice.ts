@@ -5,19 +5,39 @@ import {
   TReaderBook,
   TReaderCacheSize,
   TReaderBookState,
-  TReaderSelectedWord,
-  TReaderSelectedPage
+  TReaderBookLength,
+  TReaderSelectedWord
 } from 'src/types/store'
 import { TGetReaderBook } from 'src/types/payloadActions'
 
+const testPage = [
+  'Pariatur', 'labore', 'labore', 'do',
+  'duis', 'ut', 'id', 'magna',
+  'magna', 'ea', 'voluptate', 'nulla.',
+  'Est', 'nostrud', 'nulla', 'est',
+  'quis', 'consequat', 'non', 'proident',
+  'aliqua', 'incididunt', 'ut', 'enim',
+  'laboris', 'fugiat.', 'Tempor', 'voluptate',
+  'deserunt', 'incididunt', 'aute', 'duis',
+  'irure', 'laborum', 'laboris', 'aute',
+  'commodo', 'ex', 'in.', 'Ullamco',
+  'excepteur', 'laborum', 'duis', 'eu',
+  'velit', 'esse', 'tempor', 'culpa',
+  'esse', 'exercitation', 'et', 'veniam.',
+  'Officia', 'reprehenderit', 'nisi', 'ipsum',
+  'sint', 'irure', 'est', 'mollit',
+  'nulla.'
+]
+
 const initialState: TReaderBookState = {
-  pages: [],
+  pages: [ testPage, testPage ],
   book: null,
   selectedWord: 0,
-  selectedPage: 0,
   cacheSize: 3,
-  totalPages: 0,
-  lastReqType: null
+  totalPages: 2,
+  bookLength: testPage.length * 2,
+  lastReqType: null,
+  loadingPages: []
 }
 
 export const readerSlice = createSlice({
@@ -28,16 +48,16 @@ export const readerSlice = createSlice({
 
     setReaderPages: (state, { payload }: PayloadAction<TBookPage[]>) => void (state.pages = payload),
 
-    setReaderPage: (state, { payload }: PayloadAction<TReaderSelectedPage>) => {
-      state.selectedPage = payload.selectedPage
-    },
-
     setReaderWord: (state, { payload }: PayloadAction<TReaderSelectedWord>) => {
       state.selectedWord = payload.selectedWord
     },
 
     setCacheSize: (state, { payload }: PayloadAction<TReaderCacheSize>) => {
       state.cacheSize = payload.cacheSize
+    },
+
+    setBookLength: (state, { payload }: PayloadAction<TReaderBookLength>) => {
+      state.bookLength = payload.bookLength
     },
 
     setReaderBook: (state, { payload }: PayloadAction<TReaderBook>) => ({
@@ -54,7 +74,6 @@ export const readerSlice = createSlice({
 export const {
   getBookAction,
   setReaderBook,
-  setReaderPage,
   setReaderWord,
   setReaderPages
 } = readerSlice.actions
