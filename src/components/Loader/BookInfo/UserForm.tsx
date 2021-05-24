@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback } from 'react'
+import { VFC, useState, useCallback, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { Genres } from 'src/components/Genres'
 
@@ -19,15 +19,15 @@ export const UserForm: VFC<IUserBookInfo> = ({ handleUserBookInfo }) => {
   const [ form, setForm ] = useState(initialBookState)
 
   const fieldChangeHandler = useCallback(e => {
-    const newForm = { ...form, [e.target.id]: e.target.value }
-    setForm(newForm)
-    handleUserBookInfo(newForm)
-  }, [ form ])
+    setForm(prevForm => ({ ...prevForm, [e.target.id]: e.target.value }))
+  }, [])
 
   const genreChangeHandler = useCallback(e => {
-    const newForm = { ...form, genre: e.target.value }
-    setForm(newForm)
-    handleUserBookInfo(newForm)
+    setForm(prevForm => ({ ...prevForm, genre: e.target.value }))
+  }, [])
+
+  useEffect(() => {
+    handleUserBookInfo(form)
   }, [ form ])
 
   return (

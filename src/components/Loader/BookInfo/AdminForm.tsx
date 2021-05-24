@@ -1,4 +1,4 @@
-import React, { VFC, useState, useCallback } from 'react'
+import React, { VFC, useState, useCallback, useEffect } from 'react'
 import TextField from '@material-ui/core/TextField'
 import { Genres } from 'src/components/Genres'
 
@@ -24,26 +24,24 @@ export const AdminForm: VFC<IAdminBookInfo> = ({ handleAdminBookInfo }) => {
   const [ form, setForm ] = useState(initialBookState)
 
   const fieldChangeHandler = useCallback(e => {
-    const newForm = { ...form, [e.target.id]: e.target.value }
-    setForm(newForm)
-    handleAdminBookInfo(newForm)
-  }, [ form ])
+    setForm(prevFrom => ({ ...prevFrom, [e.target.id]: e.target.value }))
+  }, [])
 
   const keywordsChangeHandler = useCallback(e => {
     const keyString: string = e.target.value
     setKeywords(e.target.value)
-    const newForm = {
-      ...form,
+    setForm(prevForm => ({
+      ...prevForm,
       keywords: keyString.split(',').map(word => word.trim())
-    }
-    setForm(newForm)
-    handleAdminBookInfo(newForm)
-  }, [ form ])
+    }))
+  }, [])
 
   const genreChangeHandler = useCallback(e => {
-    const newForm = { ...form, genre: e.target.value }
-    setForm(newForm)
-    handleAdminBookInfo(newForm)
+    setForm(prevForm => ({ ...prevForm, genre: e.target.value }))
+  }, [])
+
+  useEffect(() => {
+    handleAdminBookInfo(form)
   }, [ form ])
 
   return (
