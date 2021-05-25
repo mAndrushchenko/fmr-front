@@ -9,17 +9,17 @@ export const Card: VFC<{ book: TShopBook }> = ({ book }) => {
 
   return (
     <div className={classes.root}>
-      <img src={book.image} alt='book preview' className={classes.image} />
+      <img src={book.image || ''} alt='book preview' className={classes.image} />
       <div className={classes.text}>
         <p className={classes.name}>
-          {book.name}
+          {book.name || 'missing book name'}
         </p>
         <p className={classes.author}>
-          {book.author}
+          {book.author || 'missing author name'}
         </p>
         <p className={classes.price}>
           $
-          {book.price}
+          {book.price || 'missing book price'}
         </p>
       </div>
     </div>
