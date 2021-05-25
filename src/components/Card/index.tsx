@@ -9,7 +9,7 @@ export const Card: VFC<{ book: TShopBook }> = ({ book }) => {
 
   return (
     <div className={classes.root}>
-      <img src={book.image || ''} alt='book preview' className={classes.image} />
+      <img src={`/uploads/${book.image || ''}`} alt='book preview' className={classes.image} />
       <div className={classes.text}>
         <p className={classes.name}>
           {book.name || 'missing book name'}
