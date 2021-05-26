@@ -1,4 +1,4 @@
-import React, { useEffect, VFC } from 'react'
+import { useEffect, VFC } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { spinnerSelector } from 'src/store/slices/spinnerSlice'
@@ -19,6 +19,7 @@ import { Signup } from '../Signup'
 import { PasswordRecovery } from '../Signin/PasswordRecovery'
 import { styles } from './styles'
 import { Library } from '../Library'
+import { Results } from '../Results'
 
 export const Main: VFC = () => {
   const { spin } = useSelector(spinnerSelector)
@@ -59,8 +60,11 @@ export const Main: VFC = () => {
           <Route path='/password-recovery'>
             <PasswordRecovery />
           </Route>
-          <Route path='/'>
+          <Route exact path='/'>
             <Home />
+          </Route>
+          <Route path='/results'>
+            <Results />
           </Route>
         </Switch>
       </Router>
