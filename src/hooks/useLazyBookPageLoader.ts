@@ -1,10 +1,11 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setReaderWord, getBookPages } from 'src/store/slices/readerSlice'
+import { setReaderWord, getBookPages, getBookAction } from 'src/store/slices/readerSlice'
+import type { TId } from 'src/types/store'
 import { deepEqual } from 'src/utils/deepEqual'
 import { useToggle } from './useToggle'
 
-export const useLazyBookPageLoader = () => {
+export const useLazyBookPageLoader = (id: TId['id']) => {
   const dispatch = useDispatch()
   const pages = useSelector(store => store.readerSlice.pages, deepEqual)
   const totalPages = useSelector(store => store.readerSlice.totalPages)
@@ -14,6 +15,10 @@ export const useLazyBookPageLoader = () => {
   const [ isPageReady, toggleIsReady ] = useToggle(true)
   const bookWordIndexRef = useRef(bookWordIndex)
   bookWordIndexRef.current = bookWordIndex
+
+  useEffect(() => {
+    dispatch(getBookAction({ id, cacheSize: 3 }))
+  }, [ id ])
 
   const isEnded = bookWordIndex >= bookLength - 1
   const isPageExists = (index: number) => index < totalPages && index >= 0

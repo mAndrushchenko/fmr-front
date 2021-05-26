@@ -1,5 +1,6 @@
 import { useCallback, useState, VFC, MouseEvent } from 'react'
 import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { useLazyBookPageLoader } from 'src/hooks/useLazyBookPageLoader'
 import { useStyles } from './styles'
 import { Visualizer } from './Visualizer'
@@ -8,8 +9,9 @@ import { Progress } from './Progress'
 import { useToggle } from '../../hooks/useToggle'
 
 export const Reader: VFC = () => {
+  const { id } = useParams<{ id: string }>()
   const classes = useStyles()
-  const { nextWord, word, isEnded } = useLazyBookPageLoader()
+  const { nextWord, word, isEnded } = useLazyBookPageLoader(id)
   const selectedWord = useSelector(store => store.readerSlice.selectedWord)
   const bookLength = useSelector(store => store.readerSlice.bookLength)
   const [ speed, setSpeed ] = useState(200)

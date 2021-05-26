@@ -67,7 +67,7 @@ export const readerSlice = createSlice({
       bookLength: payload.bookLength,
       totalPages: payload.totalPages,
       book: payload.book,
-      pages: payload.pages,
+      pages: payload.pages ?? {},
       loadingPages: []
     }),
 
