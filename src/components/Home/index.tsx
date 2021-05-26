@@ -1,5 +1,5 @@
 import { Typography } from '@material-ui/core'
-import { useEffect, VFC } from 'react'
+import { VFC } from 'react'
 import { TShopBook } from 'src/types/store'
 import { CardSlider } from '../Slider'
 
@@ -31,11 +31,6 @@ export const Home: VFC = () => {
   const newBooks: TShopBook[] = arrOfBook
   const personalOfferBooks: TShopBook[] = arrOfBook
   const popularBooks: TShopBook[] = arrOfBook
-
-  // counting re-renders
-  useEffect(() => {
-    console.log('home re-render')
-  })
 
   return (
     <div className={classes.root}>

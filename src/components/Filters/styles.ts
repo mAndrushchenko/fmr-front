@@ -3,10 +3,16 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 export const styles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      width: '100%'
+    },
+    form: {
       width: '100%',
       display: 'flex',
       flexWrap: 'wrap',
       padding: '0 20px'
+    },
+    title: {
+      width: '100%'
     },
     author: {
       flexBasis: '100%',

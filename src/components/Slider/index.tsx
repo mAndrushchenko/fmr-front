@@ -1,4 +1,4 @@
-import { useEffect, VFC } from 'react'
+import { VFC } from 'react'
 import Slider from 'react-slick'
 
 import { TShopBook } from 'src/types/store'
@@ -9,11 +9,6 @@ import { sliderSettings } from './sliderSettings'
 
 export const CardSlider: VFC<{ books: TShopBook[] }> = ({ books }) => {
   const classes = styles()
-
-  // counting re-renders
-  useEffect(() => {
-    console.log('slider re-render')
-  })
 
   return (
     <Slider
