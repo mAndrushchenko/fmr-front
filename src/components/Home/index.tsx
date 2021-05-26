@@ -1,7 +1,6 @@
 import { Typography } from '@material-ui/core'
-import { VFC } from 'react'
+import { useEffect, VFC } from 'react'
 import { TShopBook } from 'src/types/store'
-import { Filters } from '../Filters'
 import { CardSlider } from '../Slider'
 
 import { styles } from './styles'
@@ -33,9 +32,13 @@ export const Home: VFC = () => {
   const personalOfferBooks: TShopBook[] = arrOfBook
   const popularBooks: TShopBook[] = arrOfBook
 
+  // counting re-renders
+  useEffect(() => {
+    console.log('home re-render')
+  })
+
   return (
     <div className={classes.root}>
-      <Filters />
       <div className={classes.category}>
         <Typography variant='h6' className={classes.title}>
           News
