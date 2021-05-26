@@ -5,9 +5,11 @@ import type {
   TBuyBookReq,
   TGetUserReq,
   TGetShopBooks,
-  TUploadBookReq,
   TAddToBasketReq,
   TDelFromBasketReq,
+  TUploadBookInfoReq,
+  TUploadBookDataReq,
+  TUploadBookImageReq,
   TPasswordRecoveryReq,
   TGetBookPagesReq,
   TUpdateBookProgressReq
@@ -61,10 +63,26 @@ export const delFromBasketReq: TDelFromBasketReq = ({ book: body }) => ({
   body
 })
 
-export const uploadBookReq: TUploadBookReq = ({ book: fd }) => ({
-  url: 'user/upload',
-  method: 'PUT',
-  fd
+export const uploadBookInfoReq: TUploadBookInfoReq = ({ token, bookInfo: body }) => ({
+  url: 'user/upload/info',
+  method: 'POST',
+  body,
+  token
+})
+
+export const uploadBookDataReq: TUploadBookDataReq = ({ token, bookData: fd }) => ({
+  url: 'user/upload/data',
+  method: 'POST',
+  fd,
+  token
+})
+
+export const uploadBookImageReq: TUploadBookImageReq = ({ token, bookImage: fd }) => ({
+  url: 'user/upload/image',
+  method: 'POST',
+  fd,
+
+  token
 })
 
 export const buyBookReq: TBuyBookReq = ({ basket: body }) => ({

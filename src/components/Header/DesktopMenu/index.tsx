@@ -12,7 +12,6 @@ export const DesktopMenu: VFC = () => {
   const { token } = useSelector(userSelector)
   const { logout } = useAuth()
   const classes = styles()
-
   const onLogout = useCallback(() => {
     logout()
   }, [])

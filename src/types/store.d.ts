@@ -105,6 +105,6 @@ export type TSpinnerPayload = {
   message: string | null
 }
 
-export type TSpinner = TSpinnerPayload &{
+export type TSpinner = TSpinnerPayload & {
   spin: boolean
 }

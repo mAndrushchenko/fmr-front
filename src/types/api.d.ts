@@ -1,4 +1,10 @@
-import { TAdminBookLoader, TUsersBookLoader } from 'src/types/bookLoader'
+import {
+  TAdminBookLoader,
+  TBookDataLoader,
+  TBookImageLoader,
+  TBookInfoLoader,
+  TUsersBookLoader
+} from 'src/types/bookLoader'
 import {
   TBook,
   TToken,
@@ -10,11 +16,13 @@ import {
 } from 'src/types/store'
 import {
   TBuyBooks,
-  TUploadBook,
   TGetReaderBook,
   TBookPayload,
   TGetBookPages,
-  TUpdateBookProgress
+  TUpdateBookProgress,
+  TUploadInfo,
+  TUploadData,
+  TUploadImage
 } from './payloadActions'
 
 // request types
@@ -90,9 +98,19 @@ export type TDelFromBasketReq = ({ book }: TBookPayload) => (TDelete & {
   body: TBook,
 })
 
-export type TUploadBookReq = ({ book }: TUploadBook) => (TPut & {
-  url: 'user/upload',
-  fd: TUsersBookLoader | TAdminBookLoader,
+export type TUploadBookInfoReq = ({ token, bookInfo }: TUploadInfo) => (TToken & TPost & {
+  url: 'user/upload/info',
+  body: TBookInfoLoader,
+})
+
+export type TUploadBookDataReq = ({ token, bookData }: TUploadData) => (TToken & TPost & {
+  url: 'user/upload/data',
+  fd: TBookDataLoader
+})
+
+export type TUploadBookImageReq = ({ token, bookImage }: TUploadImage) => (TToken & TPost & {
+  url: 'user/upload/image',
+  fd: TBookImageLoader,
 })
 
 export type TBuyBookReq = ({ basket }: TBuyBooks) => (TPost & {

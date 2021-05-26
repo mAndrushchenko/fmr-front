@@ -9,12 +9,8 @@ import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
-import InputLabel from '@material-ui/core/InputLabel'
-
 import { styles } from './styles'
+import { Genres } from '../Genres'
 
 export const Filters: VFC = () => {
   const classes = styles()
@@ -28,7 +24,7 @@ export const Filters: VFC = () => {
   })
 
   useEffect(() => {
-// console for develop
+    // console for develop
     console.log('send request')
   }, [ useDebounce(filters, 1000) ])
 
@@ -108,34 +104,7 @@ export const Filters: VFC = () => {
             value={filters.author}
             onChange={fieldChangeHandler}
           />
-          <FormControl
-            variant='outlined'
-            margin='normal'
-            className={classes.genre}
-          >
-            <InputLabel id='genre-label'>Genre</InputLabel>
-            <Select
-              labelId='genre-label'
-              id='genre'
-              label='Genre'
-              value={filters.genre}
-              onChange={genreChangeHandler}
-            >
-              <MenuItem value='Detective'>Detective</MenuItem>
-              <MenuItem value='Fantastic'>Fantastic</MenuItem>
-              <MenuItem value='Psychology'>Psychology</MenuItem>
-              <MenuItem value='Roman'>Roman</MenuItem>
-              <MenuItem value='Fantasy'>Fantasy</MenuItem>
-              <MenuItem value='Business'>Business</MenuItem>
-              <MenuItem value='Autobiography'>Autobiography</MenuItem>
-              <MenuItem value='Thrillers'>Thrillers</MenuItem>
-              <MenuItem value='Horror'>Horror</MenuItem>
-              <MenuItem value='Poem'>Poem</MenuItem>
-              <MenuItem value='Comics'>Comics</MenuItem>
-              <MenuItem value='Memoirs'>Memoirs</MenuItem>
-              <MenuItem value='History'>History</MenuItem>
-            </Select>
-          </FormControl>
+          <Genres value={filters.genre} setValue={genreChangeHandler} />
 
           <TextField
             id='searchPhrase'
