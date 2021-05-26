@@ -18,8 +18,8 @@ export const useLazyBookPageLoader = () => {
   const isEnded = bookWordIndex >= bookLength - 1
   const isPageExists = (index: number) => index < totalPages && index >= 0
 
-  const pageIndex = Math.floor(bookWordIndex / 61)
-  const pageWordIndex = bookWordIndex - pageIndex * 61
+  const pageIndex = Math.floor(bookWordIndex / 300)
+  const pageWordIndex = bookWordIndex - pageIndex * 300
   const page = pages[pageIndex]
   let word: string | undefined
 
