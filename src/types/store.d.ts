@@ -62,8 +62,6 @@ export type TShopFilters = {
 
 export type TBookPage = string[]
 
-export type TReaderSelectedPage = { selectedPage: number }
-
 export type TReaderSelectedWord = { selectedWord: number }
 
 export type TReaderCacheSize = { cacheSize: number }
@@ -72,14 +70,15 @@ export type TReaderTotalPages = { totalPages: number }
 
 export type TReaderBookLength = { bookLength: number }
 
-export type TReaderBook = TReaderTotalPages & {
-  pages: Record<number, TBookPage | undefined>
+export type TReaderBookPages = { pages: (TBookPage | undefined)[] }
+
+export type TReaderBook = TReaderTotalPages & TReaderBookPages &
+  TReaderBookLength & TReaderSelectedWord & {
   book: TBook
 }
 
-export type TReaderBookState = TReaderCacheSize & TReaderTotalPages &
+export type TReaderBookState = TReaderTotalPages & TReaderBookPages &
   TReaderBookLength & TReaderSelectedWord & {
-  pages: Record<number, TBookPage | undefined>
   book: TBook | null,
   lastReqType: string | null
   loadingPages: number[]

@@ -7,8 +7,6 @@ export type TBookPayload = {
 
 // export type TIdWithToken = TId
 
-export type TGetReaderBook = TBookPayload & TReaderCacheSize & TReaderSelectedPage & TId
-
 export type TUploadBook = {
   book: TUsersBookLoader | TAdminBookLoader
 }
@@ -23,4 +21,15 @@ export type TUserActionPayload = TToken | TUserEmail | TBookPayload | TUploadBoo
 
 // export type TPagesWithToken = TReaderSelectedPage & TReaderCacheSize & TId
 
-export type TGetPagess = TReaderSelectedPage & TReaderCacheSize
+export type TGetReaderBook = TId & Partial<TReaderCacheSize>
+
+export type TGetBookPages = TId & TGetBookPagesPayload
+
+export type TUpdateBookProgress = TId & {
+  selectedWord: number
+}
+
+export type TGetBookPagesPayload = {
+  index: number
+  count?: number
+}

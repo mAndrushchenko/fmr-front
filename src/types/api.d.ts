@@ -4,19 +4,24 @@ import {
   TToken,
   TUserData,
   TReaderBook,
-  TShopFilters, TShopBook
+  TShopFilters,
+  TShopBook,
+  TReaderBookPages
 } from 'src/types/store'
 import {
   TBuyBooks,
   TUploadBook,
   TGetReaderBook,
-  TBookPayload
+  TBookPayload,
+  TGetBookPages,
+  TUpdateBookProgress
 } from './payloadActions'
 
 // request types
 
 type TGet = { method: 'GET' }
 type TPut = { method: 'PUT' }
+type TPatch = { method: 'PATCH' }
 type TPost = { method: 'POST' }
 type TDelete = { method: 'DELETE' }
 
@@ -57,6 +62,10 @@ export type TBooksRes = TResInformation & {
 
 export type TReaderRes = TResInformation & {
   data: TReaderBook
+}
+
+export type TBookPagesRes = TResInformation & {
+  data: TReaderBookPages
 }
 
 export type TResponse = TUserDataRes | TEmptyRes | TBookRes | TBooksRes | TReaderRes
@@ -108,8 +117,25 @@ export type TGetShopBooks = (filters: TShopFilters) => ({
 
 export type TGetBookReq = ({
   cacheSize,
-  selectedPage,
   id
-} : TGetReaderBook) => (TGet & {
+}: TGetReaderBook) => (TGet & {
   url: string,
+})
+
+export type TGetBookPagesReq = ({
+  id,
+  index,
+  count
+}: TGetBookPages) => (TGet & {
+  url: string
+})
+
+export type TUpdateBookProgressReq = ({
+  id,
+  selectedWord
+}: TUpdateBookProgress) => (TPatch & {
+  url: string,
+  body: {
+    selectedWord: number
+  }
 })
