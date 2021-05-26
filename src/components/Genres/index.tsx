@@ -1,4 +1,4 @@
-import { VFC, ChangeEvent, useEffect } from 'react'
+import { VFC, ChangeEvent } from 'react'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import Select from '@material-ui/core/Select'
@@ -15,11 +15,6 @@ interface IGenres {
 
 export const Genres: VFC<IGenres> = ({ value, setValue, className }) => {
   const classes = styles()
-
-  // counting re-renders
-  useEffect(() => {
-    console.log('genres re-render')
-  })
 
   return (
     <FormControl variant='outlined' className={`${className} ${classes.root}`} margin='normal' required>

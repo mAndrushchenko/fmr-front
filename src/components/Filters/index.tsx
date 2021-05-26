@@ -1,5 +1,4 @@
 import { VFC, useState, useCallback, useEffect } from 'react'
-import { useDebounce } from 'src/hooks/useDebounce'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
@@ -14,6 +13,7 @@ import { Genres } from '../Genres'
 
 export const Filters: VFC = () => {
   const classes = styles()
+  // let sendTimeout: any
 
   const [ author, setAuthor ] = useState<string>('')
   const [ genre, setGenre ] = useState<string>('')
@@ -21,27 +21,15 @@ export const Filters: VFC = () => {
   const [ searchPhrase, setSearchPhrase ] = useState<string>('')
   const [ year, setYear ] = useState<number>(new Date().getFullYear())
 
-  // const filters = useDebounce({
-  //   author,
-  //   genre,
-  //   price,
-  //   searchPhrase,
-  //   year
-  // }, 1000)
-
-  // counting re-renders
   useEffect(() => {
-    console.log('filters re-render')
-  })
-
-  // useEffect(() => {
-  //   // console for develop
-  //   console.log('send request')
-  // }, [ filters ])
+    const sendTimeout = setTimeout(() => {
+      console.log('send request')
+    }, 500)
+    return () => clearTimeout(sendTimeout)
+  }, [ author, genre, price, searchPhrase, year ])
 
   const authorHandler = useCallback(
     e => {
-      console.log('author changed')
       setAuthor(e.target.value)
     },
     [ ]
@@ -49,7 +37,6 @@ export const Filters: VFC = () => {
 
   const genreHandler = useCallback(
     e => {
-      console.log('genre changed')
       setGenre(e.target.value)
     },
     [ ]
@@ -57,7 +44,6 @@ export const Filters: VFC = () => {
 
   const searchPhraseHandler = useCallback(
     e => {
-      console.log('search changed')
       setSearchPhrase(e.target.value)
     },
     [ ]
@@ -65,7 +51,6 @@ export const Filters: VFC = () => {
 
   const priceHandler = useCallback(
     (e, value: number | number[]) => {
-      console.log('price changed')
       setPrice(value as number[])
     },
     [ ]
@@ -73,7 +58,6 @@ export const Filters: VFC = () => {
 
   const minPriceHandler = useCallback(
     e => {
-      console.log('min price changed')
       setPrice([ +e.target.value, price[1] ])
     },
     [ price ]
@@ -81,7 +65,6 @@ export const Filters: VFC = () => {
 
   const maxPriceHandler = useCallback(
     e => {
-      console.log('max price changed')
       setPrice([ price[0], +e.taget.value ])
     },
     [ price ]
@@ -89,19 +72,18 @@ export const Filters: VFC = () => {
 
   const yearHandler = useCallback(
     e => {
-      console.log('year changed')
       setYear(+e.target.value)
     },
     [ ]
   )
 
   return (
-    <Accordion>
-      <AccordionSummary expandIcon={<ExpandMore />}>
+    <Accordion className={classes.root}>
+      <AccordionSummary className={classes.title} expandIcon={<ExpandMore />}>
         <Typography variant='h6'>Filters</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <form className={classes.root}>
+        <form className={classes.form}>
           <TextField
             id='author'
             label='Author'
