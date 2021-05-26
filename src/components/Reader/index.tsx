@@ -1,35 +1,20 @@
 import { useCallback, useState, VFC, MouseEvent } from 'react'
+import { useSelector } from 'react-redux'
+import { useLazyBookPageLoader } from 'src/hooks/useLazyBookPageLoader'
 import { useStyles } from './styles'
 import { Visualizer } from './Visualizer'
 import { Controls } from './Controls'
 import { Progress } from './Progress'
 import { useToggle } from '../../hooks/useToggle'
 
-const tokenList = [
-  'Pariatur', 'labore', 'labore', 'do',
-  'duis', 'ut', 'id', 'magna',
-  'magna', 'ea', 'voluptate', 'nulla.',
-  'Est', 'nostrud', 'nulla', 'est',
-  'quis', 'consequat', 'non', 'proident',
-  'aliqua', 'incididunt', 'ut', 'enim',
-  'laboris', 'fugiat.', 'Tempor', 'voluptate',
-  'deserunt', 'incididunt', 'aute', 'duis',
-  'irure', 'laborum', 'laboris', 'aute',
-  'commodo', 'ex', 'in.', 'Ullamco',
-  'excepteur', 'laborum', 'duis', 'eu',
-  'velit', 'esse', 'tempor', 'culpa',
-  'esse', 'exercitation', 'et', 'veniam.',
-  'Officia', 'reprehenderit', 'nisi', 'ipsum',
-  'sint', 'irure', 'est', 'mollit',
-  'nulla.'
-]
-
 export const Reader: VFC = () => {
   const classes = useStyles()
+  const { nextWord, word, isEnded } = useLazyBookPageLoader()
+  const selectedWord = useSelector(store => store.readerSlice.selectedWord)
+  const bookLength = useSelector(store => store.readerSlice.bookLength)
   const [ speed, setSpeed ] = useState(200)
   const [ isPaused, togglePause ] = useToggle(true)
   const [ fontSize, setFontSize ] = useState(28)
-  const [ currentIndex, setCurrentIndex ] = useState(0)
   const pauseClickHandler = useCallback(
     (event: MouseEvent) =>
       event.currentTarget === event.target && togglePause(),
@@ -37,14 +22,14 @@ export const Reader: VFC = () => {
   )
   const progressChangeHandler = useCallback(
     (value: number) => {
-      const nextIndex = +((value / 100) * tokenList.length - 1).toFixed()
+      const nextIndex = +((value / 100) * bookLength).toFixed()
       togglePause(true)
       // For unknown reason, nextIndex === -1 when value === 0
-      setCurrentIndex(nextIndex > 0 ? nextIndex : 0)
+      nextWord(nextIndex > 0 ? nextIndex : 0)
     },
-    []
+    [ bookLength ]
   )
-  const progress = (currentIndex / (tokenList.length - 1)) * 100
+  const progress = (selectedWord / (bookLength - 1)) * 100
 
   return (
     <div className={classes.root} onClick={pauseClickHandler}>
@@ -54,12 +39,11 @@ export const Reader: VFC = () => {
         onPause={togglePause}
       />
       <Visualizer
-        tokenList={tokenList}
-        index={currentIndex}
+        word={word ?? ''}
         speed={speed}
         fontSize={fontSize}
-        paused={isPaused}
-        onNext={setCurrentIndex}
+        paused={isPaused || isEnded}
+        onNext={nextWord}
         onPause={togglePause}
       />
       <Controls
