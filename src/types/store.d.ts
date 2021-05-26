@@ -70,7 +70,7 @@ export type TReaderTotalPages = { totalPages: number }
 
 export type TReaderBookLength = { bookLength: number }
 
-export type TReaderBookPages = { pages: (TBookPage | undefined)[] }
+export type TReaderBookPages = { pages: Record<number, TBookPage | undefined> }
 
 export type TReaderBook = TReaderTotalPages & TReaderBookPages &
   TReaderBookLength & TReaderSelectedWord & {
