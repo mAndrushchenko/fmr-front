@@ -19,6 +19,7 @@ import { Signup } from '../Signup'
 import { PasswordRecovery } from '../Signin/PasswordRecovery'
 import { styles } from './styles'
 import { Library } from '../Library'
+import { MyBooks } from '../MyBooks'
 
 export const Main: VFC = () => {
   const { spin } = useSelector(spinnerSelector)
@@ -49,6 +50,9 @@ export const Main: VFC = () => {
           </Route>
           <Route path='/loader'>
             <Loader />
+          </Route>
+          <Route path='/my-books'>
+            <MyBooks />
           </Route>
           <Route path='/online-reader/:id'>
             <Reader />
