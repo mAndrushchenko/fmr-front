@@ -1,7 +1,14 @@
 import { put, call, takeEvery } from 'redux-saga/effects'
-import { PayloadAction } from '@reduxjs/toolkit'
-import { TToken } from 'src/types/store'
+import type { PayloadAction } from '@reduxjs/toolkit'
 import { request } from 'src/api/request'
+import type {
+  TBookRes,
+  TEmptyRes,
+  TResponse,
+  TUserDataRes,
+  TUserServerActions
+} from 'src/types/api'
+import type { TToken } from 'src/types/store'
 import {
   signinReq,
   signupReq,
@@ -13,13 +20,12 @@ import {
 } from 'src/api/server-actions'
 import type {
   TBuyBooks,
+  TBookPayload,
   TUploadInfo,
   TUploadData,
   TUploadImage,
-  TBookWithToken,
   TUserActionPayload
 } from 'src/types/payloadActions'
-import type { TEmptyRes, TResponse, TUserDataRes } from 'src/types/api'
 import {
   buyBooks,
   addToBasket,
@@ -41,8 +47,10 @@ import {
 import { stopSpin } from '../slices/spinnerSlice'
 
 function* makeUserRequest({ payload, serverAction }:
-  { payload: TUserActionPayload, serverAction: any }) {
-  const fetchDataFromApi = () => request(serverAction(payload))
+  { payload: TUserActionPayload, serverAction: TUserServerActions }) {
+  // Need to cast serverAction to any because
+  // TS cannot match serverAction param type to payload type correctly
+  const fetchDataFromApi = () => request((serverAction as any)(payload))
   const response: TResponse = yield call(fetchDataFromApi)
   return response
 }
@@ -81,7 +89,7 @@ function* signinWorker(action: PayloadAction<TToken>) {
   }
 }
 
-function* getUserDataWorker(action: PayloadAction<TToken>) {
+function* getUserDataWorker(action: PayloadAction) {
   try {
     const response: TUserDataRes = yield makeUserRequest({
       serverAction: getUserReq, payload: action.payload
@@ -95,7 +103,7 @@ function* getUserDataWorker(action: PayloadAction<TToken>) {
   }
 }
 
-function* signupUserWorker(action: PayloadAction<TToken>) {
+function* signupUserWorker(action: PayloadAction) {
   try {
     const response: TEmptyRes = yield makeUserRequest({
       serverAction: signupReq, payload: action.payload
@@ -121,7 +129,7 @@ function* passwordRecoveryWorker(action: PayloadAction<TToken>) {
   }
 }
 
-function* addToBasketWorker(action: PayloadAction<TBookWithToken>) {
+function* addToBasketWorker(action: PayloadAction<TBookPayload>) {
   try {
     const { book } = action.payload
     const response: TEmptyRes = yield makeUserRequest({
@@ -136,7 +144,7 @@ function* addToBasketWorker(action: PayloadAction<TBookWithToken>) {
   }
 }
 
-function* delFromBasketWorker(action: PayloadAction<TBookWithToken>) {
+function* delFromBasketWorker(action: PayloadAction<TBookPayload>) {
   try {
     const { book } = action.payload
     const response: TEmptyRes = yield makeUserRequest({

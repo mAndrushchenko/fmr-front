@@ -16,3 +16,9 @@ export const store = configureStore({
   }), sagaMiddleWare ]
 })
 sagaMiddleWare.run(rootWatcher)
+
+export type RootState = ReturnType<typeof rootReducer>
+
+declare module 'react-redux' {
+  interface DefaultRootState extends RootState {}
+}
