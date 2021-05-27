@@ -6,15 +6,14 @@ import {
   useCallback
 } from 'react'
 import Button from '@material-ui/core/Button'
-import { useDispatch, useSelector } from 'react-redux'
-import { addToBasketAction, userSelector } from 'src/store/slices/userSlice'
+import { useDispatch } from 'react-redux'
+import { addToBasketAction } from 'src/store/slices/userSlice'
 import defaultImage from 'src/assets/img/book/book.light-theme.png'
 import type { TAppDispatch, TShopBook } from 'src/types/store'
 import { styles } from './styles'
 
 export const Card: VFC<{ book: TShopBook }> = ({ book }) => {
   const classes = styles()
-  const { token } = useSelector(userSelector)
   const dispatch = useDispatch<TAppDispatch>()
   const imgUrl = useMemo(() => book.image ? `/uploads/${book.image}` : null, [])
   const [ imgExist, setImageExist ] = useState(true)
@@ -30,7 +29,7 @@ export const Card: VFC<{ book: TShopBook }> = ({ book }) => {
   }, [])
 
   const addToBasket = useCallback(() => {
-    dispatch(addToBasketAction({ book, token }))
+    dispatch(addToBasketAction({ book }))
   }, [ book, dispatch ])
 
   return (

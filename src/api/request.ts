@@ -1,11 +1,12 @@
-import type { IEndpoint, IHeaders, TResponse } from 'src/types/api'
+import { IEndpoint, IHeaders, TResponse } from 'src/types/api'
+import { store } from '../store/index'
 
 export const request = async ({
   url, method = 'GET', body: bodyData, token, fd
 }: IEndpoint): Promise<TResponse> => {
   let body
   const headers: IHeaders = {}
-
+  const { token: userToken } = store.getState().userSlice
   try {
     if (bodyData) {
       body = JSON.stringify(bodyData)
@@ -17,8 +18,8 @@ export const request = async ({
         console.log(key)
       }
     }
-    if (token) {
-      headers.authorization = `Bearer ${token}`
+    if (token || userToken) {
+      headers.authorization = `Bearer ${token ?? userToken}`
     }
 
     const response: Response = await fetch(url, { method, body, headers })

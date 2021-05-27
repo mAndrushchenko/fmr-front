@@ -1,6 +1,5 @@
 import { VFC } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { Reader } from '../Reader'
 import { Header } from '../Header'
 import { Loader } from '../Loader'
@@ -32,14 +31,20 @@ export const Main: VFC = () => {
           <Route path='/loader'>
             <Loader />
           </Route>
-          <Route path='/online-reader'>
+          <Route path='/online-reader/:id'>
             <Reader />
+          </Route>
+          <Route exact path='/online-reader'>
+            <Redirect to='/' />
           </Route>
           <Route path='/library'>
             <Library />
           </Route>
           <Route path='/password-recovery'>
             <PasswordRecovery />
+          </Route>
+          <Route exact path='/'>
+            <Home />
           </Route>
         </Switch>
       </Router>
