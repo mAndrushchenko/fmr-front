@@ -26,16 +26,16 @@ import {
   uploadImageError
 } from 'src/shared/constant/errorMasseges'
 import { bookNameRegexp } from 'src/shared/constant/regExp'
-import { BookInfo } from './BookInfo'
 import type {
   TBookDataLoader,
   TBookImageLoader,
   TUsersBookInfoLoaderUser
 } from 'src/types/bookLoader'
+import type { TAppDispatch, TUploadBook } from 'src/types/store'
 
+import { BookInfo } from './BookInfo'
 import { UploadImage } from './UploadImage'
 import { UploadBook } from './UploadBook'
-import type { TAppDispatch, TUploadBook } from 'src/types/store'
 
 import { loaderStyles } from './styles'
 
@@ -129,22 +129,22 @@ export const Loader: VFC = () => {
       if (!checkAdminFields() || !adminBookInfo) {
         return
       }
-      dispatch(uploadBookInfoAction({ token, bookInfo: adminBookInfo }))
+      dispatch(uploadBookInfoAction({ bookInfo: adminBookInfo }))
     } else if (activeStep === 0 && !isAdmin) {
       if (!checkUserFields() || !userBookInfo) {
         return
       }
-      dispatch(uploadBookInfoAction({ token, bookInfo: userBookInfo }))
+      dispatch(uploadBookInfoAction({ bookInfo: userBookInfo }))
     } else if (activeStep === 1) {
       if (!bookImage) {
         return setError(uploadImageError)
       }
-      dispatch(uploadBookImageAction({ token, bookImage }))
+      dispatch(uploadBookImageAction({ bookImage }))
     } else if (activeStep === 2) {
       if (!bookData) {
         return setError(uploadBookError)
       }
-      dispatch(uploadBookDataAction({ token, bookData }))
+      dispatch(uploadBookDataAction({ bookData }))
       resetFormData()
     }
     setActiveStep(activeStep + 1)

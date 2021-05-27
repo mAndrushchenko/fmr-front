@@ -30,7 +30,7 @@ export const Card: VFC<{ book: TShopBook }> = ({ book }) => {
   }, [])
 
   const addToBasket = useCallback(() => {
-    dispatch(addToBasketAction({ book, token }))
+    dispatch(addToBasketAction({ book }))
   }, [ book, dispatch ])
 
   return (
