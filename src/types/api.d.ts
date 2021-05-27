@@ -98,17 +98,17 @@ export type TDelFromBasketReq = ({ book }: TBookPayload) => (TDelete & {
   body: TBook,
 })
 
-export type TUploadBookInfoReq = ({ token, bookInfo }: TUploadInfo) => (TToken & TPost & {
+export type TUploadBookInfoReq = ({ bookInfo }: TUploadInfo) => (TPost & {
   url: 'user/upload/info',
   body: TBookInfoLoader,
 })
 
-export type TUploadBookDataReq = ({ token, bookData }: TUploadData) => (TToken & TPost & {
+export type TUploadBookDataReq = ({ bookData }: TUploadData) => (TPost & {
   url: 'user/upload/data',
   fd: TBookDataLoader
 })
 
-export type TUploadBookImageReq = ({ token, bookImage }: TUploadImage) => (TToken & TPost & {
+export type TUploadBookImageReq = ({ bookImage }: TUploadImage) => (TPost & {
   url: 'user/upload/image',
   fd: TBookImageLoader,
 })
@@ -119,7 +119,8 @@ export type TBuyBookReq = ({ basket }: TBuyBooks) => (TPost & {
 })
 
 export type TUserServerActions = TSigninReq | TSignupReq |
-  TBuyBookReq | TGetUserReq | TUploadBookReq |
+  TBuyBookReq | TGetUserReq | TUploadBookInfoReq |
+  TUploadBookDataReq | TUploadBookImageReq |
   TAddToBasketReq | TDelFromBasketReq |
   TPasswordRecoveryReq
 

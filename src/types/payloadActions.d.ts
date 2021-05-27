@@ -11,17 +11,19 @@ export type TUploadBook = {
   book: TUsersBookLoader | TAdminBookLoader
 }
 
-export type TUploadInfo = TToken & {bookInfo: TBookInfoLoader}
+export type TUploadInfo = { bookInfo: TBookInfoLoader }
 
-export type TUploadData = TToken & {bookData: TBookDataLoader}
+export type TUploadData = { bookData: TBookDataLoader }
 
-export type TUploadImage = TToken & {bookImage: TBookImageLoader}
+export type TUploadImage = { bookImage: TBookImageLoader }
 
-export type TBuyBooks = TToken & {
+export type TBuyBooks = {
   basket: TBook[]
 }
 
-export type TUserActionPayload = TToken | TUserEmail | TBookPayload | TUploadBook | TBuyBooks | void
+export type TUserActionPayload = TToken | TUserEmail |
+  TBookPayload | TUploadInfo | TUploadData |
+  TUploadImage | TBuyBooks | void
 
 // reader
 

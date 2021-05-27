@@ -129,22 +129,22 @@ export const Loader: VFC = () => {
       if (!checkAdminFields() || !adminBookInfo) {
         return
       }
-      dispatch(uploadBookInfoAction({ token, bookInfo: adminBookInfo }))
+      dispatch(uploadBookInfoAction({ bookInfo: adminBookInfo }))
     } else if (activeStep === 0 && !isAdmin) {
       if (!checkUserFields() || !userBookInfo) {
         return
       }
-      dispatch(uploadBookInfoAction({ token, bookInfo: userBookInfo }))
+      dispatch(uploadBookInfoAction({ bookInfo: userBookInfo }))
     } else if (activeStep === 1) {
       if (!bookImage) {
         return setError(uploadImageError)
       }
-      dispatch(uploadBookImageAction({ token, bookImage }))
+      dispatch(uploadBookImageAction({ bookImage }))
     } else if (activeStep === 2) {
       if (!bookData) {
         return setError(uploadBookError)
       }
-      dispatch(uploadBookDataAction({ token, bookData }))
+      dispatch(uploadBookDataAction({ bookData }))
       resetFormData()
     }
     setActiveStep(activeStep + 1)
