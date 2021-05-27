@@ -89,7 +89,7 @@ export type TFirstLoadBooksLists = {
 }
 
 export type TShopBook = TUploadBook & TId & {
-  image: string
+  image: string | null
 }
 
 export type TShop = {

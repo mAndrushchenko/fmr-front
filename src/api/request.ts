@@ -1,4 +1,4 @@
-import { IEndpoint, IHeaders, TResponse } from 'src/types/api'
+import type { IEndpoint, IHeaders, TResponse } from 'src/types/api'
 
 export const request = async ({
   url, method = 'GET', body: bodyData, token, fd

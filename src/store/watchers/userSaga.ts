@@ -49,7 +49,11 @@ function* makeUserRequest({ payload, serverAction }:
 
 function* checkStatus({ response, action, actionPayload, errorAction }: any) {
   const { data, message, status } = response
-  if (status && data) {
+  if (status && data && actionPayload) {
+    // make some operations with response data
+    yield put(action({ ...data, ...actionPayload }))
+    yield put(stopSpin({ message, error: false }))
+  } else if (status && data) {
     // make some operations with response data
     yield put(action(data))
     yield put(stopSpin({ message, error: false }))

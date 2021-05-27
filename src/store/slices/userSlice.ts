@@ -40,8 +40,6 @@ export const userSlice = createSlice({
 
     delFromBasketAction: (state, { type }: PayloadAction<TBookWithToken>) => void (state.lastReqType = type),
 
-    setUserToken: (state, { payload }: PayloadAction<TToken>) => ({ ...state, ...payload }),
-
     uploadBookInfoAction: (state, { type }: PayloadAction<TUploadInfo>) => void (state.lastReqType = type),
 
     uploadBookDataAction: (state, { type }: PayloadAction<TUploadData>) => void (state.lastReqType = type),
@@ -76,7 +74,6 @@ export const {
   addToBasket,
   setUserData,
   delUserData,
-  setUserToken,
   delFromBasket,
   buyBooksAction,
   signinUserAction,
