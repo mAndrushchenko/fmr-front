@@ -62,7 +62,7 @@ export const Main: VFC = () => {
           <Route path='/password-recovery'>
             <PasswordRecovery />
           </Route>
-          <Route path='/'>
+          <Route exact path='/'>
             <Home />
           </Route>
         </Switch>
