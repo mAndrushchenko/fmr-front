@@ -1,11 +1,11 @@
 import { VFC } from 'react'
 import { useSelector } from 'react-redux'
 import { userSelector } from 'src/store/slices/userSlice'
+import type { TUsersBookInfoLoaderUser } from 'src/types/bookLoader'
+import type { TUploadBook } from 'src/types/store'
 
 import { AdminForm } from './AdminForm'
 import { UserForm } from './UserForm'
-import type { TUsersBookInfoLoaderUser } from 'src/types/bookLoader'
-import type { TUploadBook } from 'src/types/store'
 
 interface IBookInfo {
   handleAdminBookInfo: (info: TUploadBook | null) => void,
