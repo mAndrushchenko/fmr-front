@@ -40,9 +40,10 @@ export const signupReq: TSignupReq = () => ({
   method: 'POST'
 })
 
-export const getUserReq: TGetUserReq = () => ({
+export const getUserReq: TGetUserReq = ({ token }) => ({
   url: '/user',
-  method: 'GET'
+  method: 'GET',
+  token
 })
 
 export const passwordRecoveryReq: TPasswordRecoveryReq = ({ token }) => ({
