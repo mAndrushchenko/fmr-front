@@ -4,7 +4,6 @@ import Drawer from '@material-ui/core/Drawer'
 import IconButton from '@material-ui/core/IconButton'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import Divider from '@material-ui/core/Divider'
-import Badge from '@material-ui/core/Badge'
 
 import { Typography } from '@material-ui/core'
 import { useSelector } from 'react-redux'
@@ -44,20 +43,6 @@ export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, t
         to='/catalog'
       >
         Catalog
-      </Link>
-      <Link
-        className={classes.link}
-        onClick={toggle}
-        to='/online-reader'
-      >
-        Online reader
-        <Badge
-          badgeContent='new'
-          variant='dot'
-          color='secondary'
-        >
-          &nbsp;
-        </Badge>
       </Link>
       <Link
         className={classes.link}

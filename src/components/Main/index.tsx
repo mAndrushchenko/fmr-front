@@ -51,14 +51,11 @@ export const Main: VFC = () => {
           <Route path='/loader'>
             <Loader />
           </Route>
-          <Route path='/my-books'>
-            <MyBooks />
-          </Route>
-          <Route path='/online-reader/:id'>
+          <Route path='/my-books/:id/reader'>
             <Reader />
           </Route>
-          <Route exact path='/online-reader'>
-            <Redirect to='/' />
+          <Route path='/my-books'>
+            <MyBooks />
           </Route>
           <Route path='/library'>
             <Library />
