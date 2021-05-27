@@ -1,76 +1,36 @@
-import React, { VFC, useRef, useCallback } from 'react'
-import { styled } from '@material-ui/core'
+import { VFC, useCallback } from 'react'
 import { PauseRounded } from '@material-ui/icons'
 import { useInterval } from '../../../hooks/useInterval'
+import { useStyles } from './styles'
 
 interface VisualizerProps {
   className?: string
-  tokenList: string[]
-  index: number
+  word: string
   speed: number
   fontSize: number
   paused?: boolean
-  onNext: (tokenIndex: number) => void
-  onEnd?: (tokenIndex: number) => void
+  onNext: () => void
   onPause?: (state?: boolean) => void
 }
 
-interface TextStyleProps {
-  fontSize: number
-}
-
-const VisualizerRoot = styled('div')({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  position: 'relative'
-})
-
-const DisplayPaused = styled(PauseRounded)({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  fontSize: 256,
-  opacity: 0.1,
-  zIndex: -1
-})
-
-const Text = styled('p')((props: TextStyleProps) => ({
-  fontSize: props.fontSize ?? 16
-}))
-
 export const Visualizer: VFC<VisualizerProps> = ({
   className,
-  tokenList,
-  index,
+  word,
   speed,
   fontSize,
   paused = false,
   onNext,
-  onEnd,
   onPause
 }) => {
-  const currentToken = tokenList[index]
-  const delayRef = useRef<number>((60 / speed) * 1000)
-  delayRef.current = (60 / speed) * 1000
-
-  useInterval(() => {
-    if (paused) return true
-    if (tokenList.length <= index + 1) {
-      onEnd?.(index)
-      return true
-    }
-
-    onNext?.(++index)
-  }, delayRef, [ paused, onNext ])
-
+  const classes = useStyles({ fontSize })
+  const delay = (60 / speed) * 1000
   const pauseClickHandler = useCallback(() => onPause?.(), [])
+  useInterval(() => onNext?.(), delay, paused)
 
   return (
-    <VisualizerRoot onClick={pauseClickHandler} className={className}>
-      {paused && <DisplayPaused />}
-      <Text fontSize={fontSize}>{currentToken}</Text>
-    </VisualizerRoot>
+    <div className={`${classes.root} ${className}`} onClick={pauseClickHandler}>
+      {paused && <PauseRounded className={classes.paused} />}
+      <p className={classes.text}>{word}</p>
+    </div>
   )
 }
