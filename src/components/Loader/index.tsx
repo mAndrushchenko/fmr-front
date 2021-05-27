@@ -26,16 +26,16 @@ import {
   uploadImageError
 } from 'src/shared/constant/errorMasseges'
 import { bookNameRegexp } from 'src/shared/constant/regExp'
-import { BookInfo } from './BookInfo'
 import type {
   TBookDataLoader,
   TBookImageLoader,
   TUsersBookInfoLoaderUser
 } from 'src/types/bookLoader'
+import type { TAppDispatch, TUploadBook } from 'src/types/store'
 
+import { BookInfo } from './BookInfo'
 import { UploadImage } from './UploadImage'
 import { UploadBook } from './UploadBook'
-import type { TAppDispatch, TUploadBook } from 'src/types/store'
 
 import { loaderStyles } from './styles'
 
