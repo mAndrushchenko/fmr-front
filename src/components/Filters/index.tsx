@@ -13,6 +13,7 @@ import { Genres } from '../Genres'
 
 export const Filters: VFC = () => {
   const classes = styles()
+  // let sendTimeout: any
 
   const [ author, setAuthor ] = useState<string>('')
   const [ genre, setGenre ] = useState<string>('')
