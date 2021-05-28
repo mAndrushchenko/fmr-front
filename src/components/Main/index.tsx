@@ -1,5 +1,5 @@
 import React, { useEffect, VFC } from 'react'
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { spinnerSelector } from 'src/store/slices/spinnerSlice'
 import { CircularProgress } from '@material-ui/core'
@@ -48,10 +48,10 @@ export const Main: VFC = () => {
           <Route path='/signup'>
             <Signup />
           </Route>
-          <Route path='/loader'>
+          <Route path='/my-books/upload'>
             <Loader />
           </Route>
-          <Route path='/my-books/:id/reader'>
+          <Route path='/my-books/:id/read'>
             <Reader />
           </Route>
           <Route path='/my-books'>

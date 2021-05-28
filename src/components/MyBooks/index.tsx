@@ -17,7 +17,7 @@ export const MyBooks: VFC = () => {
   const classes = useStyles()
   const history = useHistory()
   const bookClickHandler = useCallback((id: TId['id']) => {
-    history.push(`/my-books/${id}/reader`)
+    history.push(`/my-books/${id}/read`)
   }, [ history ])
 
   return (
