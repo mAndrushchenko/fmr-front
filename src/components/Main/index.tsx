@@ -1,4 +1,4 @@
-import { VFC } from 'react'
+import React, { VFC } from 'react'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { Reader } from '../Reader'
 import { Header } from '../Header'
@@ -10,6 +10,7 @@ import { PasswordRecovery } from '../Signin/PasswordRecovery'
 import { styles } from './styles'
 import { Library } from '../Library'
 import { Spinner } from '../Spinner'
+import { Results } from '../Results'
 
 export const Main: VFC = () => {
   const classes = styles()
@@ -45,6 +46,9 @@ export const Main: VFC = () => {
           </Route>
           <Route exact path='/'>
             <Home />
+          </Route>
+          <Route path='/results'>
+            <Results />
           </Route>
         </Switch>
       </Router>
