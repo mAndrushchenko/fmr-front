@@ -10,6 +10,7 @@ import { PasswordRecovery } from '../Signin/PasswordRecovery'
 import { styles } from './styles'
 import { Library } from '../Library'
 import { Results } from '../Results'
+import { Basket } from '../Basket'
 
 export const Main: VFC = () => {
   const classes = styles()
@@ -45,6 +46,9 @@ export const Main: VFC = () => {
           </Route>
           <Route path='/results'>
             <Results />
+          </Route>
+          <Route path='/basket'>
+            <Basket />
           </Route>
         </Switch>
       </Router>
