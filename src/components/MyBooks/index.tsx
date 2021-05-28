@@ -4,6 +4,7 @@ import { range } from 'src/utils/range'
 import type { TId } from 'src/types/store'
 import { useStyles } from './styles'
 import { BookCard } from './BookCard'
+import { AddCard } from './AddCard'
 
 const testBooks = range(0, 6).map(() => ({
   id: 9898,
@@ -19,6 +20,9 @@ export const MyBooks: VFC = () => {
   const bookClickHandler = useCallback((id: TId['id']) => {
     history.push(`/my-books/${id}/read`)
   }, [ history ])
+  const addBookHandler = useCallback(() => {
+    history.push('/my-books/upload')
+  }, [ history ])
 
   return (
     <div className={classes.root}>
@@ -30,6 +34,7 @@ export const MyBooks: VFC = () => {
           image={book.image}
           onClick={bookClickHandler}
         />))}
+      <AddCard onClick={addBookHandler} />
     </div>
   )
 }
