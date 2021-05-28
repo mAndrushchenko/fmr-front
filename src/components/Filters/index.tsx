@@ -1,5 +1,4 @@
 import { VFC, useState, useCallback, useEffect } from 'react'
-import { useDebounce } from 'src/hooks/useDebounce'
 import Accordion from '@material-ui/core/Accordion'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import AccordionSummary from '@material-ui/core/AccordionSummary'
@@ -15,96 +14,86 @@ import { Genres } from '../Genres'
 export const Filters: VFC = () => {
   const classes = styles()
 
-  const [ filters, setFilters ] = useState({
-    author: '',
-    genre: '',
-    price: [ 20, 80 ],
-    searchPhrase: '',
-    year: new Date().getFullYear()
-  })
+  const [ author, setAuthor ] = useState<string>('')
+  const [ genre, setGenre ] = useState<string>('')
+  const [ price, setPrice ] = useState<number[]>([ 20, 80 ])
+  const [ searchPhrase, setSearchPhrase ] = useState<string>('')
+  const [ year, setYear ] = useState<number>(new Date().getFullYear())
 
   useEffect(() => {
-    // console for develop
-    console.log('send request')
-  }, [ useDebounce(filters, 1000) ])
+    const sendTimeout = setTimeout(() => {
+      console.log('send request')
+    }, 500)
+    return () => clearTimeout(sendTimeout)
+  }, [ author, genre, price, searchPhrase, year ])
 
-  const fieldChangeHandler = useCallback(
+  const authorHandler = useCallback(
     e => {
-      setFilters({
-        ...filters,
-        [e.target.id]: e.target.value
-      })
+      setAuthor(e.target.value)
     },
-    [ filters ]
+    [ ]
   )
 
-  const genreChangeHandler = useCallback(
+  const genreHandler = useCallback(
     e => {
-      setFilters({
-        ...filters,
-        genre: e.target.value
-      })
+      setGenre(e.target.value)
     },
-    [ filters ]
+    [ ]
   )
 
-  const priceChangeHandler = useCallback(
+  const searchPhraseHandler = useCallback(
+    e => {
+      setSearchPhrase(e.target.value)
+    },
+    [ ]
+  )
+
+  const priceHandler = useCallback(
     (e, value: number | number[]) => {
-      setFilters({
-        ...filters,
-        price: value as number[]
-      })
+      setPrice(value as number[])
     },
-    [ filters ]
+    [ ]
   )
 
   const minPriceHandler = useCallback(
     e => {
-      setFilters({
-        ...filters,
-        price: [ +e.target.value, filters.price[1] ]
-      })
+      setPrice([ +e.target.value, price[1] ])
     },
-    [ filters ]
+    [ price ]
   )
 
   const maxPriceHandler = useCallback(
     e => {
-      setFilters({
-        ...filters,
-        price: [ filters.price[0], +e.target.value ]
-      })
+      setPrice([ price[0], +e.taget.value ])
     },
-    [ filters ]
+    [ price ]
   )
 
   const yearHandler = useCallback(
     e => {
-      setFilters({
-        ...filters,
-        year: +e.target.value
-      })
+      setYear(+e.target.value)
     },
-    [ filters ]
+    [ ]
   )
 
   return (
-    <Accordion>
-      <AccordionSummary expandIcon={<ExpandMore />}>
+    <Accordion className={classes.root}>
+      <AccordionSummary className={classes.title} expandIcon={<ExpandMore />}>
         <Typography variant='h6'>Filters</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <form className={classes.root}>
+        <form className={classes.form}>
           <TextField
             id='author'
             label='Author'
             variant='outlined'
             margin='normal'
             className={classes.author}
-            value={filters.author}
-            onChange={fieldChangeHandler}
+            value={author}
+            onChange={authorHandler}
           />
-          <Genres value={filters.genre} setValue={genreChangeHandler} />
+
+          <Genres className={classes.genres} value={genre} setValue={genreHandler} />
 
           <TextField
             id='searchPhrase'
@@ -112,8 +101,8 @@ export const Filters: VFC = () => {
             margin='normal'
             variant='outlined'
             className={classes.searchPhrase}
-            value={filters.searchPhrase}
-            onChange={fieldChangeHandler}
+            value={searchPhrase}
+            onChange={searchPhraseHandler}
           />
 
           <TextField
@@ -123,7 +112,7 @@ export const Filters: VFC = () => {
             variant='outlined'
             margin='normal'
             className={classes.year}
-            value={filters.year}
+            value={year}
             onChange={yearHandler}
           />
 
@@ -134,7 +123,7 @@ export const Filters: VFC = () => {
             margin='normal'
             type='number'
             className={classes.minPriceInput}
-            value={filters.price[0]}
+            value={price[0]}
             onChange={minPriceHandler}
           />
           <TextField
@@ -144,13 +133,13 @@ export const Filters: VFC = () => {
             margin='normal'
             type='number'
             className={classes.maxPriceInput}
-            value={filters.price[1]}
+            value={price[1]}
             onChange={maxPriceHandler}
           />
           <Slider
             className={classes.priceSlider}
-            value={filters.price}
-            onChange={priceChangeHandler}
+            value={price}
+            onChange={priceHandler}
             min={0}
             max={100}
           />
