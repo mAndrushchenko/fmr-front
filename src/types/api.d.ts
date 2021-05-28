@@ -12,7 +12,8 @@ import {
   TReaderBook,
   TShopFilters,
   TShopBook,
-  TReaderBookPages
+  TReaderBookPages,
+  TMyBook,
 } from 'src/types/store'
 import {
   TBuyBooks,
@@ -66,6 +67,10 @@ export type TBookRes = TResInformation & {
 
 export type TBooksRes = TResInformation & {
   data: TShopBook[]
+}
+
+export type TMyBooksRes = TResInformation & {
+  data: TMyBook[]
 }
 
 export type TReaderRes = TResInformation & {
@@ -133,6 +138,10 @@ export type TGetShopBooks = (filters: TShopFilters) => ({
 })
 
 // reader
+
+export type TGetMyBooksReq = () => (TGet & {
+  url: string,
+})
 
 export type TGetBookReq = ({
   cacheSize,

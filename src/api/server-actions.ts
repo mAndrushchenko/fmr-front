@@ -12,6 +12,7 @@ import type {
   TUploadBookImageReq,
   TPasswordRecoveryReq,
   TGetBookPagesReq,
+  TGetMyBooksReq,
   TUpdateBookProgressReq
 } from 'src/types/api'
 
@@ -92,6 +93,11 @@ export const getShopBooksReq: TGetShopBooks = body => ({
   url: 'shop',
   method: 'POST',
   body
+})
+
+export const getMyBooksReq: TGetMyBooksReq = () => ({
+  url: 'user/books',
+  method: 'GET'
 })
 
 /**

@@ -1,21 +1,17 @@
-import { useCallback, VFC } from 'react'
+import { useCallback, useEffect, VFC } from 'react'
 import { useHistory } from 'react-router-dom'
-import { range } from 'src/utils/range'
+import { useDispatch, useSelector } from 'react-redux'
 import type { TId } from 'src/types/store'
+import { deepEqual } from 'src/utils/deepEqual'
+import { getMyBooksAction } from 'src/store/slices/myBooksSlice'
 import { useStyles } from './styles'
 import { BookCard } from './BookCard'
 import { AddCard } from './AddCard'
 
-const testBooks = range(0, 6).map(() => ({
-  id: 9898,
-  name: 'dfvdf',
-  author: 'dfvdf',
-  description: 'Very long description',
-  image: null
-}))
-
 export const MyBooks: VFC = () => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+  const books = useSelector(store => store.myBooksSlice.books, deepEqual)
   const history = useHistory()
   const bookClickHandler = useCallback((id: TId['id']) => {
     history.push(`/my-books/${id}/read`)
@@ -24,9 +20,11 @@ export const MyBooks: VFC = () => {
     history.push('/my-books/upload')
   }, [ history ])
 
+  useEffect(() => void dispatch(getMyBooksAction()), [])
+
   return (
     <div className={classes.root}>
-      {testBooks.map(book => (
+      {books.map(book => (
         <BookCard
           id={book.id}
           name={book.name}
