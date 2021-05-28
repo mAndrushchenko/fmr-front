@@ -10,6 +10,7 @@ import { PasswordRecovery } from '../Signin/PasswordRecovery'
 import { styles } from './styles'
 import { Library } from '../Library'
 import { MyBooks } from '../MyBooks'
+import { Spinner } from '../Spinner'
 import { Results } from '../Results'
 
 export const Main: VFC = () => {
@@ -20,6 +21,9 @@ export const Main: VFC = () => {
       <Router>
         <Header />
         <Switch>
+          <Route exact path='/'>
+            <Home />
+          </Route>
           <Route path='/signin'>
             <Signin />
           </Route>
@@ -49,6 +53,7 @@ export const Main: VFC = () => {
           </Route>
         </Switch>
       </Router>
+      <Spinner />
     </div>
   )
 }

@@ -1,16 +1,16 @@
 import React, { useCallback, VFC } from 'react'
 import { Link } from 'react-router-dom'
 
-import { useAuth } from 'src/hooks/useAuth'
-import { useSelector } from 'react-redux'
-import { userSelector } from 'src/store/slices/userSlice'
-
 import { styles } from './styles'
 
-export const DesktopMenu: VFC = () => {
-  const { token } = useSelector(userSelector)
-  const { logout } = useAuth()
+interface IDesktopMenu {
+  logout: () => void
+  savedToken: string | null
+}
+
+export const DesktopMenu: VFC<IDesktopMenu> = ({ logout, savedToken }) => {
   const classes = styles()
+
   const onLogout = useCallback(() => {
     logout()
   }, [])
@@ -21,7 +21,7 @@ export const DesktopMenu: VFC = () => {
       <Link className={classes.link} to='/my-books'>My Books</Link>
       <Link className={classes.link} to='/basket'>Basket</Link>
       <Link className={classes.link} to='/about'>About us</Link>
-      {!token
+      {!savedToken
         ? <Link className={classes.link} to='/signin'>Log in</Link>
         : <Link className={classes.link} to='/' onClick={onLogout}>Log out</Link>}
     </div>

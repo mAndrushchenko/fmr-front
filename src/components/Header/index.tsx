@@ -12,17 +12,19 @@ import SearchIcon from '@material-ui/icons/Search'
 import Brightness7Icon from '@material-ui/icons/Brightness7'
 import Brightness4Icon from '@material-ui/icons/Brightness4'
 import { Typography } from '@material-ui/core'
+import { useAuth } from 'src/hooks/useAuth'
+import { userSelector } from 'src/store/slices/userSlice'
 
-import logo from '../../assets/img/logo/dark.png'
+import logo from 'src/assets/img/logo/dark.png'
 import { MobileMenu } from './MobileMenu'
 import { DesktopMenu } from './DesktopMenu'
 
 import { styles } from './styles'
-import { userSelector } from '../../store/slices/userSlice'
 
 export const Header: VFC = () => {
   const classes = styles()
   const user = useSelector(userSelector)
+  const { logout, savedToken } = useAuth()
 
   const [ search, setSearch ] = useState('')
   const [ open, setOpen ] = useState(false)
@@ -77,7 +79,7 @@ export const Header: VFC = () => {
               {user.name}
             </Typography>}
           </div>
-          <DesktopMenu />
+          <DesktopMenu savedToken={savedToken} logout={logout} />
           <div className={classes.buttonGroup}>
             <div
               className={searchField ? classes.searchActive : classes.search}
@@ -108,7 +110,13 @@ export const Header: VFC = () => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <MobileMenu open={open} toggle={toggleMenu} />
+      <MobileMenu
+        savedToken={savedToken}
+        logout={logout}
+        open={open}
+        toggle={toggleMenu}
+        userName={user.name}
+      />
     </>
   )
 }

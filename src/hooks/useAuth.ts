@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { userSelector, delUserData } from 'src/store/slices/userSlice'
+import { userSelector, delUserData, setUserDataAction } from 'src/store/slices/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
 
@@ -8,8 +8,6 @@ const tokenName = 'token'
 export const setTokenToCookie = (jwtToken = '') => {
   document.cookie = `${tokenName}=${jwtToken}`
 }
-
-// const userName = 'user'
 
 export const useAuth = () => {
   const { token } = useSelector(userSelector)
@@ -20,14 +18,12 @@ export const useAuth = () => {
   const login = useCallback((jwtToken: string | null) => {
     if (jwtToken) {
       setTokenToCookie(jwtToken)
-      // document.cookie = `${tokenName}=${jwtToken}`
       setSavedToken(jwtToken)
     }
   }, [ dispatch, token ])
 
   const logout = useCallback(() => {
     setTokenToCookie()
-    // document.cookie = `${tokenName}=`
     dispatch(delUserData())
     setSavedToken(null)
   }, [ dispatch ])
@@ -42,15 +38,20 @@ export const useAuth = () => {
     return currentToken
   }, [])
 
+  const isTokenExist = useCallback(() => {
+    const newToken = getItem(tokenName)
+    setSavedToken(newToken)
+  }, [ savedToken, getItem ])
+
   useEffect(() => {
-    if (token) {
+    isTokenExist()
+    if (token && token !== savedToken) {
       login(token)
     }
-  }, [ login, token ])
-
-  const isTokenExist = useCallback(() => {
-    setSavedToken(getItem(tokenName))
-  }, [ getItem ])
+    if (savedToken && !token) {
+      dispatch(setUserDataAction({ token: savedToken }))
+    }
+  }, [ login, token, savedToken ])
 
   return { login, logout, isTokenExist, savedToken }
 }
