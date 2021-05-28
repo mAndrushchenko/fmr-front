@@ -1,5 +1,5 @@
-import React, { VFC } from 'react'
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
+import { VFC } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Reader } from '../Reader'
 import { Header } from '../Header'
 import { Loader } from '../Loader'
@@ -9,6 +9,7 @@ import { Signup } from '../Signup'
 import { PasswordRecovery } from '../Signin/PasswordRecovery'
 import { styles } from './styles'
 import { Library } from '../Library'
+import { MyBooks } from '../MyBooks'
 import { Spinner } from '../Spinner'
 
 export const Main: VFC = () => {
@@ -28,23 +29,20 @@ export const Main: VFC = () => {
           <Route path='/signup'>
             <Signup />
           </Route>
-          <Route path='/loader'>
+          <Route path='/my-books/upload'>
             <Loader />
           </Route>
-          <Route path='/online-reader/:id'>
+          <Route path='/my-books/:id/read'>
             <Reader />
           </Route>
-          <Route exact path='/online-reader'>
-            <Redirect to='/' />
+          <Route path='/my-books'>
+            <MyBooks />
           </Route>
           <Route path='/library'>
             <Library />
           </Route>
           <Route path='/password-recovery'>
             <PasswordRecovery />
-          </Route>
-          <Route exact path='/'>
-            <Home />
           </Route>
         </Switch>
       </Router>
