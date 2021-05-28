@@ -1,11 +1,30 @@
-import { VFC } from 'react'
+import { VFC, useState, useCallback } from 'react'
 import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
+import IconButton from '@material-ui/core/IconButton'
+
 import { TShopBook } from '../../types/store'
 import { styles } from './styles'
+import { Payment } from '../Payment'
+import { DialogWindow } from './DialogWindow'
 
 export const Basket: VFC = () => {
   const classes = styles()
+
+  const [ open, setOpen ] = useState(false)
+
+  const agreeHandler = useCallback(() => {
+    setOpen(false)
+    // code for deleting book
+  }, [])
+
+  const disagreeHandler = useCallback(() => {
+    setOpen(false)
+  }, [])
+
+  const openHandler = useCallback(() => {
+    setOpen(true)
+  }, [])
 
   // develop code
   const bookExample: TShopBook = {
@@ -29,21 +48,25 @@ export const Basket: VFC = () => {
 
   return (
     <div className={classes.root}>
-      <div>
-        <Typography variant='overline'>
+      <div className={classes.header}>
+        <Typography variant='overline' className={classes.title}>
           Items in basket:
           {arrOfBook.length}
         </Typography>
+        <Payment label='buy all' />
       </div>
       {
         arrOfBook.map(book => (
           <div className={classes.item}>
             <img src={book.image} alt='book preview' className={classes.bookImage} />
             <div className={classes.bookInfo}>
-              <Typography variant='h6'>{book.name}</Typography>
-              <Typography variant='subtitle1'>{book.price}</Typography>
+              <Typography variant='h6' className={classes.bookName}>{book.name}</Typography>
+              <Typography variant='subtitle1' className={classes.price}>{book.price}</Typography>
             </div>
-            <DeleteIcon />
+            <IconButton onClick={openHandler} color='secondary' className={classes.deleteIcon}>
+              <DeleteIcon fontSize='large' />
+            </IconButton>
+            <DialogWindow open={open} agreeHandler={agreeHandler} disagreeHandler={disagreeHandler} />
           </div>
         ))
       }
