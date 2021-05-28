@@ -2,7 +2,6 @@ import { put, call, takeEvery } from 'redux-saga/effects'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { request } from 'src/api/request'
 import type {
-  TBookRes,
   TEmptyRes,
   TResponse,
   TUserDataRes,
@@ -57,7 +56,11 @@ function* makeUserRequest({ payload, serverAction }:
 
 function* checkStatus({ response, action, actionPayload, errorAction }: any) {
   const { data, message, status } = response
-  if (status && data) {
+  if (status && data && actionPayload) {
+    // make some operations with response data
+    yield put(action({ ...data, ...actionPayload }))
+    yield put(stopSpin({ message, error: false }))
+  } else if (status && data) {
     // make some operations with response data
     yield put(action(data))
     yield put(stopSpin({ message, error: false }))
@@ -89,14 +92,13 @@ function* signinWorker(action: PayloadAction<TToken>) {
   }
 }
 
-function* getUserDataWorker(action: PayloadAction) {
+function* getUserDataWorker({ payload }: PayloadAction<TToken>) {
   try {
     const response: TUserDataRes = yield makeUserRequest({
-      serverAction: getUserReq, payload: action.payload
+      serverAction: getUserReq, payload
     })
-
     yield checkStatus({
-      response, action: setUserData, errorAction: delUserData
+      response, action: setUserData, errorAction: delUserData, actionPayload: payload
     })
   } catch ({ message }) {
     yield put(stopSpin({ message, error: true }))
@@ -173,7 +175,6 @@ function* uploadBookInfoWorker(action: PayloadAction<TUploadInfo>) {
 
 function* uploadBookDataWorker(action: PayloadAction<TUploadData>) {
   try {
-    console.log(action.payload)
     const response: TEmptyRes = yield makeUserRequest({
       serverAction: uploadBookDataReq, payload: action.payload
     })
@@ -186,7 +187,6 @@ function* uploadBookDataWorker(action: PayloadAction<TUploadData>) {
 
 function* uploadBookImageWorker(action: PayloadAction<TUploadImage>) {
   try {
-    console.log(action.payload)
     const response: TEmptyRes = yield makeUserRequest({
       serverAction: uploadBookImageReq, payload: action.payload
     })

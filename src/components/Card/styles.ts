@@ -5,13 +5,26 @@ export const styles = makeStyles({
     border: '1px solid #ccc',
     borderRadius: '5px',
     width: '220px',
-    height: '370px',
-    margin: '0 auto'
+    height: '380px',
+    margin: '0 auto',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  imgContainer: {
+    width: '100%',
+    height: 250,
+    display: 'flex',
+    alignItems: 'center'
   },
   image: {
     width: '100%',
-    height: '270px',
+    height: 250,
     objectFit: 'cover',
+    borderRadius: '5px'
+  },
+  defaultImage: {
+    width: '100%',
     borderRadius: '5px'
   },
   name: {
@@ -34,5 +47,13 @@ export const styles = makeStyles({
     margin: 0,
     fontSize: 18,
     fontWeight: 600
+  },
+  btnBuyContainer: {
+    transition: '200ms',
+    width: '100%',
+    height: 20
+  },
+  btnBuy: {
+    width: '100%'
   }
 })
