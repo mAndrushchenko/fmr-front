@@ -4,6 +4,7 @@ import { getBooksAction, shopSelector } from 'src/store/slices/shopSlice'
 import type { TAppDispatch } from 'src/types/store'
 import { styles } from './styles'
 import { Card } from '../Card'
+import { Filters } from '../Filters'
 
 export const Library: VFC = () => {
   const classes = styles()
@@ -18,8 +19,10 @@ export const Library: VFC = () => {
   }, [])
 
   return (
-    <div className={classes.container}>
+    <div className={classes.root}>
+      <Filters />
       {!!bookList.length && bookList.map(book => <Card book={book} key={book.id} />)}
     </div>
+
   )
 }
