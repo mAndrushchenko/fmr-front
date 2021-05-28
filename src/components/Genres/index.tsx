@@ -9,14 +9,15 @@ import { styles } from './styles'
 
 interface IGenres {
   value: string,
-  setValue: (e: ChangeEvent<{ value: unknown }>) => void
+  setValue: (e: ChangeEvent<{ value: unknown }>) => void,
+  className?: string
 }
 
-export const Genres: VFC<IGenres> = ({ value, setValue }) => {
+export const Genres: VFC<IGenres> = ({ value, setValue, className }) => {
   const classes = styles()
 
   return (
-    <FormControl variant='outlined' fullWidth margin='normal' required>
+    <FormControl variant='outlined' className={`${className} ${classes.root}`} margin='normal' required>
       <InputLabel id='genre-label'>Genre</InputLabel>
       <Select
         labelId='genre-label'
