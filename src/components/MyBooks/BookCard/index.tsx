@@ -12,7 +12,7 @@ import { useStyles } from './styles'
 interface BookCardProps {
   id: TId['id']
   name: string
-  image: string
+  image?: string | null
   author: string
   onClick?: (id: TId['id']) => void
 }
@@ -32,7 +32,7 @@ export const BookCard: VFC<BookCardProps> = ({
       <CardActionArea onClick={cardClickHandler}>
         <CardMedia
           className={classes.media}
-          image={image}
+          image={image ?? undefined}
           title={name}
         />
         <CardContent>
