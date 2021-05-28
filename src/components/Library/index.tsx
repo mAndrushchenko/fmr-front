@@ -15,7 +15,7 @@ export const Library: VFC = () => {
     if (!bookList.length) {
       dispatch(getBooksAction(filters))
     }
-  }, [ bookList ])
+  }, [])
 
   return (
     <div className={classes.container}>

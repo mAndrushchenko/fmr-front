@@ -1,13 +1,4 @@
 import { put, call, takeEvery } from 'redux-saga/effects'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { request } from 'src/api/request'
-import type {
-  TEmptyRes,
-  TResponse,
-  TUserDataRes,
-  TUserServerActions
-} from 'src/types/api'
-import type { TToken } from 'src/types/store'
 import {
   signinReq,
   signupReq,
@@ -15,8 +6,20 @@ import {
   buyBookReq,
   addToBasketReq,
   delFromBasketReq,
-  passwordRecoveryReq, uploadBookImageReq, uploadBookDataReq, uploadBookInfoReq
+  uploadBookDataReq,
+  uploadBookInfoReq,
+  uploadBookImageReq,
+  passwordRecoveryReq
 } from 'src/api/server-actions'
+import { request } from 'src/api/request'
+import type { TToken } from 'src/types/store'
+import type {
+  TEmptyRes,
+  TResponse,
+  TUserDataRes,
+  TUserServerActions
+} from 'src/types/api'
+import type { PayloadAction } from '@reduxjs/toolkit'
 import type {
   TBuyBooks,
   TBookPayload,
@@ -135,9 +138,9 @@ function* addToBasketWorker(action: PayloadAction<TBookPayload>) {
   try {
     const { book } = action.payload
     const response: TEmptyRes = yield makeUserRequest({
-      serverAction: addToBasketReq, payload: action.payload
+      serverAction: addToBasketReq, payload: book
     })
-
+    console.log(addToBasketReq({ book }))
     yield checkStatus({
       response, action: addToBasket, actionPayload: book
     })
