@@ -104,13 +104,10 @@ export const getMyBooksReq: TGetMyBooksReq = () => ({
  * GET /reader/:id?[cache=number]
  * @response
  * - info:
+ * - - id: string | number
  * - - name: string
- * - - keywords: string[]
- * - - releaseYear: number
  * - - author: string
- * - - genre: string
- * - - price: number
- * - - description: string
+ * - - image: string | null
  * - - length: number // Amount of words in book
  * - selectedWord: number // Word index where user stopped
  * - pages: { [key: number]: string[] } | null
@@ -122,7 +119,7 @@ export const getReaderBookReq: TGetBookReq = ({
   id,
   cacheSize
 }) => ({
-  url: `reader/${id}?${cacheSize ? `cache=${cacheSize}` : ''}`,
+  url: `/reader/${id}?${cacheSize ? `cache=${cacheSize}` : ''}`,
   method: 'GET'
 })
 
@@ -139,7 +136,7 @@ export const getBookPagesReq: TGetBookPagesReq = ({
   index,
   count
 }) => ({
-  url: `reader/${id}?index=${index}${count ? `&count=${count}` : ''}`,
+  url: `/reader/${id}/pages?index=${index}${count ? `&count=${count}` : ''}`,
   method: 'GET'
 })
 
@@ -153,7 +150,7 @@ export const updateBookProgress: TUpdateBookProgressReq = ({
   id,
   selectedWord
 }) => ({
-  url: `reader/${id}`,
+  url: `/reader/${id}`,
   method: 'PATCH',
   body: { selectedWord }
 })
