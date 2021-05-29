@@ -25,8 +25,8 @@ export const Signin: VFC = () => {
   const { token } = useSelector(userSelector)
   const { spin, error: err } = useSelector(spinnerSelector)
   const [ form, setForm ] = useState({
-    email: 'avitrenko2004@gmail.com',
-    password: 'M81dy140'
+    email: '',
+    password: ''
   })
 
   const [ ignoreEmail, setIgnore ] = useState(false)
