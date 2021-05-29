@@ -14,8 +14,18 @@ import {
   TUploadImage
 } from 'src/types/payloadActions'
 
+const getToken = () => {
+  let token: string = ''
+  document.cookie.split('; ').forEach((field: string) => {
+    const currentField = field.split('=')
+    const [ cookieKey, cookieValue ] = currentField
+    if ('token' === cookieKey) token = cookieValue
+  })
+  return token
+}
+
 const initialState: TUserData = {
-  token: '',
+  token: getToken(),
   name: '',
   lastReqType: '',
   isAdmin: false,
