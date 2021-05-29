@@ -34,7 +34,7 @@ export const styles = makeStyles({
     position: 'absolute',
     right: 0,
     top: 0,
-    width: 40,
+    padding: '5px 5px',
     height: 30,
     backgroundColor: 'rgb(63,81,181, 0.9)',
     borderRadius: 5
