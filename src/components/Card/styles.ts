@@ -13,19 +13,32 @@ export const styles = makeStyles({
   },
   imgContainer: {
     width: '100%',
-    height: 250,
+    height: 240,
     display: 'flex',
     alignItems: 'center'
   },
   image: {
+    height: 240,
     width: '100%',
-    height: 250,
     objectFit: 'cover',
     borderRadius: '5px'
   },
+
   defaultImage: {
     width: '100%',
     borderRadius: '5px'
+  },
+  priceContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    padding: '5px 5px',
+    height: 30,
+    backgroundColor: 'rgb(63,81,181, 0.9)',
+    borderRadius: 5
   },
   name: {
     marginTop: 0,
@@ -35,19 +48,22 @@ export const styles = makeStyles({
     marginBottom: '0',
     fontSize: 16
   },
+  price: {
+    margin: 0,
+    fontSize: 18,
+    fontWeight: 600,
+    color: '#fff'
+  },
   text: {
-    padding: '10px 7px 5px'
+    padding: '10px 7px 5px',
+    height: 100
   },
   author: {
     marginBottom: '10px',
     marginTop: 0,
     color: '#767579'
   },
-  price: {
-    margin: 0,
-    fontSize: 18,
-    fontWeight: 600
-  },
+
   btnBuyContainer: {
     transition: '200ms',
     width: '100%',

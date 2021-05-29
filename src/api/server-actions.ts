@@ -36,9 +36,10 @@ export const signinReq: TSigninReq = ({ token }) => ({
   token
 })
 
-export const signupReq: TSignupReq = () => ({
+export const signupReq: TSignupReq = ({ token }) => ({
   url: '/signup',
-  method: 'POST'
+  method: 'POST',
+  token
 })
 
 export const getUserReq: TGetUserReq = ({ token }) => ({

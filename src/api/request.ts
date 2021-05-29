@@ -21,7 +21,6 @@ export const request = async ({
     if (token || userToken) {
       headers.authorization = `Bearer ${token ?? userToken}`
     }
-
     const response: Response = await fetch(url, { method, body, headers })
     const status = response.ok
     const resData = await response.json()

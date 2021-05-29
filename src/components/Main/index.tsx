@@ -1,4 +1,4 @@
-import React, { VFC } from 'react'
+import { VFC } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Reader } from '../Reader'
 import { Header } from '../Header'
@@ -11,7 +11,7 @@ import { styles } from './styles'
 import { Library } from '../Library'
 import { MyBooks } from '../MyBooks'
 import { Spinner } from '../Spinner'
-import { Results } from '../Results'
+import { Basket } from '../Basket'
 
 export const Main: VFC = () => {
   const classes = styles()
@@ -45,11 +45,8 @@ export const Main: VFC = () => {
           <Route path='/password-recovery'>
             <PasswordRecovery />
           </Route>
-          <Route exact path='/'>
-            <Home />
-          </Route>
-          <Route path='/results'>
-            <Results />
+          <Route path='/basket'>
+            <Basket />
           </Route>
         </Switch>
       </Router>

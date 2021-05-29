@@ -1,13 +1,4 @@
 import { put, call, takeEvery } from 'redux-saga/effects'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { request } from 'src/api/request'
-import type {
-  TEmptyRes,
-  TResponse,
-  TUserDataRes,
-  TUserServerActions
-} from 'src/types/api'
-import type { TToken } from 'src/types/store'
 import {
   signinReq,
   signupReq,
@@ -15,8 +6,20 @@ import {
   buyBookReq,
   addToBasketReq,
   delFromBasketReq,
-  passwordRecoveryReq, uploadBookImageReq, uploadBookDataReq, uploadBookInfoReq
+  uploadBookDataReq,
+  uploadBookInfoReq,
+  uploadBookImageReq,
+  passwordRecoveryReq
 } from 'src/api/server-actions'
+import { request } from 'src/api/request'
+import type { TToken } from 'src/types/store'
+import type {
+  TEmptyRes,
+  TResponse,
+  TUserDataRes,
+  TUserServerActions
+} from 'src/types/api'
+import type { PayloadAction } from '@reduxjs/toolkit'
 import type {
   TBuyBooks,
   TBookPayload,
@@ -105,12 +108,11 @@ function* getUserDataWorker({ payload }: PayloadAction<TToken>) {
   }
 }
 
-function* signupUserWorker(action: PayloadAction) {
+function* signupUserWorker({ payload }: PayloadAction<TToken>) {
   try {
     const response: TEmptyRes = yield makeUserRequest({
-      serverAction: signupReq, payload: action.payload
+      serverAction: signupReq, payload
     })
-
     yield checkStatus({
       response
     })
@@ -131,15 +133,13 @@ function* passwordRecoveryWorker(action: PayloadAction<TToken>) {
   }
 }
 
-function* addToBasketWorker(action: PayloadAction<TBookPayload>) {
+function* addToBasketWorker({ payload }: PayloadAction<TBookPayload>) {
   try {
-    const { book } = action.payload
     const response: TEmptyRes = yield makeUserRequest({
-      serverAction: addToBasketReq, payload: action.payload
+      serverAction: addToBasketReq, payload
     })
-
     yield checkStatus({
-      response, action: addToBasket, actionPayload: book
+      response, action: addToBasket, actionPayload: payload
     })
   } catch ({ message }) {
     yield put(stopSpin({ message, error: true }))
