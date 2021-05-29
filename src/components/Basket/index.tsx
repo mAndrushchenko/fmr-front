@@ -30,7 +30,7 @@ export const Basket: VFC = () => {
   // develop code
   const bookExample: TShopBook = {
     description: 'Very long description',
-    id: 9898,
+    id: 0,
     name: 'book name',
     author: 'dfvdf',
     genre: 'dvdfv',
@@ -42,7 +42,7 @@ export const Basket: VFC = () => {
   let count = 0
   const arrOfBook: TShopBook[] = []
   while (count < 15) {
-    arrOfBook.push(bookExample)
+    arrOfBook.push({ ...bookExample, id: Math.floor(Math.random() * 1000) })
     count++
   }
   // end of develop code
@@ -58,7 +58,7 @@ export const Basket: VFC = () => {
       </div>
       {
         arrOfBook.map(book => (
-          <div className={classes.item}>
+          <div key={book.id} className={classes.item}>
             {book.image
               ? <img src={book.image} alt='book preview' className={classes.bookImage} />
               : <img src={defaultImage} alt='book preview' className={classes.bookImage} />}

@@ -27,6 +27,7 @@ export const MyBooks: VFC = () => {
     <div className={classes.root}>
       {books.map(book => (
         <BookCard
+          key={book.id}
           id={book.id}
           name={book.name}
           author={book.author}
