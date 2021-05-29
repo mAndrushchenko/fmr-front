@@ -12,7 +12,8 @@ import {
   TReaderBook,
   TShopFilters,
   TShopBook,
-  TReaderBookPages
+  TReaderBookPages,
+  TMyBook,
 } from 'src/types/store'
 import {
   TBuyBooks,
@@ -68,6 +69,10 @@ export type TBooksRes = TResInformation & {
   data: TShopBook[]
 }
 
+export type TMyBooksRes = TResInformation & {
+  data: TMyBook[]
+}
+
 export type TReaderRes = TResInformation & {
   data: TReaderBook
 }
@@ -89,32 +94,32 @@ export type TGetUserReq = ({ token }: TToken) => (TToken & TGet & { url: '/user'
 export type TPasswordRecoveryReq = ({ token }: TToken) => (TToken & TPost & { url: '/password-recovery' })
 
 export type TAddToBasketReq = ({ book }: TBookPayload) => (TPost & {
-  url: 'user/basket/add',
+  url: '/user/basket/add',
   body: TBook,
 })
 
 export type TDelFromBasketReq = ({ book }: TBookPayload) => (TDelete & {
-  url: 'user/basket/delete',
+  url: '/user/basket/delete',
   body: TBook,
 })
 
 export type TUploadBookInfoReq = ({ bookInfo }: TUploadInfo) => (TPost & {
-  url: 'user/upload/info',
+  url: '/user/upload/info',
   body: TBookInfoLoader,
 })
 
 export type TUploadBookDataReq = ({ bookData }: TUploadData) => (TPost & {
-  url: 'user/upload/data',
+  url: '/user/upload/data',
   fd: TBookDataLoader
 })
 
 export type TUploadBookImageReq = ({ bookImage }: TUploadImage) => (TPost & {
-  url: 'user/upload/image',
+  url: '/user/upload/image',
   fd: TBookImageLoader,
 })
 
 export type TBuyBookReq = ({ basket }: TBuyBooks) => (TPost & {
-  url: 'user/buy',
+  url: '/user/buy',
   body: TBook[],
 })
 
@@ -127,12 +132,16 @@ export type TUserServerActions = TSigninReq | TSignupReq |
 // shop
 
 export type TGetShopBooks = (filters: TShopFilters) => ({
-  url: 'shop',
+  url: '/shop',
   method: 'POST',
   body: TShopFilters,
 })
 
 // reader
+
+export type TGetMyBooksReq = () => (TGet & {
+  url: string,
+})
 
 export type TGetBookReq = ({
   cacheSize,

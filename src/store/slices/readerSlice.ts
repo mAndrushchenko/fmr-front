@@ -9,34 +9,12 @@ import {
 } from 'src/types/store'
 import { TGetBookPagesPayload, TGetReaderBook } from 'src/types/payloadActions'
 
-const testPage = [
-  'Pariatur', 'labore', 'labore', 'do',
-  'duis', 'ut', 'id', 'magna',
-  'magna', 'ea', 'voluptate', 'nulla.',
-  'Est', 'nostrud', 'nulla', 'est',
-  'quis', 'consequat', 'non', 'proident',
-  'aliqua', 'incididunt', 'ut', 'enim',
-  'laboris', 'fugiat.', 'Tempor', 'voluptate',
-  'deserunt', 'incididunt', 'aute', 'duis',
-  'irure', 'laborum', 'laboris', 'aute',
-  'commodo', 'ex', 'in.', 'Ullamco',
-  'excepteur', 'laborum', 'duis', 'eu',
-  'velit', 'esse', 'tempor', 'culpa',
-  'esse', 'exercitation', 'et', 'veniam.',
-  'Officia', 'reprehenderit', 'nisi', 'ipsum',
-  'sint', 'irure', 'est', 'mollit',
-  'nulla.'
-]
-
 const initialState: TReaderBookState = {
-  pages: {
-    0: testPage,
-    1: testPage
-  },
+  pages: {},
   book: null,
   selectedWord: 0,
-  totalPages: 2,
-  bookLength: testPage.length * 2,
+  totalPages: 0,
+  bookLength: 0,
   lastReqType: null,
   loadingPages: []
 }
@@ -57,16 +35,16 @@ export const readerSlice = createSlice({
       state.bookLength = payload.bookLength
     },
 
-    setBookPages: (state, { payload }: PayloadAction<TReaderBookPages>) => {
-      state.pages = { ...state.pages, ...payload.pages }
+    setBookPages: (state, { payload }: PayloadAction<TReaderBookPages['pages']>) => {
+      state.pages = { ...state.pages, ...payload }
     },
 
     setReaderBook: (state, { payload }: PayloadAction<TReaderBook>) => ({
       ...state,
       selectedWord: payload.selectedWord,
-      bookLength: payload.bookLength,
-      totalPages: payload.totalPages,
-      book: payload.book,
+      bookLength: +payload.info.bookLength,
+      totalPages: Math.floor(+payload.info.bookLength / 300),
+      book: payload.info,
       pages: payload.pages ?? {},
       loadingPages: []
     }),

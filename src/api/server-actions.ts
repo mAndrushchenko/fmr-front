@@ -12,6 +12,7 @@ import type {
   TUploadBookImageReq,
   TPasswordRecoveryReq,
   TGetBookPagesReq,
+  TGetMyBooksReq,
   TUpdateBookProgressReq
 } from 'src/types/api'
 
@@ -54,58 +55,60 @@ export const passwordRecoveryReq: TPasswordRecoveryReq = ({ token }) => ({
 })
 
 export const addToBasketReq: TAddToBasketReq = ({ book: body }) => ({
-  url: 'user/basket/add',
+  url: '/user/basket/add',
   method: 'POST',
   body
 })
 
 export const delFromBasketReq: TDelFromBasketReq = ({ book: body }) => ({
-  url: 'user/basket/delete',
+  url: '/user/basket/delete',
   method: 'DELETE',
   body
 })
 
 export const uploadBookInfoReq: TUploadBookInfoReq = ({ bookInfo: body }) => ({
-  url: 'user/upload/info',
+  url: '/user/upload/info',
   method: 'POST',
   body
 })
 
 export const uploadBookDataReq: TUploadBookDataReq = ({ bookData: fd }) => ({
-  url: 'user/upload/data',
+  url: '/user/upload/data',
   method: 'POST',
   fd
 })
 
 export const uploadBookImageReq: TUploadBookImageReq = ({ bookImage: fd }) => ({
-  url: 'user/upload/image',
+  url: '/user/upload/image',
   method: 'POST',
   fd
 })
 
 export const buyBookReq: TBuyBookReq = ({ basket: body }) => ({
-  url: 'user/buy',
+  url: '/user/buy',
   method: 'POST',
   body
 })
 
 export const getShopBooksReq: TGetShopBooks = body => ({
-  url: 'shop',
+  url: '/shop',
   method: 'POST',
   body
+})
+
+export const getMyBooksReq: TGetMyBooksReq = () => ({
+  url: '/user/books',
+  method: 'GET'
 })
 
 /**
  * GET /reader/:id?[cache=number]
  * @response
  * - info:
+ * - - id: string | number
  * - - name: string
- * - - keywords: string[]
- * - - releaseYear: number
  * - - author: string
- * - - genre: string
- * - - price: number
- * - - description: string
+ * - - image: string | null
  * - - length: number // Amount of words in book
  * - selectedWord: number // Word index where user stopped
  * - pages: { [key: number]: string[] } | null
@@ -117,7 +120,7 @@ export const getReaderBookReq: TGetBookReq = ({
   id,
   cacheSize
 }) => ({
-  url: `reader/${id}?${cacheSize ? `cache=${cacheSize}` : ''}`,
+  url: `/reader/${id}?${cacheSize ? `cache=${cacheSize}` : ''}`,
   method: 'GET'
 })
 
@@ -134,7 +137,7 @@ export const getBookPagesReq: TGetBookPagesReq = ({
   index,
   count
 }) => ({
-  url: `reader/${id}?index=${index}${count ? `&count=${count}` : ''}`,
+  url: `/reader/${id}/pages?index=${index}${count ? `&count=${count}` : ''}`,
   method: 'GET'
 })
 
@@ -148,7 +151,7 @@ export const updateBookProgress: TUpdateBookProgressReq = ({
   id,
   selectedWord
 }) => ({
-  url: `reader/${id}`,
+  url: `/reader/${id}`,
   method: 'PATCH',
   body: { selectedWord }
 })

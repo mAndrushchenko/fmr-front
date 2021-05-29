@@ -73,8 +73,8 @@ export type TReaderBookLength = { bookLength: number }
 export type TReaderBookPages = { pages: Record<number, TBookPage | undefined> }
 
 export type TReaderBook = TReaderTotalPages & TReaderBookPages &
-  TReaderBookLength & TReaderSelectedWord & {
-  book: TBook
+  TReaderSelectedWord & {
+  info: TBook & TReaderBookLength
 }
 
 export type TReaderBookState = TReaderTotalPages & TReaderBookPages &
@@ -107,4 +107,11 @@ export type TSpinnerPayload = {
 
 export type TSpinner = TSpinnerPayload & {
   spin: boolean
+}
+
+export type TMyBook = Pick<TShopBook, 'id' | 'name' | 'author' | 'image'>
+
+export type TMyBookStore = {
+  books: TMyBook[]
+  lastReqType: string | null
 }

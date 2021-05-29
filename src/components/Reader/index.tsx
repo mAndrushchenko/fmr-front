@@ -1,4 +1,4 @@
-import { useCallback, useState, VFC, MouseEvent } from 'react'
+import { useCallback, useState, VFC, MouseEvent, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { useLazyBookPageLoader } from 'src/hooks/useLazyBookPageLoader'
@@ -22,16 +22,22 @@ export const Reader: VFC = () => {
       event.currentTarget === event.target && togglePause(),
     []
   )
+  // For unknown reason progressChangeHandler does not update
+  // when bookLength updates
+  const bookLengthRef = useRef<number>(bookLength)
+  bookLengthRef.current = bookLength
   const progressChangeHandler = useCallback(
     (value: number) => {
-      const nextIndex = +((value / 100) * bookLength).toFixed()
+      const nextIndex = +((value / 100) * bookLengthRef.current).toFixed()
+      console.log(value, nextIndex, bookLengthRef.current)
       togglePause(true)
       // For unknown reason, nextIndex === -1 when value === 0
       nextWord(nextIndex > 0 ? nextIndex : 0)
     },
-    [ bookLength ]
+    []
   )
   const progress = (selectedWord / (bookLength - 1)) * 100
+  console.log(bookLength, selectedWord, progress)
 
   return (
     <div className={classes.root} onClick={pauseClickHandler}>
