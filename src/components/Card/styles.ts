@@ -23,6 +23,7 @@ export const styles = makeStyles({
     objectFit: 'cover',
     borderRadius: '5px'
   },
+
   defaultImage: {
     width: '100%',
     borderRadius: '5px'

@@ -134,15 +134,13 @@ function* passwordRecoveryWorker(action: PayloadAction<TToken>) {
   }
 }
 
-function* addToBasketWorker(action: PayloadAction<TBookPayload>) {
+function* addToBasketWorker({ payload }: PayloadAction<TBookPayload>) {
   try {
-    const { book } = action.payload
     const response: TEmptyRes = yield makeUserRequest({
-      serverAction: addToBasketReq, payload: book
+      serverAction: addToBasketReq, payload
     })
-    console.log(addToBasketReq({ book }))
     yield checkStatus({
-      response, action: addToBasket, actionPayload: book
+      response, action: addToBasket, actionPayload: payload
     })
   } catch ({ message }) {
     yield put(stopSpin({ message, error: true }))

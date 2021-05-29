@@ -10,10 +10,13 @@ import Typography from '@material-ui/core/Typography'
 
 import { styles } from './styles'
 import { Genres } from '../Genres'
+import { getBooksAction } from '../../store/slices/shopSlice'
+import { useDispatch } from 'react-redux'
+import type { TAppDispatch } from 'src/types/store'
 
 export const Filters: VFC = () => {
+  const dispatch = useDispatch<TAppDispatch>()
   const classes = styles()
-  // let sendTimeout: any
 
   const [ author, setAuthor ] = useState<string>('')
   const [ genre, setGenre ] = useState<string>('')
@@ -23,7 +26,7 @@ export const Filters: VFC = () => {
 
   useEffect(() => {
     const sendTimeout = setTimeout(() => {
-      console.log('send request')
+      dispatch(getBooksAction({ year, price, searchPhrase, genre, author }))
     }, 500)
     return () => clearTimeout(sendTimeout)
   }, [ author, genre, price, searchPhrase, year ])
@@ -32,40 +35,48 @@ export const Filters: VFC = () => {
     e => {
       setAuthor(e.target.value)
     },
-    [ ]
+    []
   )
 
   const genreHandler = useCallback(
     e => {
       setGenre(e.target.value)
     },
-    [ ]
+    []
   )
 
   const searchPhraseHandler = useCallback(
     e => {
       setSearchPhrase(e.target.value)
     },
-    [ ]
+    []
   )
 
   const priceHandler = useCallback(
     (e, value: number | number[]) => {
-      setPrice(value as number[])
+      if (value) {
+        setPrice(value as number[])
+      }
     },
-    [ ]
+    []
   )
 
   const minPriceHandler = useCallback(
     e => {
-      setPrice([ +e.target.value, price[1] ])
+      const { value } = e.target
+      if (value) {
+        setPrice([ +value, price[1] ])
+      }
     },
     [ price ]
   )
 
   const maxPriceHandler = useCallback(
     e => {
-      setPrice([ price[0], +e.taget.value ])
+      const { value } = e.target
+      if (value) {
+        setPrice([ price[0], +value ])
+      }
     },
     [ price ]
   )
@@ -74,7 +85,7 @@ export const Filters: VFC = () => {
     e => {
       setYear(+e.target.value)
     },
-    [ ]
+    []
   )
 
   return (
