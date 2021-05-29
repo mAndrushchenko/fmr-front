@@ -43,9 +43,9 @@ export const MobileMenu: VFC<IMobileMenu> = ({ open, toggle, logout, savedToken,
       <Link
         className={classes.link}
         onClick={toggle}
-        to='/catalog'
+        to='/library'
       >
-        Catalog
+        Library
       </Link>
       <Link
         className={classes.link}

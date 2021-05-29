@@ -1,5 +1,8 @@
+import { useMemo, VFC, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Typography } from '@material-ui/core'
-import { useMemo, VFC } from 'react'
+import type { TAppDispatch } from 'src/types/store'
+import { getBooksAction, shopSelector } from 'src/store/slices/shopSlice'
 import { TShopBook } from 'src/types/store'
 import { CardSlider } from '../Slider'
 
@@ -27,9 +30,25 @@ while (count < 15) {
 
 export const Home: VFC = () => {
   const classes = styles()
-  const newBooks: TShopBook[] = useMemo(() => arrOfBook, [])
-  const personalOfferBooks: TShopBook[] = useMemo(() => arrOfBook, [])
-  const popularBooks: TShopBook[] = useMemo(() => arrOfBook, [])
+  // const newBooks: TShopBook[] = useMemo(() => arrOfBook, [])
+  // const personalOfferBooks: TShopBook[] = useMemo(() => arrOfBook, [])
+  // const popularBooks: TShopBook[] = useMemo(() => arrOfBook, [])
+
+  const dispatch = useDispatch<TAppDispatch>()
+  const { books, filters } = useSelector(shopSelector)
+  const bookList = useMemo(() => books, [ books ])
+
+  useEffect(() => {
+    if (!bookList.length) {
+      dispatch(getBooksAction(filters))
+    }
+  }, [])
+
+  console.log(bookList)
+
+  const newBooks: TShopBook[] = useMemo(() => bookList.slice(0, bookList.length / 3), [])
+  const popularBooks: TShopBook[] = useMemo(() => bookList.slice(bookList.length / 3, bookList.length * 0.67), [])
+  const personalOfferBooks: TShopBook[] = useMemo(() => bookList.slice(bookList.length * 0.67, bookList.length - 1), [])
 
   return (
     <div className={classes.root}>
