@@ -108,12 +108,11 @@ function* getUserDataWorker({ payload }: PayloadAction<TToken>) {
   }
 }
 
-function* signupUserWorker(action: PayloadAction) {
+function* signupUserWorker({ payload }: PayloadAction<TToken>) {
   try {
     const response: TEmptyRes = yield makeUserRequest({
-      serverAction: signupReq, payload: action.payload
+      serverAction: signupReq, payload
     })
-
     yield checkStatus({
       response
     })
