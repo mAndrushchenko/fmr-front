@@ -1,5 +1,5 @@
 import { IEndpoint, IHeaders, TResponse } from 'src/types/api'
-import { store } from '../store/index'
+import { store } from '../store'
 
 export const request = async ({
   url, method = 'GET', body: bodyData, token, fd
