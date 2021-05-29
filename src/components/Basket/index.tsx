@@ -63,9 +63,12 @@ export const Basket: VFC = () => {
               <Typography variant='h6' className={classes.bookName}>{book.name}</Typography>
               <Typography variant='subtitle1' className={classes.price}>{book.price}</Typography>
             </div>
-            <IconButton onClick={openHandler} color='secondary' className={classes.deleteIcon}>
-              <DeleteIcon fontSize='large' />
-            </IconButton>
+            <div className={classes.actions}>
+              <IconButton onClick={openHandler} color='secondary'>
+                <DeleteIcon fontSize='large' />
+              </IconButton>
+              <Payment label='buy' />
+            </div>
             <DialogWindow open={open} agreeHandler={agreeHandler} disagreeHandler={disagreeHandler} />
           </div>
         ))

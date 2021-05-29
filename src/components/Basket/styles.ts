@@ -29,7 +29,7 @@ export const styles = makeStyles((theme: Theme) =>
       height: '100%',
       borderRadius: '5px'
     },
-    deleteIcon: {
+    actions: {
       alignSelf: 'center'
     },
     header: {
