@@ -1,5 +1,5 @@
-import React, { VFC } from 'react'
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
+import { VFC } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Reader } from '../Reader'
 import { Header } from '../Header'
 import { Loader } from '../Loader'
@@ -9,7 +9,8 @@ import { Signup } from '../Signup'
 import { PasswordRecovery } from '../Signin/PasswordRecovery'
 import { styles } from './styles'
 import { Library } from '../Library'
-import { Results } from '../Results'
+import { MyBooks } from '../MyBooks'
+import { Spinner } from '../Spinner'
 import { Basket } from '../Basket'
 
 export const Main: VFC = () => {
@@ -20,20 +21,23 @@ export const Main: VFC = () => {
       <Router>
         <Header />
         <Switch>
+          <Route exact path='/'>
+            <Home />
+          </Route>
           <Route path='/signin'>
             <Signin />
           </Route>
           <Route path='/signup'>
             <Signup />
           </Route>
-          <Route path='/loader'>
+          <Route path='/my-books/upload'>
             <Loader />
           </Route>
-          <Route path='/online-reader/:id'>
+          <Route path='/my-books/:id/read'>
             <Reader />
           </Route>
-          <Route exact path='/online-reader'>
-            <Redirect to='/' />
+          <Route path='/my-books'>
+            <MyBooks />
           </Route>
           <Route path='/library'>
             <Library />
@@ -41,17 +45,12 @@ export const Main: VFC = () => {
           <Route path='/password-recovery'>
             <PasswordRecovery />
           </Route>
-          <Route exact path='/'>
-            <Home />
-          </Route>
-          <Route path='/results'>
-            <Results />
-          </Route>
           <Route path='/basket'>
             <Basket />
           </Route>
         </Switch>
       </Router>
+      <Spinner />
     </div>
   )
 }

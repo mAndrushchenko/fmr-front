@@ -3,10 +3,11 @@ import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 import IconButton from '@material-ui/core/IconButton'
 
-import { TShopBook } from '../../types/store'
 import { styles } from './styles'
 import { Payment } from '../Payment'
 import { DialogWindow } from './DialogWindow'
+import defaultImage from 'src/assets/img/book/book.light-theme.png'
+import type { TShopBook } from 'src/types/store'
 
 export const Basket: VFC = () => {
   const classes = styles()
@@ -33,7 +34,7 @@ export const Basket: VFC = () => {
     name: 'book name',
     author: 'dfvdf',
     genre: 'dvdfv',
-    image: 'https://upload.wikimedia.org/wikipedia/ru/1/10/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B0_%D0%BA%D0%BD%D0%B8%D0%B3%D0%B8_%22%D0%9D%D0%B0%D0%B2%D0%B0%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D1%8F%22%2C_%D0%9C%D0%B0%D0%BA%D1%81_%D0%A4%D1%80%D0%B0%D0%B9.jpg',
+    image: null,
     price: 12.99,
     keywords: [ 'ssdc', 'sdc' ],
     releaseYear: 2003
@@ -58,7 +59,10 @@ export const Basket: VFC = () => {
       {
         arrOfBook.map(book => (
           <div className={classes.item}>
-            <img src={book.image} alt='book preview' className={classes.bookImage} />
+            {book.image
+              ? <img src={book.image} alt='book preview' className={classes.bookImage} />
+              : <img src={defaultImage} alt='book preview' className={classes.bookImage} />}
+
             <div className={classes.bookInfo}>
               <Typography variant='h6' className={classes.bookName}>{book.name}</Typography>
               <Typography variant='subtitle1' className={classes.price}>{book.price}</Typography>

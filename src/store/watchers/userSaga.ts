@@ -1,14 +1,4 @@
 import { put, call, takeEvery } from 'redux-saga/effects'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { request } from 'src/api/request'
-import type {
-  TBookRes,
-  TEmptyRes,
-  TResponse,
-  TUserDataRes,
-  TUserServerActions
-} from 'src/types/api'
-import type { TToken } from 'src/types/store'
 import {
   signinReq,
   signupReq,
@@ -16,8 +6,20 @@ import {
   buyBookReq,
   addToBasketReq,
   delFromBasketReq,
-  passwordRecoveryReq, uploadBookImageReq, uploadBookDataReq, uploadBookInfoReq
+  uploadBookDataReq,
+  uploadBookInfoReq,
+  uploadBookImageReq,
+  passwordRecoveryReq
 } from 'src/api/server-actions'
+import { request } from 'src/api/request'
+import type { TToken } from 'src/types/store'
+import type {
+  TEmptyRes,
+  TResponse,
+  TUserDataRes,
+  TUserServerActions
+} from 'src/types/api'
+import type { PayloadAction } from '@reduxjs/toolkit'
 import type {
   TBuyBooks,
   TBookPayload,
@@ -57,7 +59,11 @@ function* makeUserRequest({ payload, serverAction }:
 
 function* checkStatus({ response, action, actionPayload, errorAction }: any) {
   const { data, message, status } = response
-  if (status && data) {
+  if (status && data && actionPayload) {
+    // make some operations with response data
+    yield put(action({ ...data, ...actionPayload }))
+    yield put(stopSpin({ message, error: false }))
+  } else if (status && data) {
     // make some operations with response data
     yield put(action(data))
     yield put(stopSpin({ message, error: false }))
@@ -89,14 +95,13 @@ function* signinWorker(action: PayloadAction<TToken>) {
   }
 }
 
-function* getUserDataWorker(action: PayloadAction) {
+function* getUserDataWorker({ payload }: PayloadAction<TToken>) {
   try {
     const response: TUserDataRes = yield makeUserRequest({
-      serverAction: getUserReq, payload: action.payload
+      serverAction: getUserReq, payload
     })
-
     yield checkStatus({
-      response, action: setUserData, errorAction: delUserData
+      response, action: setUserData, errorAction: delUserData, actionPayload: payload
     })
   } catch ({ message }) {
     yield put(stopSpin({ message, error: true }))
@@ -129,15 +134,13 @@ function* passwordRecoveryWorker(action: PayloadAction<TToken>) {
   }
 }
 
-function* addToBasketWorker(action: PayloadAction<TBookPayload>) {
+function* addToBasketWorker({ payload }: PayloadAction<TBookPayload>) {
   try {
-    const { book } = action.payload
     const response: TEmptyRes = yield makeUserRequest({
-      serverAction: addToBasketReq, payload: action.payload
+      serverAction: addToBasketReq, payload
     })
-
     yield checkStatus({
-      response, action: addToBasket, actionPayload: book
+      response, action: addToBasket, actionPayload: payload
     })
   } catch ({ message }) {
     yield put(stopSpin({ message, error: true }))
@@ -173,7 +176,6 @@ function* uploadBookInfoWorker(action: PayloadAction<TUploadInfo>) {
 
 function* uploadBookDataWorker(action: PayloadAction<TUploadData>) {
   try {
-    console.log(action.payload)
     const response: TEmptyRes = yield makeUserRequest({
       serverAction: uploadBookDataReq, payload: action.payload
     })
@@ -186,7 +188,6 @@ function* uploadBookDataWorker(action: PayloadAction<TUploadData>) {
 
 function* uploadBookImageWorker(action: PayloadAction<TUploadImage>) {
   try {
-    console.log(action.payload)
     const response: TEmptyRes = yield makeUserRequest({
       serverAction: uploadBookImageReq, payload: action.payload
     })

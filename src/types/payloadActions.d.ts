@@ -23,7 +23,7 @@ export type TBuyBooks = {
 
 export type TUserActionPayload = TToken | TUserEmail |
   TBookPayload | TUploadInfo | TUploadData |
-  TUploadImage | TBuyBooks | void
+  TUploadImage | TBuyBooks | TBook | void
 
 // reader
 

@@ -13,9 +13,12 @@ export const UploadImage: VFC<IBookImage> = ({ handleBookImage }) => {
   const classes = uploadStyles()
 
   const changeHandler = useCallback(e => {
-    const bookImage = new FormData()
-    bookImage.append('image', e.target.files[0], e.target.files[0].name)
-    handleBookImage(bookImage)
+    const { files } = e.target
+    if (files.length) {
+      const bookImage = new FormData()
+      bookImage.append('image', files[0], files[0].name)
+      handleBookImage(bookImage)
+    }
   }, [])
 
   return (

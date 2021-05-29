@@ -84,7 +84,7 @@ export type TSigninReq = ({ token }: TToken) => (TToken & TPost & { url: '/signi
 
 export type TSignupReq = () => (TPost & { url: '/signup' })
 
-export type TGetUserReq = () => (TGet & { url: '/user' })
+export type TGetUserReq = ({ token }: TToken) => (TToken & TGet & { url: '/user' })
 
 export type TPasswordRecoveryReq = ({ token }: TToken) => (TToken & TPost & { url: '/password-recovery' })
 

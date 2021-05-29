@@ -4,17 +4,19 @@ import Drawer from '@material-ui/core/Drawer'
 import IconButton from '@material-ui/core/IconButton'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import Divider from '@material-ui/core/Divider'
-import Badge from '@material-ui/core/Badge'
 
 import { Typography } from '@material-ui/core'
-import { useSelector } from 'react-redux'
-import { userSelector } from 'src/store/slices/userSlice'
-import { useAuth } from 'src/hooks/useAuth'
 import { styles } from './styles'
 
-export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, toggle }) => {
-  const { savedToken, logout } = useAuth()
-  const { name } = useSelector(userSelector)
+interface IMobileMenu {
+  logout: () => void
+  savedToken: string | null
+  open: boolean
+  toggle: () => void
+  userName: string
+}
+
+export const MobileMenu: VFC<IMobileMenu> = ({ open, toggle, logout, savedToken, userName }) => {
   const classes = styles()
 
   const onLogout = useCallback(() => {
@@ -35,7 +37,7 @@ export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, t
         <IconButton onClick={toggle}>
           <ChevronRightIcon />
         </IconButton>
-        <Typography className={classes.userName}>{name}</Typography>
+        <Typography className={classes.userName}>{userName || ''}</Typography>
       </div>
       <Divider />
       <Link
@@ -44,20 +46,6 @@ export const MobileMenu: VFC<{ open: boolean, toggle: () => void }> = ({ open, t
         to='/catalog'
       >
         Catalog
-      </Link>
-      <Link
-        className={classes.link}
-        onClick={toggle}
-        to='/online-reader'
-      >
-        Online reader
-        <Badge
-          badgeContent='new'
-          variant='dot'
-          color='secondary'
-        >
-          &nbsp;
-        </Badge>
       </Link>
       <Link
         className={classes.link}
