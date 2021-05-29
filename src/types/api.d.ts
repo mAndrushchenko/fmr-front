@@ -82,7 +82,7 @@ export type TResponse = TUserDataRes | TEmptyRes | TBookRes | TBooksRes | TReade
 // user
 export type TSigninReq = ({ token }: TToken) => (TToken & TPost & { url: '/signin' })
 
-export type TSignupReq = () => (TPost & { url: '/signup' })
+export type TSignupReq = ({ token }: TToken) => (TToken & TPost & { url: '/signup' })
 
 export type TGetUserReq = ({ token }: TToken) => (TToken & TGet & { url: '/user' })
 
