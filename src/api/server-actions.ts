@@ -55,49 +55,49 @@ export const passwordRecoveryReq: TPasswordRecoveryReq = ({ token }) => ({
 })
 
 export const addToBasketReq: TAddToBasketReq = ({ book: body }) => ({
-  url: 'user/basket/add',
+  url: '/user/basket/add',
   method: 'POST',
   body
 })
 
 export const delFromBasketReq: TDelFromBasketReq = ({ book: body }) => ({
-  url: 'user/basket/delete',
+  url: '/user/basket/delete',
   method: 'DELETE',
   body
 })
 
 export const uploadBookInfoReq: TUploadBookInfoReq = ({ bookInfo: body }) => ({
-  url: 'user/upload/info',
+  url: '/user/upload/info',
   method: 'POST',
   body
 })
 
 export const uploadBookDataReq: TUploadBookDataReq = ({ bookData: fd }) => ({
-  url: 'user/upload/data',
+  url: '/user/upload/data',
   method: 'POST',
   fd
 })
 
 export const uploadBookImageReq: TUploadBookImageReq = ({ bookImage: fd }) => ({
-  url: 'user/upload/image',
+  url: '/user/upload/image',
   method: 'POST',
   fd
 })
 
 export const buyBookReq: TBuyBookReq = ({ basket: body }) => ({
-  url: 'user/buy',
+  url: '/user/buy',
   method: 'POST',
   body
 })
 
 export const getShopBooksReq: TGetShopBooks = body => ({
-  url: 'shop',
+  url: '/shop',
   method: 'POST',
   body
 })
 
 export const getMyBooksReq: TGetMyBooksReq = () => ({
-  url: 'user/books',
+  url: '/user/books',
   method: 'GET'
 })
 
