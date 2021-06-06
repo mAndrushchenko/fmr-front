@@ -3,11 +3,11 @@ import Typography from '@material-ui/core/Typography'
 import DeleteIcon from '@material-ui/icons/Delete'
 import IconButton from '@material-ui/core/IconButton'
 
-import { styles } from './styles'
-import { Payment } from '../Payment'
-import { DialogWindow } from './DialogWindow'
 import defaultImage from 'src/assets/img/book/book.light-theme.png'
 import type { TShopBook } from 'src/types/store'
+import { Payment } from '../Payment'
+import { DialogWindow } from './DialogWindow'
+import { styles } from './styles'
 
 export const Basket: VFC = () => {
   const classes = styles()

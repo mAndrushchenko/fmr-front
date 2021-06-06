@@ -1,6 +1,7 @@
 import React, { useCallback, VFC } from 'react'
 import { Link } from 'react-router-dom'
-
+import { useSelector } from 'react-redux'
+import { userSelector } from 'src/store/slices/userSlice'
 import { styles } from './styles'
 
 interface IDesktopMenu {
@@ -10,6 +11,7 @@ interface IDesktopMenu {
 
 export const DesktopMenu: VFC<IDesktopMenu> = ({ logout, savedToken }) => {
   const classes = styles()
+  const { token } = useSelector(userSelector)
 
   const onLogout = useCallback(() => {
     logout()
@@ -18,7 +20,7 @@ export const DesktopMenu: VFC<IDesktopMenu> = ({ logout, savedToken }) => {
   return (
     <div className={classes.root}>
       <Link className={classes.link} to='/library'>Library</Link>
-      <Link className={classes.link} to='/my-books'>My Books</Link>
+      {token && <Link className={classes.link} to='/my-books'>My Books</Link>}
       <Link className={classes.link} to='/basket'>Basket</Link>
       <Link className={classes.link} to='/about'>About us</Link>
       {!savedToken

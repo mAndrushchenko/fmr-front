@@ -19,7 +19,7 @@ const getToken = () => {
   document.cookie.split('; ').forEach((field: string) => {
     const currentField = field.split('=')
     const [ cookieKey, cookieValue ] = currentField
-    if ('token' === cookieKey) token = cookieValue
+    if (cookieKey === 'token') token = cookieValue
   })
   return token
 }

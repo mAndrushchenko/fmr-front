@@ -8,11 +8,11 @@ import Slider from '@material-ui/core/Slider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
-import { styles } from './styles'
-import { Genres } from '../Genres'
-import { getBooksAction } from '../../store/slices/shopSlice'
 import { useDispatch } from 'react-redux'
 import type { TAppDispatch } from 'src/types/store'
+import { getBooksAction } from 'src/store/slices/shopSlice'
+import { Genres } from '../Genres'
+import { styles } from './styles'
 
 export const Filters: VFC = () => {
   const dispatch = useDispatch<TAppDispatch>()
