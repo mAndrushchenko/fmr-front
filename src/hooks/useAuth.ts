@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
 
 const tokenName = 'token'
-
-export const setTokenToCookie = (jwtToken = '') => {
+const setTokenToCookie = (jwtToken = '') => {
   document.cookie = `${tokenName}=${jwtToken}`
 }
 
@@ -13,39 +12,39 @@ export const useAuth = () => {
   const { token } = useSelector(userSelector)
   const dispatch = useDispatch<TAppDispatch>()
 
-  const [ savedToken, setSavedToken ] = useState<null | string>(null)
+  const [ savedToken, setSavedToken ] = useState('')
 
-  const login = useCallback((jwtToken: string | null) => {
+  const login = useCallback((jwtToken: string) => {
     if (jwtToken) {
       setTokenToCookie(jwtToken)
       setSavedToken(jwtToken)
     }
   }, [ dispatch, token ])
 
-  const logout = useCallback(() => {
-    setTokenToCookie()
-    dispatch(delUserData())
-    setSavedToken(null)
-  }, [ dispatch ])
-
-  const getItem = useCallback((key: string): string | null => {
-    let currentToken: string | null = null
+  const getToken = useCallback(() => {
+    let currentToken: string = ''
     document.cookie.split('; ').forEach((field: string) => {
       const currentField = field.split('=')
       const [ cookieKey, cookieValue ] = currentField
-      if (key === cookieKey) currentToken = cookieValue
+      if (cookieKey === 'token') currentToken = cookieValue
     })
     return currentToken
   }, [])
 
+  const logout = useCallback(() => {
+    setTokenToCookie()
+    setSavedToken('')
+    dispatch(delUserData())
+  }, [ dispatch ])
+
   const isTokenExist = useCallback(() => {
-    const newToken = getItem(tokenName)
+    const newToken = getToken()
     setSavedToken(newToken)
-  }, [ savedToken, getItem ])
+  }, [ savedToken ])
 
   useEffect(() => {
     isTokenExist()
-    if (token && token !== savedToken) {
+    if (!!token && token !== savedToken) {
       login(token)
     }
     if (savedToken && !token) {

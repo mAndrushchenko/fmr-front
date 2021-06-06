@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { setTokenToCookie } from 'src/hooks/useAuth'
-import {
+import type {
   TBook,
   TToken,
   TReducer,
   TUserData
 } from 'src/types/store'
-import {
+import type {
   TBuyBooks,
   TBookPayload,
   TUploadInfo,
@@ -14,18 +13,8 @@ import {
   TUploadImage
 } from 'src/types/payloadActions'
 
-const getToken = () => {
-  let token: string = ''
-  document.cookie.split('; ').forEach((field: string) => {
-    const currentField = field.split('=')
-    const [ cookieKey, cookieValue ] = currentField
-    if (cookieKey === 'token') token = cookieValue
-  })
-  return token
-}
-
 const initialState: TUserData = {
-  token: getToken(),
+  token: '',
   name: '',
   lastReqType: '',
   isAdmin: false,
@@ -60,10 +49,7 @@ export const userSlice = createSlice({
 
     setUserData: (state, { payload }: PayloadAction<TUserData>) => ({ ...state, ...payload }),
 
-    delUserData: () => {
-      setTokenToCookie()
-      return initialState
-    },
+    delUserData: () => initialState,
 
     addToBasket: (state, { payload }: PayloadAction<TBook>) => {
       state.basket = [ ...state.basket, payload ]
