@@ -11,10 +11,5 @@ export const styles = makeStyles({
   link: {
     display: 'block',
     margin: '10px 0 20px'
-  },
-  spinner: {
-    position: 'fixed',
-    left: '50%',
-    top: '50%'
   }
 })

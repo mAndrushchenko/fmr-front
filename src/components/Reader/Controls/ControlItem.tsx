@@ -1,5 +1,6 @@
-import { styled, Slider } from '@material-ui/core'
 import { useCallback, VFC, MouseEvent } from 'react'
+import { Slider } from '@material-ui/core'
+import { useControlItemStyles } from './styles'
 
 interface ControlItemProps {
   name: string
@@ -10,20 +11,6 @@ interface ControlItemProps {
   onPause?: (state?: boolean) => void
 }
 
-const ControlItemRoot = styled('div')({
-  display: 'flex',
-  width: '80%',
-  alignItems: 'center'
-})
-
-const Value = styled('h3')({
-  marginLeft: '10px'
-})
-
-const Name = styled('h3')({
-  marginRight: '10px'
-})
-
 export const ControlItem: VFC<ControlItemProps> = ({
   name,
   value,
@@ -32,6 +19,7 @@ export const ControlItem: VFC<ControlItemProps> = ({
   onChange,
   onPause
 }) => {
+  const classes = useControlItemStyles()
   const changeHandler = useCallback(
     (event: unknown, eventValue: number | number[]) =>
       onChange?.(eventValue as number),
@@ -44,15 +32,15 @@ export const ControlItem: VFC<ControlItemProps> = ({
   )
 
   return (
-    <ControlItemRoot onClick={pauseClickHandler}>
-      <Name>{name}</Name>
+    <div className={classes.root} onClick={pauseClickHandler}>
+      <h3 className={classes.name}>{name}</h3>
       <Slider
         value={value}
         min={min}
         max={max}
         onChange={changeHandler}
       />
-      <Value>{value}</Value>
-    </ControlItemRoot>
+      <h3 className={classes.value}>{value}</h3>
+    </div>
   )
 }

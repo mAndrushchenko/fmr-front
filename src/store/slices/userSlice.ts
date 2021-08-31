@@ -1,15 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import {
+import type {
   TBook,
-  TReducer,
   TToken,
-  TUserData,
-  TUserEmail
+  TReducer,
+  TUserData
 } from 'src/types/store'
-import {
+import type {
   TBuyBooks,
-  TUploadBook,
-  TBookWithToken
+  TBookPayload,
+  TUploadInfo,
+  TUploadData,
+  TUploadImage
 } from 'src/types/payloadActions'
 
 const initialState: TUserData = {
@@ -30,19 +31,23 @@ export const userSlice = createSlice({
 
     signupUserAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
-    passwordRecoveryAction: (state, { type }: PayloadAction<TUserEmail>) => void (state.lastReqType = type),
+    passwordRecoveryAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
     setUserDataAction: (state, { type }: PayloadAction<TToken>) => void (state.lastReqType = type),
 
-    addToBasketAction: (state, { type }: PayloadAction<TBookWithToken>) => void (state.lastReqType = type),
+    addToBasketAction: (state, { type }: PayloadAction<TBookPayload>) => void (state.lastReqType = type),
 
-    delFromBasketAction: (state, { type }: PayloadAction<TBookWithToken>) => void (state.lastReqType = type),
+    delFromBasketAction: (state, { type }: PayloadAction<TBookPayload>) => void (state.lastReqType = type),
 
-    uploadBookAction: (state, { type }: PayloadAction<TUploadBook>) => void (state.lastReqType = type),
+    uploadBookInfoAction: (state, { type }: PayloadAction<TUploadInfo>) => void (state.lastReqType = type),
+
+    uploadBookDataAction: (state, { type }: PayloadAction<TUploadData>) => void (state.lastReqType = type),
+
+    uploadBookImageAction: (state, { type }: PayloadAction<TUploadImage>) => void (state.lastReqType = type),
 
     buyBooksAction: (state, { type }: PayloadAction<TBuyBooks>) => void (state.lastReqType = type),
 
-    setUserData: (state, { payload }: PayloadAction<TUserData>) => payload,
+    setUserData: (state, { payload }: PayloadAction<TUserData>) => ({ ...state, ...payload }),
 
     delUserData: () => initialState,
 
@@ -54,10 +59,6 @@ export const userSlice = createSlice({
       state.basket = state.basket.filter(book => book.id !== payload.id)
     },
 
-    uploadBook: (state, { payload }: PayloadAction<TBook>) => {
-      state.uploadedBooks = [ ...state.uploadedBooks, payload ]
-    },
-
     buyBooks: (state, { payload }: PayloadAction<TBook[]>) => ({
       ...state, purchasedBooks: [ ...state.purchasedBooks, ...payload ]
     })
@@ -66,7 +67,6 @@ export const userSlice = createSlice({
 
 export const {
   buyBooks,
-  uploadBook,
   addToBasket,
   setUserData,
   delUserData,
@@ -74,7 +74,9 @@ export const {
   buyBooksAction,
   signinUserAction,
   signupUserAction,
-  uploadBookAction,
+  uploadBookInfoAction,
+  uploadBookDataAction,
+  uploadBookImageAction,
   addToBasketAction,
   setUserDataAction,
   delFromBasketAction,

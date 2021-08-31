@@ -1,5 +1,5 @@
-import { styled } from '@material-ui/core'
 import { useCallback, useState, VFC, MouseEvent } from 'react'
+import { useIndexStyles } from './styles'
 import { ControlItem } from './ControlItem'
 
 interface ControlsProps {
@@ -11,13 +11,6 @@ interface ControlsProps {
   onPause?: (state?: boolean) => void
 }
 
-const ControlsRoot = styled('div')({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexDirection: 'column'
-})
-
 export const Controls: VFC<ControlsProps> = ({
   className,
   fontSize,
@@ -26,6 +19,7 @@ export const Controls: VFC<ControlsProps> = ({
   onFontSizeChange,
   onPause
 }) => {
+  const classes = useIndexStyles()
   const [ fontSizeState, setFontSize ] = useState(fontSize)
   const [ speedState, setSpeed ] = useState(speed)
   const speedChangeHandler = useCallback(
@@ -49,7 +43,7 @@ export const Controls: VFC<ControlsProps> = ({
   )
 
   return (
-    <ControlsRoot className={className} onClick={pauseClickHandler}>
+    <div className={`${classes.root} ${className}`} onClick={pauseClickHandler}>
       <ControlItem
         name='Font Size'
         value={fontSizeState}
@@ -63,6 +57,6 @@ export const Controls: VFC<ControlsProps> = ({
         onChange={speedChangeHandler}
         onPause={onPause}
       />
-    </ControlsRoot>
+    </div>
   )
 }

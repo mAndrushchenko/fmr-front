@@ -1,4 +1,5 @@
-import { VFC, useState, useCallback } from 'react'
+import React, { VFC, useState, useCallback } from 'react'
+import { Redirect } from 'react-router-dom'
 import { sign } from 'jsonwebtoken'
 
 import {
@@ -8,32 +9,27 @@ import {
   Typography,
   FormControlLabel
 } from '@material-ui/core'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { TAppDispatch } from 'src/types/store'
-import { signupUserAction } from 'src/store/slices/userSlice'
+import { signupUserAction, userSelector } from 'src/store/slices/userSlice'
 import { passwordRegexp, emailRegexp, nameRegexp } from 'src/shared/constant/regExp'
 import { passwordError, emailError, nameError } from 'src/shared/constant/errorMasseges'
 import { AfterRegComp } from './AfterRegComp'
 import { styles } from './styles'
-
-const formInitialState = {
-  email: '',
-  name: '',
-  firstPassword: '',
-  secondPassword: ''
-}
+import { spinnerSelector, startSpin } from '../../store/slices/spinnerSlice'
 
 export const Signup: VFC = () => {
   const classes = styles()
   const dispatch = useDispatch<TAppDispatch>()
-
-  // If token exist, we redirect user to the home page
-  // const { token } = useSelector(userSelector)
-
-
-  //  Before token works correctly, use boolean to check on user logged
+  const { token } = useSelector(userSelector)
+  const { spin, error: err } = useSelector(spinnerSelector)
   const [ register, setRegister ] = useState(false)
-  const [ form, setForm ] = useState(formInitialState)
+  const [ form, setForm ] = useState({
+    email: '',
+    name: '',
+    firstPassword: '',
+    secondPassword: ''
+  })
   const [ ignoreEmail, setIgnore ] = useState(false)
   const [ error, setError ] = useState({
     email: '',
@@ -42,7 +38,7 @@ export const Signup: VFC = () => {
   })
 
   const validation = useCallback(() => {
-    let passwordProblem = ''
+    let passwordProblem: string
 
     if (form.firstPassword !== form.secondPassword) {
       passwordProblem = 'You password does not match'
@@ -73,7 +69,7 @@ export const Signup: VFC = () => {
       email: (e.target.checked ||
         emailRegexp.test(form.email)) ? '' : emailError
     })
-  }, [ form ])
+  }, [ form, error ])
 
   const onBlurHandler = useCallback(() => {
     setError(validation())
@@ -85,21 +81,21 @@ export const Signup: VFC = () => {
     const newError = validation()
 
     if (!newError.email && !newError.name && !newError.firstPassword) {
-      const token = sign({
+      const newToken = sign({
         email: form.email,
         name: form.name,
         password: form.firstPassword
       }, 'ssh')
-      dispatch(signupUserAction({ token }))
+      dispatch(startSpin())
+      dispatch(signupUserAction({ token: newToken }))
       setRegister(true)
-      setForm(formInitialState)
     }
     setError(newError)
   }, [ dispatch, form ])
 
   return (
     <div className={classes.root}>
-      {register
+      {(register && !spin && !err)
         ? <AfterRegComp />
         : <div className={classes.singnup}>
             <Typography variant='h4'>
@@ -181,11 +177,13 @@ export const Signup: VFC = () => {
                 variant='outlined'
                 color='primary'
                 className={classes.button}
+                disabled={spin}
               >
                 Sign up
               </Button>
             </form>
           </div>}
+      {token && <Redirect to='/' />}
     </div>
   )
 }

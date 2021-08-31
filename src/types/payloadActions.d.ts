@@ -1,26 +1,43 @@
 import { TToken, TBook, TId, TReaderCacheSize, TReaderSelectedPage, TUserEmail } from './store'
-import { TAdminBookLoader, TUsersBookLoader } from './bookLoader'
+import { TAdminBookLoader, TBookDataLoader, TBookImageLoader, TBookInfoLoader, TUsersBookLoader } from './bookLoader'
 
-export type TBookWithToken = TToken & {
+export type TBookPayload = {
   book: TBook
 }
 
-// export type TIdWithToken = TToken & TId
+// export type TIdWithToken = TId
 
-export type TGetReaderBook = TBookWithToken & TReaderCacheSize & TReaderSelectedPage & TId
-
-export type TUploadBook = TToken & {
+export type TUploadBook = {
   book: TUsersBookLoader | TAdminBookLoader
 }
 
-export type TBuyBooks = TToken & {
+export type TUploadInfo = { bookInfo: TBookInfoLoader }
+
+export type TUploadData = { bookData: TBookDataLoader }
+
+export type TUploadImage = { bookImage: TBookImageLoader }
+
+export type TBuyBooks = {
   basket: TBook[]
 }
 
-export type TUserActionPayload = TToken | TUserEmail | TBookWithToken | TUploadBook | TBuyBooks
+export type TUserActionPayload = TToken | TUserEmail |
+  TBookPayload | TUploadInfo | TUploadData |
+  TUploadImage | TBuyBooks | TBook | void
 
 // reader
 
-// export type TPagesWithToken = TToken & TReaderSelectedPage & TReaderCacheSize & TId
+// export type TPagesWithToken = TReaderSelectedPage & TReaderCacheSize & TId
 
-export type TGetPagesWithToken = TToken & TReaderSelectedPage & TReaderCacheSize
+export type TGetReaderBook = TId & Partial<TReaderCacheSize>
+
+export type TGetBookPages = TId & TGetBookPagesPayload
+
+export type TUpdateBookProgress = TId & {
+  selectedWord: number
+}
+
+export type TGetBookPagesPayload = {
+  index: number
+  count?: number
+}

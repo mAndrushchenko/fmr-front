@@ -57,12 +57,10 @@ export type TShopFilters = {
   price: number[] | null
   genre: string | null
   searchPhrase: string | null
-  author: string | null
+  author: string | null,
 }
 
 export type TBookPage = string[]
-
-export type TReaderSelectedPage = { selectedPage: number }
 
 export type TReaderSelectedWord = { selectedWord: number }
 
@@ -70,16 +68,20 @@ export type TReaderCacheSize = { cacheSize: number }
 
 export type TReaderTotalPages = { totalPages: number }
 
-export type TReaderBook = TReaderTotalPages & {
-  pages: TBookPage[]
-  book: TBook
+export type TReaderBookLength = { bookLength: number }
+
+export type TReaderBookPages = { pages: Record<number, TBookPage | undefined> }
+
+export type TReaderBook = TReaderTotalPages & TReaderBookPages &
+  TReaderSelectedWord & {
+  info: TBook & TReaderBookLength
 }
 
-export type TReaderBookState = TReaderSelectedPage &
-  TReaderSelectedWord & TReaderCacheSize & TReaderTotalPages & {
-  pages: TBookPage[]
+export type TReaderBookState = TReaderTotalPages & TReaderBookPages &
+  TReaderBookLength & TReaderSelectedWord & {
   book: TBook | null,
   lastReqType: string | null
+  loadingPages: number[]
 }
 
 export type TFirstLoadBooksLists = {
@@ -88,12 +90,28 @@ export type TFirstLoadBooksLists = {
   random: TBook[]
 }
 
+export type TShopBook = TUploadBook & TId & {
+  image: string | null
+}
+
 export type TShop = {
-  books: TBook[]
+  books: TShopBook[]
   filters: TShopFilters
   lastReqType: string | null
 }
 
-export type TSpinner = {
+export type TSpinnerPayload = {
+  error: boolean,
+  message: string | null
+}
+
+export type TSpinner = TSpinnerPayload & {
   spin: boolean
+}
+
+export type TMyBook = Pick<TShopBook, 'id' | 'name' | 'author' | 'image'>
+
+export type TMyBookStore = {
+  books: TMyBook[]
+  lastReqType: string | null
 }

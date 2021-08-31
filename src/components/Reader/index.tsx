@@ -1,84 +1,57 @@
-import { useCallback, useState, VFC, MouseEvent } from 'react'
-import { styled } from '@material-ui/core'
+import { useCallback, useState, VFC, MouseEvent, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { useLazyBookPageLoader } from 'src/hooks/useLazyBookPageLoader'
+import { useStyles } from './styles'
 import { Visualizer } from './Visualizer'
 import { Controls } from './Controls'
 import { Progress } from './Progress'
 import { useToggle } from '../../hooks/useToggle'
 
-const tokenList = [
-  'Pariatur', 'labore', 'labore', 'do',
-  'duis', 'ut', 'id', 'magna',
-  'magna', 'ea', 'voluptate', 'nulla.',
-  'Est', 'nostrud', 'nulla', 'est',
-  'quis', 'consequat', 'non', 'proident',
-  'aliqua', 'incididunt', 'ut', 'enim',
-  'laboris', 'fugiat.', 'Tempor', 'voluptate',
-  'deserunt', 'incididunt', 'aute', 'duis',
-  'irure', 'laborum', 'laboris', 'aute',
-  'commodo', 'ex', 'in.', 'Ullamco',
-  'excepteur', 'laborum', 'duis', 'eu',
-  'velit', 'esse', 'tempor', 'culpa',
-  'esse', 'exercitation', 'et', 'veniam.',
-  'Officia', 'reprehenderit', 'nisi', 'ipsum',
-  'sint', 'irure', 'est', 'mollit',
-  'nulla.'
-]
-
-const ReaderRoot = styled('div')(({ theme }) => ({
-  [theme.breakpoints.down('xs')]: {
-    width: '100%'
-  },
-  [theme.breakpoints.up('sm')]: {
-    width: '70%'
-  },
-  [theme.breakpoints.up('md')]: {
-    width: '50%'
-  },
-  [theme.breakpoints.up('lg')]: {
-    width: '30%'
-  },
-  height: '100%',
-  margin: 'auto',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between'
-}))
-
 export const Reader: VFC = () => {
+  const { id } = useParams<{ id: string }>()
+  const classes = useStyles()
+  const { nextWord, word, isEnded } = useLazyBookPageLoader(id)
+  const selectedWord = useSelector(store => store.readerSlice.selectedWord)
+  const bookLength = useSelector(store => store.readerSlice.bookLength)
   const [ speed, setSpeed ] = useState(200)
   const [ isPaused, togglePause ] = useToggle(true)
   const [ fontSize, setFontSize ] = useState(28)
-  const [ currentIndex, setCurrentIndex ] = useState(0)
   const pauseClickHandler = useCallback(
     (event: MouseEvent) =>
       event.currentTarget === event.target && togglePause(),
     []
   )
+  // For unknown reason progressChangeHandler does not update
+  // when bookLength updates
+  const bookLengthRef = useRef<number>(bookLength)
+  bookLengthRef.current = bookLength
   const progressChangeHandler = useCallback(
     (value: number) => {
-      const nextIndex = +((value / 100) * tokenList.length - 1).toFixed()
+      const nextIndex = +((value / 100) * bookLengthRef.current).toFixed()
+      console.log(value, nextIndex, bookLengthRef.current)
       togglePause(true)
-      // For unknown reason, this formula gives -1 when value === 0
-      setCurrentIndex(nextIndex > 0 ? nextIndex : 0)
+      // For unknown reason, nextIndex === -1 when value === 0
+      nextWord(nextIndex > 0 ? nextIndex : 0)
     },
     []
   )
-  const progress = (currentIndex / (tokenList.length - 1)) * 100
+  const progress = (selectedWord / (bookLength - 1)) * 100
+  console.log(bookLength, selectedWord, progress)
 
   return (
-    <ReaderRoot onClick={pauseClickHandler}>
+    <div className={classes.root} onClick={pauseClickHandler}>
       <Progress
         value={progress}
         onChange={progressChangeHandler}
         onPause={togglePause}
       />
       <Visualizer
-        tokenList={tokenList}
-        index={currentIndex}
+        word={word ?? ''}
         speed={speed}
         fontSize={fontSize}
-        paused={isPaused}
-        onNext={setCurrentIndex}
+        paused={isPaused || isEnded}
+        onNext={nextWord}
         onPause={togglePause}
       />
       <Controls
@@ -88,6 +61,6 @@ export const Reader: VFC = () => {
         onSpeedChange={setSpeed}
         onPause={togglePause}
       />
-    </ReaderRoot>
+    </div>
   )
 }

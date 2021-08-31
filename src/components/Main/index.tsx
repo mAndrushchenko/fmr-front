@@ -1,35 +1,56 @@
 import { VFC } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { styled } from '@material-ui/core'
 import { Reader } from '../Reader'
 import { Header } from '../Header'
 import { Loader } from '../Loader'
+import { Home } from '../Home'
 import { Signin } from '../Signin'
 import { Signup } from '../Signup'
+import { PasswordRecovery } from '../Signin/PasswordRecovery'
+import { styles } from './styles'
+import { Library } from '../Library'
+import { MyBooks } from '../MyBooks'
+import { Spinner } from '../Spinner'
+import { Basket } from '../Basket'
 
-const MainRoot = styled('main')({
-  height: '100%',
-  paddingTop: '64px'
-})
+export const Main: VFC = () => {
+  const classes = styles()
 
-export const Main: VFC = () => (
-  <MainRoot>
-    <Router>
-      <Header />
-      <Switch>
-        <Route path='/signin'>
-          <Signin />
-        </Route>
-        <Route path='/signup'>
-          <Signup />
-        </Route>
-        <Route path='/loader'>
-          <Loader />
-        </Route>
-        <Route path='/online-reader'>
-          <Reader />
-        </Route>
-      </Switch>
-    </Router>
-  </MainRoot>
-)
+  return (
+    <div className={classes.root}>
+      <Router>
+        <Header />
+        <Switch>
+          <Route exact path='/'>
+            <Home />
+          </Route>
+          <Route path='/signin'>
+            <Signin />
+          </Route>
+          <Route path='/signup'>
+            <Signup />
+          </Route>
+          <Route path='/my-books/upload'>
+            <Loader />
+          </Route>
+          <Route path='/my-books/:id/read'>
+            <Reader />
+          </Route>
+          <Route path='/my-books'>
+            <MyBooks />
+          </Route>
+          <Route path='/library'>
+            <Library />
+          </Route>
+          <Route path='/password-recovery'>
+            <PasswordRecovery />
+          </Route>
+          <Route path='/basket'>
+            <Basket />
+          </Route>
+        </Switch>
+      </Router>
+      <Spinner />
+    </div>
+  )
+}

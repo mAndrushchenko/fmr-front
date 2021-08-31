@@ -1,20 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   TReducer,
-  TSpinner
+  TSpinner, TSpinnerPayload
 } from 'src/types/store'
 
 const initialState: TSpinner = {
-  spin: false
+  spin: false,
+  message: null,
+  error: false
 }
 
 export const spinnerSlice = createSlice({
   name: 'spinner',
   initialState,
   reducers: {
-    startSpin: () => ({ spin: true }),
+    startSpin: () => ({ spin: true, message: null, error: false }),
 
-    stopSpin: () => ({ spin: false })
+    stopSpin: (state, { payload }: PayloadAction<TSpinnerPayload>) => ({ spin: false, ...payload })
   }
 })
 

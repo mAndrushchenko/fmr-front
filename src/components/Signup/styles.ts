@@ -15,6 +15,23 @@ export const styles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center'
-  }
+  },
 
+  cardRoot: {
+    margin: '0 auto',
+    maxWidth: 345
+  },
+  media: {
+    height: 140
+  },
+  title: {
+    textAlign: 'center'
+  },
+  message: {
+    fontSize: 20
+  },
+  btn: {
+    width: '100%',
+    textAlign: 'center'
+  }
 })
